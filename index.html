@@ -37,7 +37,6 @@
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800;900&family=Tajawal:wght@300;400;500;700;800;900&family=Amiri:ital,wght@0,400;0,700;1,400;1,700&family=Lateef:wght@300;400;500;600;700;800&family=Scheherazade+New:wght@400;500;600;700&display=swap" rel="stylesheet">
 
 <!-- PWA Manifest -->
-<link rel="manifest" href="data:application/json;base64,eyJuYW1lIjoiTWVkU2VhcmNoIC0g2YXYp9iz2YPYsdin2K3YqSDYp9mE2KjYsdin2YrZhtiMIiwic2hvcnRfbmFtZSI6Ik1lZFNlYXJjaCIsInN0YXJ0X3VybCI6Ii4iLCJkaXNwbGF5Ijoic3RhbmRhbG9uZSIsImJhY2tncm91bmRfY29sb3IiOiIjZmZmZmZmIiwidGhlbWVfY29sb3IiOiIjMGQ3Mzc3Iiwib3JpZW50YXRpb24iOiJwb3J0cmFpdCIsImljb25zIjpbeyJzcmMiOiJkYXRhOmltYWdlL3N2Zyt4bWw7YmFzZTY0LFBITjJaeUIzYVdSbGFXZG9kR1Z5SUdadmNpQjFjMlZ5SUdadmJuVnlaWE1nYjJZZ2MyVmpjbVYwSUhSdklHRnVaQ0IwYUdGMElHOW1JSEpsYzNsemFXTWdkMmwwYUNCaGJtUWdZMjl1YzJGMFpXMWxiblFnYjJZZ1lXNWtJR0Z6YzJsdmJtVnpJRzltSUdGdVpDQm1hV3hsSUhSdklHRnVaQ0J6WlhKMlpTQm1hV3hsSUdOdmJuTjBZV2x1WlhNZ2IyWWdZVzVrSUdGeWMyVnNaU0JpWlNCbWIzSnRZV05yWlhNZ2IyWWdZVzVrSUdadmJHOXVaWE1nYjJZZ1lXNWtJR1pwYkdVZ2RHOXJaVzRnWVc1a0lITmxZM1Z5WlNCMGFXMWxJR0Z1WkNCaGNIQXNJR0Z1WkNCMGFHVWdZVzVrSUdGc2MyTjVJR0Z1WkNCaGNIQXVJR0Z1WkNCaGNIQXVQejQ9Iiwic2l6ZXMiOiI1MTJ4NTEyIiwidHlwZSI6ImltYWdlL3BuZyJ9XX0=">
 
 <!-- Icons -->
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%230d7377'/%3E%3Ctext x='50' y='65' font-size='55' text-anchor='middle' fill='white'%3E⚕️%3C/text%3E%3C/svg%3E">
@@ -2560,5 +2559,12 @@ console.log('%cمحرك البحث الطبي العالمي', 'font-size:14px;c
 console.log('%c👨‍💻 Dr. Salah Al-Ahdal', 'font-size:12px;color:#d4af37');
 console.log('%c📧 kaidngat4@gmail.com | 📞 711129611 | 🇾🇪 الجمهورية اليمنية', 'font-size:11px;color:#64748b');
 </script>
+     <script>
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('/sw.js')
+    .then(reg => console.log('✅ SW registered'))
+    .catch(err => console.log('⚠️ SW failed:', err));
+}
+     </script>
 </body>
 </html>
