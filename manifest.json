@@ -1,0 +1,28 @@
+{
+  "name": "MedSearch - محرك البحث الطبي العالمي",
+  "short_name": "MedSearch",
+  "description": "محرك بحث طبي عالمي مع قواميس الأدوية والأمراض",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#0d7377",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "images/logo-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "images/logo-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "images/logo-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}
