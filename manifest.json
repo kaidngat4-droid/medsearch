@@ -1,28 +1,55 @@
 {
   "name": "MedSearch - محرك البحث الطبي العالمي",
   "short_name": "MedSearch",
-  "description": "محرك بحث طبي عالمي مع قواميس الأدوية والأمراض",
+  "description": "محرك بحث طبي عالمي مع قواميس الأدوية والأمراض والأنسجة والمختبرات والمصادر الطبية العالمية",
   "start_url": "/",
+  "scope": "/",
   "display": "standalone",
+  "orientation": "portrait",
   "background_color": "#ffffff",
   "theme_color": "#0d7377",
-  "orientation": "portrait",
+  "categories": ["medical", "health", "education"],
+  "lang": "ar",
+  "dir": "rtl",
   "icons": [
     {
-      "src": "images/logo-192.png",
+      "src": "icon-192.png",
       "sizes": "192x192",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any maskable"
     },
     {
-      "src": "images/logo-512.png",
-      "sizes": "512x512",
-      "type": "image/png"
-    },
-    {
-      "src": "images/logo-512.png",
+      "src": "icon-512.png",
       "sizes": "512x512",
       "type": "image/png",
-      "purpose": "maskable"
+      "purpose": "any maskable"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "screenshot1.png",
+      "sizes": "1080x1920",
+      "type": "image/png",
+      "form_factor": "narrow"
+    }
+  ],
+  "prefer_related_applications": false,
+  "display_override": ["standalone", "minimal-ui"],
+  "related_applications": [],
+  "shortcuts": [
+    {
+      "name": "قاموس الأدوية",
+      "short_name": "أدوية",
+      "description": "البحث في قاموس الأدوية",
+      "url": "/?page=pharmacology",
+      "icons": [{ "src": "icon-192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "قاموس الأمراض",
+      "short_name": "أمراض",
+      "description": "البحث في قاموس الأمراض",
+      "url": "/?page=diseases",
+      "icons": [{ "src": "icon-192.png", "sizes": "192x192" }]
     }
   ]
 }
