@@ -1997,7 +1997,6 @@ let installDismissed = false;
 document.addEventListener('DOMContentLoaded', () => {
   const savedTheme = localStorage.getItem('medsearch_theme') || 'light';
   setTheme(savedTheme);
-  initServiceWorker();
   initOfflineDetection();
   initInstallPrompt();
   initScrollEffects();
@@ -2005,18 +2004,6 @@ document.addEventListener('DOMContentLoaded', () => {
   console.log('🚀 MedSearch PWA v2.0 - Loaded');
   console.log('👨‍💻 Dr. Salah Al-Ahdal | 📧 kaidngat4@gmail.com | 📞 711129611');
 });
-
-    
-    const blob = new Blob([swCode], { type: 'application/javascript' });
-    const swUrl = URL.createObjectURL(blob);
-    
-    navigator.serviceWorker.register(swUrl).then(reg => {
-      console.log('✅ Service Worker registered');
-    }).catch(err => {
-      console.log('⚠️ SW registration failed:', err);
-    });
-  }
-}
 
 // ============ OFFLINE DETECTION ============
 function initOfflineDetection() {
