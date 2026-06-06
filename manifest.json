@@ -11,6 +11,7 @@
   "categories": ["medical", "health", "education"],
   "lang": "ar",
   "dir": "rtl",
+  "iarc_rating_id": "e58c174a-81d2-5c3b-bc3f-1e7b6e9e3e37",
   "icons": [
     {
       "src": "icon-192.png",
@@ -30,11 +31,12 @@
       "src": "screenshot1.png",
       "sizes": "1080x1920",
       "type": "image/png",
-      "form_factor": "narrow"
+      "form_factor": "narrow",
+      "label": "الشاشة الرئيسية"
     }
   ],
-  "prefer_related_applications": false,
   "display_override": ["standalone", "minimal-ui"],
+  "prefer_related_applications": false,
   "related_applications": [],
   "shortcuts": [
     {
@@ -49,6 +51,13 @@
       "short_name": "أمراض",
       "description": "البحث في قاموس الأمراض",
       "url": "/?page=diseases",
+      "icons": [{ "src": "icon-192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "قاموس المختبرات",
+      "short_name": "مختبرات",
+      "description": "البحث في قاموس المختبرات",
+      "url": "/?page=labs",
       "icons": [{ "src": "icon-192.png", "sizes": "192x192" }]
     }
   ]
