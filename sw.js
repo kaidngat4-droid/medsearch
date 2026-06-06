@@ -1,9 +1,11 @@
-const CACHE_NAME = 'medsearch-v3';
+const CACHE_NAME = 'medsearch-v6';
 const ASSETS = [
   '/',
+  '/index.html',
   '/manifest.json',
   '/icon-192.png',
-  '/icon-512.png'
+  '/icon-512.png',
+  '/icon-maskable.png'
 ];
 
 self.addEventListener('install', (e) => {
@@ -24,10 +26,16 @@ self.addEventListener('activate', (e) => {
 
 self.addEventListener('fetch', (e) => {
   e.respondWith(
-    caches.match(e.request).then(res => res || fetch(e.request).catch(() => {
-      if (e.request.mode === 'navigate') {
-        return caches.match('/');
-      }
-    }))
+    caches.match(e.request).then(res => {
+      if (res) return res;
+      return fetch(e.request).then(response => {
+        if (!response || response.status !== 200) return response;
+        const responseToCache = response.clone();
+        caches.open(CACHE_NAME).then(cache => cache.put(e.request, responseToCache));
+        return response;
+      }).catch(() => {
+        if (e.request.mode === 'navigate') return caches.match('/');
+      });
+    })
   );
 });
