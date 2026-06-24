@@ -3,7 +3,6 @@
       "target": {
         "namespace": "android_app",
         "package_name": "app.netlify.medsearch_app.twa",
-        "sha256_cert_fingerprints": ["49:E9:BD:47:CF:9D:71:3F:11:63:39:AF:EA:5A:A6:6D:C5:DA:5A:75:F6:A2:D2:DA:1D:9D:6D:9B:6A:F7:F3:05"]
+        "sha256_cert_fingerprints": ["4B:9A:C7:1D:65:00:BD:4B:E6:58:95:80:04:9C:A0:B3:75:F3:41:05:DA:68:90:A1:7B:F0:E2:C0:7E:D4:A2:29"]
       }
     }]
-
