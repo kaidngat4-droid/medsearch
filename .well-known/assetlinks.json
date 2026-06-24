@@ -1,1 +1,9 @@
+[{
+      "relation": ["delegate_permission/common.handle_all_urls"],
+      "target": {
+        "namespace": "android_app",
+        "package_name": "app.netlify.medsearch_app.twa",
+        "sha256_cert_fingerprints": ["49:E9:BD:47:CF:9D:71:3F:11:63:39:AF:EA:5A:A6:6D:C5:DA:5A:75:F6:A2:D2:DA:1D:9D:6D:9B:6A:F7:F3:05"]
+      }
+    }]
 
