@@ -1,17 +1,19 @@
 {
-  "name": "MedSearch - محرك البحث الطبي العالمي",
-  "short_name": "MedSearch",
-  "description": "محرك بحث طبي عالمي مع قواميس الأدوية والأمراض والأنسجة والمختبرات والمصادر الطبية العالمية",
+  "name": "MedSearch Yemen - محرك البحث الطبي العالمي",
+  "short_name": "MedSearch Yemen",
+  "description": "محرك بحث طبي يمني شامل مع قواميس الأدوية والأمراض والأنسجة والمختبرات والمصادر الطبية العالمية",
   "start_url": "/",
   "scope": "/",
   "display": "standalone",
+  "display_override": ["standalone", "minimal-ui", "browser"],
   "orientation": "portrait",
   "background_color": "#ffffff",
   "theme_color": "#0d7377",
-  "categories": ["medical", "health", "education"],
+  "categories": ["medical", "health", "education", "reference"],
   "lang": "ar",
   "dir": "rtl",
   "iarc_rating_id": "e58c174a-81d2-5c3b-bc3f-1e7b6e9e3e37",
+
   "icons": [
     {
       "src": "icon-192.png",
@@ -30,41 +32,128 @@
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "maskable"
+    },
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "monochrome"
     }
   ],
+
   "screenshots": [
     {
       "src": "screenshot1.png",
       "sizes": "1080x1920",
       "type": "image/png",
       "form_factor": "narrow",
-      "label": "الشاشة الرئيسية"
+      "label": "الشاشة الرئيسية - البحث الطبي العالمي"
+    },
+    {
+      "src": "screenshot-1.png",
+      "sizes": "1080x1920",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "قواميس الأدوية والأمراض"
+    },
+    {
+      "src": "screenshot-wide.png",
+      "sizes": "1920x1080",
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "وضع سطح المكتب"
     }
   ],
-  "display_override": ["standalone", "minimal-ui"],
+
   "prefer_related_applications": false,
   "related_applications": [],
+
   "shortcuts": [
     {
       "name": "قاموس الأدوية",
       "short_name": "أدوية",
-      "description": "البحث في قاموس الأدوية",
+      "description": "البحث في قاموس الأدوية الشامل",
       "url": "/?page=pharmacology",
-      "icons": [{ "src": "icon-192.png", "sizes": "192x192" }]
+      "icons": [
+        { 
+          "src": "icon-192.png", 
+          "sizes": "192x192",
+          "purpose": "any"
+        }
+      ]
     },
     {
       "name": "قاموس الأمراض",
       "short_name": "أمراض",
-      "description": "البحث في قاموس الأمراض",
+      "description": "البحث في قاموس الأمراض والأوبئة",
       "url": "/?page=diseases",
-      "icons": [{ "src": "icon-192.png", "sizes": "192x192" }]
+      "icons": [
+        { 
+          "src": "icon-192.png", 
+          "sizes": "192x192",
+          "purpose": "any"
+        }
+      ]
     },
     {
       "name": "قاموس المختبرات",
       "short_name": "مختبرات",
-      "description": "البحث في قاموس المختبرات",
+      "description": "البحث في قاموس التحاليل والمختبرات",
       "url": "/?page=labs",
-      "icons": [{ "src": "icon-192.png", "sizes": "192x192" }]
+      "icons": [
+        { 
+          "src": "icon-192.png", 
+          "sizes": "192x192",
+          "purpose": "any"
+        }
+      ]
+    },
+    {
+      "name": "قاموس الأنسجة",
+      "short_name": "أنسجة",
+      "description": "البحث في قاموس الأنسجة والخلايا",
+      "url": "/?page=tissues",
+      "icons": [
+        { 
+          "src": "icon-192.png", 
+          "sizes": "192x192",
+          "purpose": "any"
+        }
+      ]
+    }
+  ],
+
+  "share_target": {
+    "action": "/",
+    "method": "GET",
+    "params": {
+      "title": "title",
+      "text": "text",
+      "url": "url"
+    }
+  },
+
+  "handle_links": "preferred",
+
+  "edge_side_panel": {
+    "preferred_width": 400
+  },
+
+  "widgets": [],
+
+  "protocol_handlers": [
+    {
+      "protocol": "web+medsearch",
+      "url": "/?query=%s"
+    }
+  ],
+
+  "file_handlers": [
+    {
+      "action": "/",
+      "accept": {
+        "text/html": [".html"]
+      }
     }
   ]
 }
