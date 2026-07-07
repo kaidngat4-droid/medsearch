@@ -2,8 +2,9 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="theme-color" content="#0d7377">
+<link rel="icon" href="/images/icon-192.png">
 <title>MedSearch Yemen - غير متصل</title>
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -11,12 +12,13 @@
     font-family: 'Cairo', 'Tajawal', sans-serif;
     background: linear-gradient(135deg, #0d7377, #095457);
     min-height: 100vh;
+    min-height: 100dvh;
     display: flex;
     align-items: center;
     justify-content: center;
     color: #fff;
     text-align: center;
-    padding: 20px;
+    padding: max(20px, env(safe-area-inset-top)) 20px max(20px, env(safe-area-inset-bottom));
   }
   .offline-container {
     max-width: 420px;
@@ -35,23 +37,9 @@
     0%, 100% { transform: scale(1); opacity: 0.8; }
     50% { transform: scale(1.1); opacity: 1; }
   }
-  .offline-title {
-    font-size: 26px;
-    font-weight: 900;
-    margin-bottom: 8px;
-  }
-  .offline-subtitle {
-    font-size: 18px;
-    font-weight: 700;
-    margin-bottom: 12px;
-    opacity: 0.95;
-  }
-  .offline-desc {
-    font-size: 15px;
-    opacity: 0.9;
-    margin-bottom: 28px;
-    line-height: 1.8;
-  }
+  .offline-title { font-size: 26px; font-weight: 900; margin-bottom: 8px; }
+  .offline-subtitle { font-size: 18px; font-weight: 700; margin-bottom: 12px; opacity: 0.95; }
+  .offline-desc { font-size: 15px; opacity: 0.9; margin-bottom: 28px; line-height: 1.8; }
   .retry-btn {
     padding: 14px 40px;
     border: 2px solid #fff;
@@ -66,12 +54,10 @@
     display: inline-flex;
     align-items: center;
     gap: 8px;
+    min-height: 48px;
   }
-  .retry-btn:hover {
-    background: #fff;
-    color: #0d7377;
-    transform: translateY(-2px);
-  }
+  .retry-btn:hover { background: #fff; color: #0d7377; transform: translateY(-2px); }
+  .retry-btn:active { transform: translateY(0) scale(0.98); }
   .cached-info {
     margin-top: 28px;
     padding: 18px;
@@ -81,25 +67,14 @@
     backdrop-filter: blur(10px);
     border: 1px solid rgba(255,255,255,0.15);
   }
-  .cached-info strong {
-    display: block;
-    margin-bottom: 8px;
-    font-size: 14px;
-  }
-  .yemen-flag {
-    font-size: 24px;
-    margin-top: 16px;
-  }
-  .developer {
-    margin-top: 20px;
-    font-size: 12px;
-    opacity: 0.7;
-  }
+  .cached-info strong { display: block; margin-bottom: 8px; font-size: 14px; }
+  .yemen-flag { font-size: 24px; margin-top: 16px; }
+  .developer { margin-top: 20px; font-size: 12px; opacity: 0.7; }
 </style>
 </head>
 <body>
   <div class="offline-container">
-    <div class="offline-icon">📡</div>
+    <div class="offline-icon" aria-hidden="true">📡</div>
     <h1 class="offline-title">MedSearch Yemen</h1>
     <div class="offline-subtitle">أنت غير متصل بالإنترنت</div>
     <p class="offline-desc">
@@ -114,16 +89,11 @@
       📚 +5000 دواء | +3000 مرض | +2000 تحليل<br>
       🔬 أنسجة | 🧪 مختبرات | 💊 أدوية
     </div>
-    <div class="yemen-flag">🇾🇪 الجمهورية اليمنية</div>
-    <div class="developer">
-      👨‍💻 Dr. Salah Al-Ahdal | 📧 kaidngat4@gmail.com
-    </div>
+    <div class="yemen-flag" aria-hidden="true">🇾🇪 الجمهورية اليمنية</div>
+    <div class="developer">👨‍💻 Dr. Salah Al-Ahdal | 📧 kaidngat4@gmail.com</div>
   </div>
   <script>
-    // Auto-retry when connection returns
-    window.addEventListener('online', () => {
-      window.location.reload();
-    });
+    window.addEventListener('online', () => window.location.reload());
   </script>
 </body>
 </html>
