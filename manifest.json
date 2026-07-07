@@ -6,13 +6,21 @@
   "id": "/index.html",
   "scope": "/",
   "display": "standalone",
-  "display_override": ["standalone", "minimal-ui"],
+  "display_override": [
+    "standalone",
+    "minimal-ui",
+    "window-controls-overlay"
+  ],
   "orientation": "portrait-primary",
   "background_color": "#ffffff",
   "theme_color": "#0d7377",
   "lang": "ar",
   "dir": "rtl",
-  "categories": ["medical", "health", "reference"],
+  "categories": [
+    "medical",
+    "health",
+    "reference"
+  ],
   "icons": [
     {
       "src": "/images/icon-72.png",
@@ -90,13 +98,23 @@
       "name": "قاموس الأدوية",
       "short_name": "الأدوية",
       "url": "/index.html?page=pharmacology",
-      "icons": [{ "src": "/images/icon-96.png", "sizes": "96x96" }]
+      "icons": [
+        {
+          "src": "/images/icon-96.png",
+          "sizes": "96x96"
+        }
+      ]
     },
     {
       "name": "قاموس الأمراض",
       "short_name": "الأمراض",
       "url": "/index.html?page=diseases",
-      "icons": [{ "src": "/images/icon-96.png", "sizes": "96x96" }]
+      "icons": [
+        {
+          "src": "/images/icon-96.png",
+          "sizes": "96x96"
+        }
+      ]
     }
   ],
   "prefer_related_applications": false
