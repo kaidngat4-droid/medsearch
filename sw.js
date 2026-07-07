@@ -36,7 +36,6 @@ const CORE_ASSETS = [
   '/images/icon-144.png',
   '/images/icon-192-maskable.png',
   '/images/icon-384.png',
-  '/images/icon-128.png',
   '/images/icon-512-maskable.png',
   '/images/screenshot-home-narrow.png',  
   '/images/screenshot-home-wide.png'     
