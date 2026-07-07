@@ -30,11 +30,13 @@ const CORE_ASSETS = [
   '/app.js',    
   '/images/icon-192.png',
   '/images/icon-512.png',
-    '/images/icon-72.png',
+   '/images/icon-72.png',
+   '/images/icon-96.png',
   '/images/icon-128.png',
-  '/images/icon-144.png
+  '/images/icon-144.png',
   '/images/icon-192-maskable.png',
   '/images/icon-384.png',
+  '/images/icon-128.png',
   '/images/icon-512-maskable.png',
   '/images/screenshot-home-narrow.png',  
   '/images/screenshot-home-wide.png'     
