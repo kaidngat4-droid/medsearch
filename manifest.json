@@ -1,121 +1,121 @@
 {
-  "name": "MedSearch Yemen 🇾🇪",
+  "الاسم": "MedSearch اليمن 🇾🇪"
   "short_name": "MedSearch",
-  "description": "محرك البحث الطبي العالمي - قواميس الأدوية والأمراض والأنسجة والمختبرات مع ربط مباشر بالمصادر الطبية العالمية",
+  "description": "محرك البحث الطبي العالمي - ونيسيس الأدوية والأمراض والأنسجة والمختبرات مع ربط مباشر بالمصادر الطبية العالمية",
   "start_url": "/index.html",
   "id": "/index.html",
-  "scope": "/",
-  "display": "standalone",
+  "نِطَاق": "/"،
+  "عرض": "مستقل"،
   "display_override": [
-    "standalone",
+    "مستقل"،
     "minimal-ui",
     "window-controls-overlay"
   ],
-  "orientation": "portrait-primary",
-  "background_color": "#ffffff",
+  "الاتجاه": "الصورة-الأساسية"،
+  لون_الخلفية: #ffffff,
   "theme_color": "#0d7377",
   "lang": "ar",
-  "dir": "rtl",
-  "categories": [
-    "medical",
-    "health",
-    "reference"
+  "dir": "rtl"
+  "فئات": [
+    "طبي"،
+    "صحة"،
+    "مرجع"
   ],
-  "icons": [
+  "الأيقونات": [
     {
       "src": "/images/icon-72.png",
-      "sizes": "72x72",
-      "type": "image/png",
-      "purpose": "any"
+      "المقاسات": "72x72"،
+      "النوع": "صورة/png"
+      "الغرض": "أي"
     },
     {
       "src": "/images/icon-96.png",
-      "sizes": "96x96",
-      "type": "image/png",
-      "purpose": "any"
+      "المقاسات": "96x96"،
+      "النوع": "صورة/png"
+      "الغرض": "أي"
     },
     {
       "src": "/images/icon-128.png",
-      "sizes": "128x128",
-      "type": "image/png",
-      "purpose": "any"
+      "المقاسات": "128x128"،
+      "النوع": "صورة/png"
+      "الغرض": "أي"
     },
     {
       "src": "/images/icon-144.png",
-      "sizes": "144x144",
-      "type": "image/png",
-      "purpose": "any"
+      "المقاسات": "144x144"
+      "النوع": "صورة/png"
+      "الغرض": "أي"
     },
     {
       "src": "/images/icon-192.png",
-      "sizes": "192x192",
-      "type": "image/png",
-      "purpose": "any"
+      "الأحجام": "192x192"،
+      "النوع": "صورة/png"
+      "الغرض": "أي"
     },
     {
       "src": "/images/icon-192-maskable.png",
-      "sizes": "192x192",
-      "type": "image/png",
-      "purpose": "maskable"
+      "الأحجام": "192x192"،
+      "النوع": "صورة/png"
+      "الغرض": "قابل للإخفاء"
     },
     {
       "src": "/images/icon-384.png",
-      "sizes": "384x384",
-      "type": "image/png",
-      "purpose": "any"
+      "الأحجام": "384x384"
+      "النوع": "صورة/png"
+      "الغرض": "أي"
     },
     {
       "src": "/images/icon-512.png",
-      "sizes": "512x512",
-      "type": "image/png",
-      "purpose": "any"
+      الأحجام: 512 × 512
+      "النوع": "صورة/png"
+      "الغرض": "أي"
     },
     {
       "src": "/images/icon-512-maskable.png",
-      "sizes": "512x512",
-      "type": "image/png",
-      "purpose": "maskable"
+      الأحجام: 512 × 512
+      "النوع": "صورة/png"
+      "الغرض": "قابل للإخفاء"
     }
   ],
-  "screenshots": [
+  "لقطات الشاشة": [
     {
       "src": "/images/screenshot-home-narrow.png",
-      "sizes": "1080x1920",
-      "type": "image/png",
+      الأحجام: 1080 × 1920
+      "النوع": "صورة/png"
       "form_factor": "narrow",
-      "label": "الصفحة الرئيسية لتطبيق MedSearch Yemen"
+      "label": "الصفحة الرئيسية لتطبيق MedSearch Egypt"
     },
     {
       "src": "/images/screenshot-home-wide.png",
-      "sizes": "1920x1080",
-      "type": "image/png",
-      "form_factor": "wide",
-      "label": "الصفحة الرئيسية لتطبيق MedSearch Yemen على الأجهزة اللوحية"
+      الأحجام: 1920 × 1080
+      "النوع": "صورة/png"
+      "form_factor": "عريض",
+      "label": "الصفحة الرئيسية لتطبيق MedSearch Egypt على الأجهزة اللوحية"
     }
   ],
-  "shortcuts": [
+  "الاختصارات": [
     {
       "name": "قاموس الأدوية",
       "short_name": "الأدوية",
       "url": "/index.html?page=pharmacology",
-      "icons": [
+      "الأيقونات": [
         {
           "src": "/images/icon-96.png",
-          "sizes": "96x96"
+          المقاسات: 96x96
         }
       ]
     },
     {
-      "name": "قاموس الأمراض",
+      "name": "قاموس الأمراض"،
       "short_name": "الأمراض",
       "url": "/index.html?page=diseases",
-      "icons": [
+      "الأيقونات": [
         {
           "src": "/images/icon-96.png",
-          "sizes": "96x96"
+          المقاسات: 96x96
         }
       ]
     }
   ],
-  "prefer_related_applications": false
+  "تفضيل التطبيقات ذات الصلة": خطأ
 }
