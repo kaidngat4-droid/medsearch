@@ -4,7 +4,7 @@
  * ============================================================
  * محرك البحث الطبي العالمي - النسخة النهائية مع جميع التحسينات
  * 
- * @version     4.0.2
+ * @version     4.0.0
  * @author      Dr. Salah Al-Ahdal
  * @email       kaidngat4@gmail.com
  * @phone       +967 711 129 611
@@ -19,7 +19,7 @@
 
 const APP_NAME = 'MedSearch Yemen';
 const APP_SHORT_NAME = 'MedSearch';
-const APP_VERSION = '4.0.2';
+const APP_VERSION = '4.0.0';
 const DB_NAME = 'MedSearchDB';
 const DB_VERSION = 1;
 const THEME_KEY = 'medsearch_theme';
