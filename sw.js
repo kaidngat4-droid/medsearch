@@ -26,6 +26,7 @@ const CORE_ASSETS = [
   '/',
   '/index.html',
   '/offline.html',
+   '/privacy.html',
   '/manifest.json',
   '/app.js',    
   '/images/icon-192.png',
