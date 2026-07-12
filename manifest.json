@@ -83,14 +83,14 @@
       "sizes": "1080x1920",
       "type": "image/png",
       "form_factor": "narrow",
-      "label": "MedSearch Egypt App Homepage"
+      "label": "MedSearch Yemen App Homepage"
     },
     {
       "src": "/images/screenshot-home-wide.png",
       "sizes": "1920x1080",
       "type": "image/png",
       "form_factor": "wide",
-      "label": "MedSearch Egypt App Homepage on Tablets"
+      "label": "MedSearch Yemen App Homepage on Tablets"
     }
   ],
   "shortcuts": [
