@@ -1,6 +1,6 @@
 // MedSearch Yemen Service Worker - Native Hybrid v4
 // محرك البحث الطبي العالمي - مع ميزات أصلية للجوال
-// Dr. Salah Al-Ahdal | kaidngat4@gmail.com | 🇾🇪 الجمهورية اليمنية
+// Dr. Salah Al-Ahdal | salahalahdal43@gmail.com | 🇾🇪 الجمهورية اليمنية
 //
 // v4 CHANGELOG:
 // - FIX: merged the two separate `fetch` listeners into ONE. Registering
@@ -471,4 +471,4 @@ async function cleanupAllCaches() {
 
 // ============ CONSOLE SIGNATURE ============
 console.log(`%c⚕️ MedSearch Yemen Native ${SW_VERSION}`, 'font-size:20px;font-weight:bold;color:#0d7377');
-console.log('%c👨‍💻 Dr. Salah Al-Ahdal | 📧 kaidngat4@gmail.com | 🇾🇪', 'font-size:11px;color:#64748b');
+console.log('%c👨‍💻 Dr. Salah Al-Ahdal | 📧 salahalahdal43@gmail.com | 🇾🇪', 'font-size:11px;color:#64748b');

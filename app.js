@@ -6,7 +6,7 @@
  * 
  * @version     4.0.0
  * @author      Dr. Salah Al-Ahdal
- * @email       kaidngat4@gmail.com
+ * @email       salahalahdal43@gmail.com
  * @phone       +967 711 129 611
  * @location    الجمهورية اليمنية
  * @license     All Rights Reserved
@@ -1392,7 +1392,7 @@ function printConsoleSignature() {
     console.log('%c\u{2695}\u{FE0F} ' + APP_NAME + ' v' + APP_VERSION, 'font-size:24px;font-weight:bold;color:#0d7377');
     console.log('%cمحرك البحث الطبي العالمي - مع ميزات أصلية للجوال', 'font-size:14px;color:#4a5568');
     console.log('%c\u{1F468}\u{200D}\u{1F52C} Dr. Salah Al-Ahdal', 'font-size:12px;color:#d4af37');
-    console.log('%c\u{1F4E7} kaidngat4@gmail.com | \u{1F4DE} 711129611 | \u{1F1FE}\u{1F1EA} الجمهورية اليمنية', 'font-size:11px;color:#64748b');
+    console.log('%c\u{1F4E7} salahalahdal43@gmail.com | \u{1F4DE} 711129611 | \u{1F1FE}\u{1F1EA} الجمهورية اليمنية', 'font-size:11px;color:#64748b');
     console.log('%c\u{2705} app.js v4.0.2 - QR Scanner: ZXing + BarcodeDetector', 'font-size:12px;color:#43a047');
 }
 

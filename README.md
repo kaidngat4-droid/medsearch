@@ -17,7 +17,7 @@
 
 ## 👨‍💻 المطور
 **Dr. Salah Al-Ahdal**
-- 📧 kaidngat4@gmail.com
+- 📧 salahalahdal43@gmail.com
 - 📞 711129611
 - 🇾🇪 الجمهورية اليمنية
 
