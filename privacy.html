@@ -2,68 +2,367 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>سياسة الخصوصية - MedSearch Yemen</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>سياسة الخصوصية | MedSearch Yemen</title>
+    
+    <!-- SEO -->
+    <meta name="description" content="سياسة خصوصية MedSearch Yemen - محرك البحث الطبي العالمي. نوضح كيف نحمي بياناتك ولا نجمع معلوماتك الشخصية.">
+    <meta name="robots" content="index, follow">
+    <meta name="theme-color" content="#0d7377">
+    
+    <!-- Open Graph -->
+    <meta property="og:title" content="سياسة الخصوصية - MedSearch Yemen">
+    <meta property="og:description" content="كيف نحمي خصوصيتك في تطبيق MedSearch Yemen">
+    <meta property="og:type" content="article">
+    <meta property="og:locale" content="ar_YE">
+    
+    <!-- Icons -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%230d7377'/%3E%3Ctext x='50' y='68' font-size='60' text-anchor='middle' fill='white'%3E⚕%3C/text%3E%3C/svg%3E">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+    
     <style>
+        :root {
+            --primary: #0d7377;
+            --primary-dark: #095457;
+            --primary-light: #e0f7fa;
+            --accent: #00bfa5;
+            --bg: #ffffff;
+            --bg-secondary: #f5f7fa;
+            --text: #1a1a2e;
+            --text-secondary: #4a5568;
+            --border: #e2e8f0;
+            --danger: #e53935;
+            --danger-light: #ffebee;
+            --success: #43a047;
+            --success-light: #e8f5e9;
+        }
+        
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        
+        html { background: var(--bg-secondary); scroll-behavior: smooth; }
+        
         body {
             font-family: 'Tajawal', 'Cairo', sans-serif;
-            background: #f5f7fa;
-            color: #1a1a2e;
-            max-width: 700px;
+            background: var(--bg);
+            color: var(--text);
+            max-width: 760px;
             margin: 40px auto;
-            padding: 30px;
-            background: white;
+            padding: 40px 32px;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(13, 115, 119, 0.08);
+            line-height: 1.9;
+            font-size: 15px;
+            -webkit-font-smoothing: antialiased;
+        }
+        
+        /* Back button */
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 20px;
+            background: var(--primary);
+            color: #fff;
+            text-decoration: none;
+            border-radius: 25px;
+            font-weight: 700;
+            font-size: 14px;
+            margin-bottom: 24px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(13, 115, 119, 0.25);
+        }
+        .back-btn:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(13, 115, 119, 0.35);
+        }
+        
+        /* Header */
+        .privacy-header {
+            text-align: center;
+            padding: 32px 20px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
             border-radius: 16px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+            color: #fff;
+            margin-bottom: 28px;
+            position: relative;
+            overflow: hidden;
+        }
+        .privacy-header::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(255,255,255,0.03) 10px, rgba(255,255,255,0.03) 20px);
+        }
+        .privacy-header .icon { font-size: 56px; margin-bottom: 12px; position: relative; z-index: 1; }
+        .privacy-header h1 {
+            font-family: 'Cairo', sans-serif;
+            font-size: 28px;
+            font-weight: 800;
+            margin-bottom: 8px;
+            position: relative;
+            z-index: 1;
+        }
+        .privacy-header p {
+            font-size: 14px;
+            opacity: 0.9;
+            position: relative;
+            z-index: 1;
+        }
+        
+        /* Sections */
+        h2 {
+            font-family: 'Cairo', sans-serif;
+            font-size: 20px;
+            font-weight: 800;
+            color: var(--primary-dark);
+            margin-top: 32px;
+            margin-bottom: 14px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid var(--primary-light);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        h2 .num {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 30px;
+            height: 30px;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            color: #fff;
+            border-radius: 50%;
+            font-size: 14px;
+            font-weight: 800;
+            flex-shrink: 0;
+        }
+        
+        p { margin-bottom: 14px; color: var(--text-secondary); }
+        strong { color: var(--text); font-weight: 700; }
+        
+        /* Lists */
+        ul {
+            list-style: none;
+            padding: 0;
+            margin: 12px 0 20px;
+        }
+        ul li {
+            position: relative;
+            padding: 8px 32px 8px 0;
+            color: var(--text-secondary);
+        }
+        ul li::before {
+            content: '✓';
+            position: absolute;
+            right: 0;
+            top: 8px;
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            background: var(--primary-light);
+            color: var(--primary);
+            font-size: 13px;
+            font-weight: 900;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        /* Alert boxes */
+        .alert {
+            padding: 16px 20px;
+            border-radius: 12px;
+            margin: 20px 0;
+            border-right: 4px solid;
+            font-size: 14px;
+        }
+        .alert-success { background: var(--success-light); border-color: var(--success); }
+        .alert-success strong { color: var(--success); }
+        .alert-danger { background: var(--danger-light); border-color: var(--danger); }
+        .alert-danger strong { color: var(--danger); }
+        
+        /* Links */
+        a { color: var(--primary); font-weight: 600; text-decoration: none; transition: all 0.2s; }
+        a:hover { text-decoration: underline; color: var(--primary-dark); }
+        
+        /* Contact card */
+        .contact-card {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            padding: 20px;
+            background: var(--bg-secondary);
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            margin-top: 16px;
+        }
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 14px;
+            background: var(--bg);
+            border-radius: 8px;
+            text-decoration: none;
+            color: var(--text);
+            border: 1px solid var(--border);
+            transition: all 0.3s;
+        }
+        .contact-item:hover {
+            border-color: var(--primary);
+            transform: translateX(-4px);
+            box-shadow: 0 4px 12px rgba(13, 115, 119, 0.1);
+            text-decoration: none;
+        }
+        .contact-item .emoji { font-size: 20px; }
+        .contact-item .label { font-weight: 600; font-size: 14px; }
+        
+        /* Footer */
+        .footer {
+            margin-top: 40px;
+            padding: 24px 20px;
+            background: linear-gradient(135deg, #1a1a2e, var(--primary));
+            color: #fff;
+            border-radius: 12px;
+            text-align: center;
+            font-size: 13px;
             line-height: 1.8;
         }
-        h1 { color: #0d7377; text-align: center; }
-        h2 { color: #0a5c5f; margin-top: 30px; }
-        .footer { margin-top: 30px; font-size: 14px; color: #666; text-align: center; border-top: 1px solid #eee; padding-top: 20px; }
+        .footer strong { color: #d4af37; }
+        
+        /* Responsive */
+        @media (max-width: 600px) {
+            body {
+                margin: 0;
+                border-radius: 0;
+                padding: 24px 20px;
+                max-width: 100%;
+            }
+            .privacy-header h1 { font-size: 22px; }
+            .privacy-header .icon { font-size: 44px; }
+            h2 { font-size: 17px; }
+            ul li, p { font-size: 14px; }
+        }
+        
+        /* Print */
+        @media print {
+            body { box-shadow: none; margin: 0; max-width: 100%; }
+            .back-btn { display: none; }
+            .privacy-header { background: #0d7377 !important; -webkit-print-color-adjust: exact; }
+        }
     </style>
 </head>
 <body>
-    <h1>سياسة الخصوصية</h1>
-    <p><strong>تاريخ آخر تحديث:</strong> 24 يونيو 2026</p>
-
-    <h2>1. مقدمة</h2>
-    <p>تطبيق <strong>MedSearch Yemen</strong> ("التطبيق") هو محرك بحث طبي عالمي يهدف إلى توفير معلومات طبية موثوقة وقواميس دوائية ومرضية ومخبرية. نحن نلتزم بحماية خصوصية مستخدمينا. توضح هذه السياسة كيفية تعاملنا مع المعلومات عند استخدامك للتطبيق.</p>
-
-    <h2>2. المعلومات التي نجمعها وكيفية استخدامها</h2>
-    <p>نحن <strong>لا نجمع</strong> أي بيانات شخصية تحدد هويتك (مثل الاسم، البريد الإلكتروني، أو رقم الهاتف) ولا نطلب تسجيل حساب.</p>
-    <p>ومع ذلك، قد يطلب التطبيق بعض الأذونات للوصول إلى ميزات معينة في جهازك، وتُعالج جميعها <strong>محلياً على جهازك فقط</strong> ولا يتم إرسالها أو تخزينها على أي خادم خارجي:</p>
-    <ul>
-        <li><strong>الموقع الجغرافي (GPS):</strong> يُستخدم فقط لعرض موقعك الحالي عند طلب ذلك، ولا يتم تخزينه أو مشاركته.</li>
-        <li><strong>الكاميرا:</strong> تُستخدم فقط لمسح رموز QR (QR Scanner) داخل التطبيق.</li>
-        <li><strong>الميكروفون:</strong> يُستخدم فقط لميزة البحث الصوتي، ولا يتم تسجيل أو تخزين أي صوت.</li>
-        <li><strong>معلومات الشبكة والبطارية:</strong> تُستخدم فقط لعرض حالة الاتصال والبطارية داخل التطبيق.</li>
-    </ul>
-
-    <h2>3. البيانات المخزنة محلياً</h2>
-    <p>يوفر التطبيق ميزة "التخزين المحلي" لحفظ البيانات (مثل المفضلة أو الإعدادات) على جهازك مباشرة باستخدام تقنيات التخزين المحلي في المتصفح/التطبيق. هذه البيانات لا تُرسل إلى أي خادم، ويمكنك مسحها في أي وقت من داخل التطبيق.</p>
-
-    <h2>4. الخدمات الخارجية والروابط</h2>
-    <p>عند استخدام ميزة البحث العالمي، يتم توجيهك إلى مواقع ويب خارجية (مثل Google، PubMed، WHO، Mayo Clinic، WebMD، Drugs.com، NHS). نحن لا نتحكم في هذه المواقع ولا نتحمل مسؤولية سياسات الخصوصية الخاصة بها. ننصحك بمراجعة سياسات الخصوصية لكل موقع تزوره.</p>
-
-    <h2>5. أمان البيانات</h2>
-    <p>نظرًا لأننا لا نجمع أي بيانات شخصية على خوادمنا، فإن مخاطر تسرب البيانات لدينا معدومة. يقع تأمين جهازك الشخصي على عاتقك أنت.</p>
-
-    <h2>6. إخلاء المسؤولية الطبي</h2>
-    <p>المعلومات التي يوفرها التطبيق هي لأغراض <strong>تعليمية ومعلوماتية فقط</strong>، ولا تُغني بأي حال من الأحوال عن استشارة الطبيب المختص أو الصيدلي. لا تستخدم هذا التطبيق لتشخيص أو علاج أي حالة طبية. في حالة الطوارئ، اتصل بالجهات المختصة فوراً.</p>
-
-    <h2>7. التغييرات على سياسة الخصوصية</h2>
-    <p>قد نقوم بتحديث هذه السياسة من حين لآخر. سيتم نشر أي تغييرات على هذه الصفحة مع تحديث تاريخ "آخر تحديث".</p>
-
-    <h2>8. اتصل بنا</h2>
-    <p>إذا كان لديك أي استفسار حول سياسة الخصوصية، يرجى التواصل مع المطور:</p>
-    <p>
-        👨‍💻 <strong>Dr. Salah Al-Ahdal</strong><br>
-        📧 البريد الإلكتروني: <a href="mailto:salahalahdal43@gmail.com">salahalahdal43@gmail.com</a><br>
-        🇾🇪 الجمهورية اليمنية
-    </p>
-
-    <div class="footer">
-        © 2026 MedSearch Yemen. جميع الحقوق محفوظة.
+    
+    <a href="index.html" class="back-btn">
+        <span>←</span>
+        <span>العودة للتطبيق</span>
+    </a>
+    
+    <div class="privacy-header">
+        <div class="icon">🔒</div>
+        <h1>سياسة الخصوصية</h1>
+        <p>MedSearch Yemen - محرك البحث الطبي العالمي</p>
+        <p style="margin-top:6px;font-size:12px;opacity:0.75">آخر تحديث:12 اكتوبر  2026</p>
     </div>
+    
+    <h2><span class="num">1</span> مقدمة</h2>
+    <p>
+        تطبيق <strong>MedSearch Yemen</strong> ("التطبيق") هو محرك بحث طبي عالمي يهدف إلى توفير معلومات طبية موثوقة وقواميس دوائية ومرضية ومخبرية. نحن نلتزم بحماية خصوصية مستخدمينا. توضح هذه السياسة كيفية تعاملنا مع المعلومات عند استخدامك للتطبيق.
+    </p>
+    
+    <h2><span class="num">2</span> المعلومات التي نجمعها</h2>
+    <p>
+        نحن <strong>لا نجمع</strong> أي بيانات شخصية تحدد هويتك (مثل الاسم، البريد الإلكتروني، أو رقم الهاتف) ولا نطلب تسجيل حساب.
+    </p>
+    <p>قد يطلب التطبيق بعض الأذونات للوصول إلى ميزات معينة، وتُعالج جميعها <strong>محلياً على جهازك فقط</strong> ولا يتم إرسالها إلى أي خادم:</p>
+    <ul>
+        <li><strong>الموقع الجغرافي (GPS):</strong> يُستخدم فقط لعرض موقعك الحالي عند طلبك، ولا يتم تخزينه أو مشاركته.</li>
+        <li><strong>الكاميرا:</strong> تُستخدم فقط لمسح رموز QR/Barcode داخل التطبيق.</li>
+        <li><strong>الميكروفون:</strong> يُستخدم فقط لميزة البحث الصوتي، ولا يتم تسجيل أو تخزين أي صوت.</li>
+        <li><strong>معلومات الشبكة والبطارية:</strong> تُستخدم فقط لعرض حالة الاتصال والبطارية.</li>
+        <li><strong>الاهتزاز (Vibration):</strong> يُستخدم للتنبيهات التفاعلية فقط.</li>
+    </ul>
+    
+    <h2><span class="num">3</span> البيانات المخزنة محلياً</h2>
+    <p>
+        يوفر التطبيق ميزة "التخزين المحلي" لحفظ البيانات (مثل المفضلة، سجل البحث، الإعدادات) على جهازك مباشرة باستخدام تقنيات <strong>IndexedDB</strong> و <strong>localStorage</strong>. هذه البيانات:
+    </p>
+    <ul>
+        <li>لا تُرسل إلى أي خادم خارجي.</li>
+        <li>يمكنك مسحها في أي وقت من داخل التطبيق.</li>
+        <li>يمكنك تصديرها بصيغة JSON.</li>
+    </ul>
+    
+    <h2><span class="num">4</span> الخدمات الخارجية</h2>
+    <p>
+        عند استخدام ميزة البحث العالمي، يتم توجيهك إلى مواقع خارجية (Google، PubMed، WHO، Mayo Clinic، WebMD، Drugs.com، NHS). نحن لا نتحكم في هذه المواقع ولا نتحمل مسؤولية سياسات الخصوصية الخاصة بها. ننصحك بمراجعة سياسات كل موقع تزوره.
+    </p>
+    
+    <h2><span class="num">5</span> أمان البيانات</h2>
+    <p>
+        نظرًا لأننا لا نجمع أي بيانات شخصية على خوادمنا، فإن مخاطر تسرب البيانات لدينا معدومة. نستخدم اتصالات HTTPS مشفرة عند فتح المصادر الخارجية. يقع تأمين جهازك الشخصي على عاتقك أنت.
+    </p>
+    
+    <h2><span class="num">6</span> خصوصية الأطفال</h2>
+    <p>
+        التطبيق غير موجه للأطفال تحت <strong>13 عاماً</strong>. لا نجمع بيانات من الأطفال عن قصد. إذا كنت ولي أمر وتعتقد أن طفلك قدم بيانات، تواصل معنا لحذفها فوراً.
+    </p>
+    
+    <h2><span class="num">7</span> حقوقك</h2>
+    <ul>
+        <li><strong>حق الوصول:</strong> مراجعة بياناتك المحفوظة محلياً.</li>
+        <li><strong>حق الحذف:</strong> مسح جميع بياناتك عبر زر "مسح التخزين".</li>
+        <li><strong>حق التصدير:</strong> تصدير بياناتك بصيغة JSON.</li>
+        <li><strong>حق إلغاء الأذونات:</strong> من إعدادات جهازك في أي وقت.</li>
+    </ul>
+    
+    <h2><span class="num">8</span> إخلاء المسؤولية الطبي</h2>
+    <div class="alert alert-danger">
+        <strong>⚠️ تنبيه مهم:</strong>
+        <ul style="margin-top:10px">
+            <li>المعلومات التي يوفرها التطبيق هي لأغراض <strong>تعليمية ومعلوماتية فقط</strong>.</li>
+            <li>لا تُغني بأي حال من الأحوال عن استشارة الطبيب المختص أو الصيدلي.</li>
+            <li>لا تستخدم التطبيق لتشخيص أو علاج أي حالة طبية.</li>
+            <li>في حالة الطوارئ، اتصل بالجهات المختصة فوراً (191 / 199 في اليمن).</li>
+        </ul>
+    </div>
+    
+    <h2><span class="num">9</span> التغييرات على السياسة</h2>
+    <p>
+        قد نقوم بتحديث هذه السياسة من حين لآخر. سيتم نشر أي تغييرات على هذه الصفحة مع تحديث تاريخ "آخر تحديث". استمرارك في استخدام التطبيق بعد التغييرات يعني موافقتك عليها.
+    </p>
+    
+    <h2><span class="num">10</span> اتصل بنا</h2>
+    <p>لأي استفسار حول سياسة الخصوصية، تواصل مع المطور:</p>
+    <div class="contact-card">
+        <a href="mailto:salahalahdal43@gmail.com" class="contact-item">
+            <span class="emoji">📧</span>
+            <span class="label">salahalahdal43@gmail.com</span>
+        </a>
+        <a href="tel:+967711129611" class="contact-item">
+            <span class="emoji">📞</span>
+            <span class="label">+967 711 129 611</span>
+        </a>
+        <div class="contact-item" style="cursor:default">
+            <span class="emoji">🇾🇪</span>
+            <span class="label">الجمهورية اليمنية</span>
+        </div>
+        <div class="contact-item" style="cursor:default">
+            <span class="emoji">👨‍💻</span>
+            <span class="label">Dr. Salah Al-Ahdal - المطور</span>
+        </div>
+    </div>
+    
+    <div class="footer">
+        © 2026 <strong>MedSearch Yemen</strong> - جميع الحقوق محفوظة<br>
+        <span style="font-size:12px;opacity:0.8">برمجة وتطوير: Dr. Salah Al-Ahdal</span>
+    </div>
+    
 </body>
 </html>
