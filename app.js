@@ -507,28 +507,23 @@ function searchGlobal(source) {
 // ═══════════════════════════════════════════════════════════
 
 async function loadZXing() {
-    if (zxingLoaded && window.ZXingBrowser) return window.ZXingBrowser;
-    const urls = [ZXING_CDN_PRIMARY, ZXING_CDN_FALLBACK];
+    if (window.ZXing && window.ZXing.BrowserMultiFormatReader) return window.ZXing;
+    const urls = ['lib/zxing-library.min.js', 'https://cdn.jsdelivr.net/npm/@zxing/library@0.21.3/umd/index.min.js'];
     for (const url of urls) {
         try {
             await new Promise((resolve, reject) => {
-                if (window.ZXingBrowser) { zxingLoaded = true; resolve(window.ZXingBrowser); return; }
-                const script = document.createElement('script');
-                script.src = url;
-                script.async = true;
-                script.onload = () => { zxingLoaded = true; resolve(window.ZXingBrowser); };
-                script.onerror = reject;
-                document.head.appendChild(script);
+                const sc = document.createElement('script');
+                sc.src = url; sc.async = true;
+                sc.onload = resolve; sc.onerror = reject;
+                document.head.appendChild(sc);
             });
-            if (window.ZXingBrowser) return window.ZXingBrowser;
-        } catch (e) {
-            console.warn(`[QR] فشل تحميل ZXing من ${url}`);
-        }
+            if (window.ZXing && window.ZXing.BrowserMultiFormatReader) return window.ZXing;
+        } catch (e) { console.warn('[QR] فشل تحميل', url); }
     }
-    throw new Error('جميع محاولات تحميل ZXing فشلت. تحقق من اتصالك بالإنترنت.');
+    throw new Error('تعذر تحميل ZXing');
 }
 
-function supportsBarcodeDetector() {
+async function supportsBarcodeDetector() {
     if (!('BarcodeDetector' in window)) return false;
     try {
         const formats = await BarcodeDetector.getSupportedFormats();
@@ -557,27 +552,19 @@ async function startQRScanner() {
     if (ZXingBrowser) {
         try {
             const codeReader = new ZXingBrowser.BrowserMultiFormatReader();
-            const videoInputDevices = await ZXingBrowser.BrowserCodeReader.listVideoInputDevices();
-            const backCamera = videoInputDevices.find(d => d.label.toLowerCase().includes('back') || d.label.toLowerCase().includes('environment'));
-            const selectedDeviceId = backCamera ? backCamera.deviceId : (videoInputDevices[0]?.deviceId || undefined);
+            const devices = await codeReader.listVideoInputDevices();
+            const back = devices.find(d => /back|environment|rear/i.test(d.label));
+            const deviceId = back ? back.deviceId : (devices[devices.length - 1]?.deviceId || undefined);
 
             overlay.classList.add('active');
             updateNativeStatus('qrStatus', '\u{1F50D} يبحث...');
             showToast('\u{1F4F7} وجه الكاميرا نحو QR أو Barcode');
 
-            qrControls = await codeReader.decodeFromVideoDevice(
-                selectedDeviceId,
-                video,
-                (result, err) => {
-                    if (result) {
-                        handleQRResult(result.getText(), result.format);
-                    }
-                    if (err && err.name !== 'NotFoundException') {
-                        console.warn('[QR] Scan error:', err);
-                    }
-                }
-            );
-            qrStream = video.srcObject;
+            codeReader.decodeFromVideoDevice(deviceId, video, (result, err) => {
+                if (result) handleQRResult(result.getText(), result.getBarcodeFormat ? String(result.getBarcodeFormat()) : 'QR');
+            });
+            qrControls = { stop: () => { try { codeReader.reset(); } catch (e) {} } };
+            setTimeout(() => { qrStream = video.srcObject; }, 800);
             return;
         } catch (err) {
             console.error('[QR] ZXing start failed:', err);
@@ -588,14 +575,14 @@ async function startQRScanner() {
     const barcodeSupported = await supportsBarcodeDetector();
     if (barcodeSupported) {
         try {
-            qrStream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } });
+            qrStream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: { ideal: 'environment' }, width: { ideal: 1280 }, height: { ideal: 720 } } });
             video.srcObject = qrStream;
             await video.play();
             overlay.classList.add('active');
             updateNativeStatus('qrStatus', '\u{1F50D} يبحث (BarcodeDetector)...');
             showToast('\u{1F4F7} وجه الكاميرا نحو QR أو Barcode');
 
-            const detector = new BarcodeDetector();
+            const detector = new BarcodeDetector({ formats: ['qr_code','ean_13','ean_8','upc_a','upc_e','code_128','code_39','itf','data_matrix','pdf417'] });
             const scanLoop = async () => {
                 if (!overlay.classList.contains('active')) return;
                 try {
@@ -635,7 +622,10 @@ function stopQRScanner() {
     updateNativeStatus('qrStatus', 'جاهز');
 }
 
+let _lastQR = { d: '', t: 0 };
 function handleQRResult(data, format) {
+    if (_lastQR.d === data && Date.now() - _lastQR.t < 3000) return;
+    _lastQR = { d: data, t: Date.now() };
     if (qrControls) { try { qrControls.stop(); } catch(e){} qrControls = null; }
     if (navigator.vibrate) navigator.vibrate([50, 30, 100]);
     saveQRHistory(data, format);
@@ -671,16 +661,21 @@ function handleQRResult(data, format) {
 }
 
 async function toggleTorch() {
-    if (!qrStream) { showToast('⚠️ الكاميرا غير نشطة'); return; }
-    const track = qrStream.getVideoTracks()[0];
-    if (!track) return;
+    const video = document.getElementById('qrVideo');
+    const stream = (video && video.srcObject) || qrStream;
+    if (!stream) { showToast('⚠️ الكاميرا غير نشطة'); return; }
+    const track = stream.getVideoTracks()[0];
+    if (!track) { showToast('⚠️ لا يوجد مسار فيديو'); return; }
     try {
-        const capabilities = track.getCapabilities();
-        if (!capabilities.torch) { showToast('⚠️ الكاميرا لا تدعم الفلاش'); return; }
+        const caps = track.getCapabilities ? track.getCapabilities() : {};
+        if (!('torch' in caps)) { showToast('⚠️ هذه الكاميرا لا تدعم الفلاش'); return; }
         torchOn = !torchOn;
         await track.applyConstraints({ advanced: [{ torch: torchOn }] });
         showToast(torchOn ? '\u{1F526} الفلاش مفعل' : '\u{1F526} الفلاش مطفأ');
-    } catch (err) { showToast('\u{274C} خطأ في التحكم بالفلاش'); }
+    } catch (err) {
+        torchOn = false;
+        showToast('\u{274C} الفلاش: ' + (err.name || 'خطأ'));
+    }
 }
 
 async function switchCamera() {
@@ -847,31 +842,36 @@ function getLocation() {
         return;
     }
     updateNativeStatus('locationStatus', 'يجلب...');
-    navigator.geolocation.getCurrentPosition(
-        (pos) => {
-            const { latitude, longitude, accuracy } = pos.coords;
-            const mapsUrl = `https://www.google.com/maps?q=${latitude},${longitude}`;
-            showNativeOutput(
-                `\u{1F4CD} موقعك الحالي:\n` +
-                `خط العرض: ${latitude.toFixed(6)}\n` +
-                `خط الطول: ${longitude.toFixed(6)}\n` +
-                `الدقة: ${accuracy ? accuracy.toFixed(0) : 'غير معروف'} متر\n\n` +
-                `\u{1F517} ${mapsUrl}`
-            );
-            updateNativeStatus('locationStatus', 'تم الحصول');
-            showToast('\u{1F4CD} تم تحديد الموقع');
-        },
-        (err) => {
-            const errorMap = {
-                [err.PERMISSION_DENIED]: 'تم رفض الإذن',
-                [err.POSITION_UNAVAILABLE]: 'الموقع غير متاح',
-                [err.TIMEOUT]: 'انتهى الوقت'
-            };
-            showToast(`\u{274C} ${errorMap[err.code] || 'خطأ غير معروف'}`);
-            updateNativeStatus('locationStatus', 'خطأ');
-        },
-        { enableHighAccuracy: true, timeout: 15000, maximumAge: 0 }
-    );
+    const getPos = (opts) => new Promise((res, rej) => navigator.geolocation.getCurrentPosition(res, rej, opts));
+    const onOk = (pos) => {
+        const { latitude, longitude, accuracy } = pos.coords;
+        const mapsUrl = `https://www.google.com/maps?q=${latitude},${longitude}`;
+        showNativeOutput(
+            `\u{1F4CD} موقعك الحالي:\n` +
+            `خط العرض: ${latitude.toFixed(6)}\n` +
+            `خط الطول: ${longitude.toFixed(6)}\n` +
+            `الدقة: ${accuracy ? accuracy.toFixed(0) : 'غير معروف'} متر\n\n` +
+            `\u{1F517} ${mapsUrl}`
+        );
+        updateNativeStatus('locationStatus', 'تم الحصول');
+        showToast('\u{1F4CD} تم تحديد الموقع');
+    };
+    const onErr = (err) => {
+        const msgs = {
+            1: 'تم رفض إذن الموقع، فعّله من إعدادات المتصفح',
+            2: 'الموقع غير متاح، فعّل GPS وجرّب مجدداً',
+            3: 'انتهت المهلة، جرّب قرب نافذة أو في الخارج'
+        };
+        showToast('\u{274C} ' + (msgs[err && err.code] || 'تعذر تحديد الموقع'));
+        updateNativeStatus('locationStatus', 'خطأ');
+    };
+    getPos({ enableHighAccuracy: false, timeout: 8000, maximumAge: 300000 })
+        .then(onOk)
+        .catch((e) => {
+            if (e && e.code === 1) return onErr(e);
+            showToast('\u{23F3} جارٍ استخدام GPS الدقيق...');
+            return getPos({ enableHighAccuracy: true, timeout: 25000, maximumAge: 0 }).then(onOk).catch(onErr);
+        });
 }
 
 // ═══════════════════════════════════════════════════════════
@@ -879,30 +879,31 @@ function getLocation() {
 // ═══════════════════════════════════════════════════════════
 
 async function getBatteryInfo() {
-    if (!navigator.getBattery) {
-        showToast('\u{274C} Battery API غير مدعوم');
-        updateNativeStatus('batteryStatus', 'غير مدعوم');
-        return;
+    let out = '';
+    let status = 'جاهز';
+    if (navigator.getBattery) {
+        try {
+            const b = await navigator.getBattery();
+            const level = Math.round(b.level * 100);
+            out += `\u{1F50B} البطارية: ${level}% (${b.charging ? 'يشحن' : 'على البطارية'})\n\n`;
+            status = `${level}%`;
+        } catch (e) { /* تجاهل */ }
     }
-    try {
-        const battery = await navigator.getBattery();
-        const level = Math.round(battery.level * 100);
-        const charging = battery.charging ? '\u{26A1} يشحن' : '\u{1F50B} يعمل على البطارية';
-        let timeStr = '';
-        if (battery.charging && isFinite(battery.chargingTime)) timeStr = `${Math.round(battery.chargingTime / 60)} دقيقة حتى الامتلاء`;
-        else if (!battery.charging && isFinite(battery.dischargingTime)) timeStr = `${Math.round(battery.dischargingTime / 60)} دقيقة متبقية`;
-        showNativeOutput(
-            `\u{1F50B} حالة البطارية:\n` +
-            `المستوى: ${level}%\n` +
-            `الحالة: ${charging}\n` +
-            `${timeStr ? 'الوقت: ' + timeStr : ''}`
-        );
-        updateNativeStatus('batteryStatus', `${level}%`);
-        showToast(`\u{1F50B} البطارية: ${level}%`);
-    } catch (err) {
-        showToast('\u{274C} خطأ في قراءة البطارية');
-        updateNativeStatus('batteryStatus', 'خطأ');
+    const conn = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+    out += `\u{1F4F1} معلومات الجهاز:\n`;
+    out += `الاتصال: ${navigator.onLine ? 'متصل \u{2705}' : 'غير متصل \u{274C}'}\n`;
+    if (conn) {
+        out += `نوع الشبكة: ${conn.effectiveType || 'غير معروف'}\n`;
+        out += `سرعة التنزيل: ${(conn.downlink || 0).toFixed(1)} Mbps\n`;
+        if (status === 'جاهز') status = conn.effectiveType || 'متصل';
     }
+    if (navigator.deviceMemory) out += `الذاكرة: ${navigator.deviceMemory} GB\n`;
+    if (navigator.hardwareConcurrency) out += `أنوية المعالج: ${navigator.hardwareConcurrency}\n`;
+    out += `اللغة: ${navigator.language}\n`;
+    if (!navigator.getBattery) out += `\n\u{2139}\u{FE0F} معلومات البطارية غير متاحة في هذا المتصفح.`;
+    showNativeOutput(out.trim());
+    updateNativeStatus('batteryStatus', status);
+    showToast('\u{1F4F1} تم عرض معلومات الجهاز');
 }
 
 // ═══════════════════════════════════════════════════════════

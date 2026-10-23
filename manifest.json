@@ -14,8 +14,8 @@
   "orientation": "portrait-primary",
   "background_color": "#ffffff",
   "theme_color": "#0d7377",
-  "lang": "en",
-  "dir": "ltr",
+  "lang": "ar",
+  "dir": "rtl",
   "categories": [
     "medical",
     "health",

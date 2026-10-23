@@ -1,0 +1,7 @@
+signing.keystore
+*.jks
+*.keystore
+*before_fixes_backup
+*.bak
+*.orig
+*.pre_*
