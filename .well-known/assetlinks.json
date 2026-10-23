@@ -1,8 +1,11 @@
-[{
-      "relation": ["delegate_permission/common.handle_all_urls"],
-      "target": {
-        "namespace": "android_app",
-        "package_name": "com.salah.medsearch",
-        "sha256_cert_fingerprints": ["EF:E1:4A:E5:E8:D9:03:A7:8C:77:08:4B:E3:99:B0:77:1A:AE:B8:E1:D6:C4:28:10:59:42:9B:54:5C:60:89:E5"]
-      }
-    }]
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.salah.medsearch",
+      "sha256_cert_fingerprints":
+        ["9E:13:7B:CC:09:10:22:F6:16:8B:E8:A9:12:4F:99:2F:FE:7F:49:73:03:FC:F9:42:12:F3:46:5A:C0:BF:52:7B"]
+    }
+  }
+]
