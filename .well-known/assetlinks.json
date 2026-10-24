@@ -4,8 +4,19 @@
     "target": {
       "namespace": "android_app",
       "package_name": "com.salah.medsearch",
-      "sha256_cert_fingerprints":
-        ["9E:13:7B:CC:09:10:22:F6:16:8B:E8:A9:12:4F:99:2F:FE:7F:49:73:03:FC:F9:42:12:F3:46:5A:C0:BF:52:7B"]
+      "sha256_cert_fingerprints": [
+        "9E:13:7B:CC:09:10:22:F6:16:8B:E8:A9:12:4F:99:2F:FE:7F:49:73:03:FC:F9:42:12:F3:46:5A:C0:BF:52:7B"
+      ]
+    }
+  },
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "app.netlify.medsearch_app.twa",
+      "sha256_cert_fingerprints": [
+        "4B:9A:C7:1D:65:00:BD:4B:E6:58:95:80:04:9C:A0:B3:75:F3:41:05:DA:68:90:A1:7B:F0:E2:C0:7E:D4:A2:29"
+      ]
     }
   }
 ]
