@@ -85,7 +85,7 @@ const SEARCH_SOURCES = [
     },
     {
         name: 'Drugs.com',
-        desc: '+24000 دواء',
+        desc: 'مرجع شامل للأدوية والتداخلات الدوائية',
         icon: '\u{1F48A}',
         color: '#00897b',
         key: 'drugs',
@@ -113,16 +113,18 @@ const MEDICAL_DB = {
         desc: 'أدوية | جرعات | تفاعلات | آثار جانبية | موانع | تصنيف | آلية عمل',
         stats: ['جرعات', 'تفاعلات', 'موانع'],
         data: [
-            { id: 1, name: 'باراسيتامول', nameEn: 'Paracetamol', category: 'مسكن ألم / خافض حرارة', dose: '500-1000 ملغ كل 6 ساعات', maxDose: '4000 ملغ/اليوم', sideEffects: 'غثيان، طفح، نادراً سمية كبدية', interactions: 'الكحول يزيد سمية الكبد', contraindications: 'أمراض الكبد الحادة', pregnancy: 'آمن نسبياً (فئة B)', form: 'أقراص، شراب، تحاميل، حقن', mechanism: 'تثبيط COX في الجهاز العصبي المركزي' },
-            { id: 2, name: 'أموكسيسيلين', nameEn: 'Amoxicillin', category: 'مضاد حيوي (بنسلين)', dose: '500 ملغ كل 8 ساعات', maxDose: '3000 ملغ/اليوم', sideEffects: 'إسهال، غثيان، طفح، حساسية', interactions: 'ميثوتريكسات، وارفارين', contraindications: 'حساسية البنسلين', pregnancy: 'آمن (فئة B)', form: 'كبسولات، شراب، حقن', mechanism: 'تثبيط بناء جدار الخلية البكتيرية' },
+            { id: 1, name: 'باراسيتامول', nameEn: 'Paracetamol', category: 'مسكن ألم / خافض حرارة', dose: '500-1000 ملغ كل 6 ساعات', maxDose: '4000 ملغ/اليوم', sideEffects: 'غثيان، طفح، نادراً سمية كبدية', interactions: 'الكحول يزيد سمية الكبد', contraindications: 'أمراض الكبد الحادة', pregnancy: 'يُعد آمناً نسبياً؛ استشر الطبيب', form: 'أقراص، شراب، تحاميل، حقن', mechanism: 'تثبيط COX في الجهاز العصبي المركزي' },
+            { id: 2, name: 'أموكسيسيلين', nameEn: 'Amoxicillin', category: 'مضاد حيوي (بنسلين)', dose: '500 ملغ كل 8 ساعات', maxDose: '3000 ملغ/اليوم', sideEffects: 'إسهال، غثيان، طفح، حساسية', interactions: 'ميثوتريكسات، وارفارين', contraindications: 'حساسية البنسلين', pregnancy: 'يُعد آمناً عموماً؛ استشر الطبيب', form: 'كبسولات، شراب، حقن', mechanism: 'تثبيط بناء جدار الخلية البكتيرية' },
             { id: 3, name: 'ميترونيدازول', nameEn: 'Metronidazole', category: 'مضاد حيوي / مضاد طفيليات', dose: '500 ملغ كل 8 ساعات', maxDose: '2000 ملغ/اليوم', sideEffects: 'طعم معدني، غثيان، صداع', interactions: 'الكحول، وارفارين', contraindications: 'الحمل (ثلاثة أشهر الأولى)', pregnancy: 'يتجنب في الثلث الأول', form: 'أقراص، جل، تحاميل، حقن', mechanism: 'تدمير الحمض النووي للكائنات الدقيقة' },
-            { id: 4, name: 'أوميبرازول', nameEn: 'Omeprazole', category: 'مثبط مضخة البروتون', dose: '20-40 ملغ يومياً', maxDose: '80 ملغ/اليوم', sideEffects: 'صداع، إسهال، إمساك', interactions: 'كلوبيدوقرل، كيتوكونازول', contraindications: 'فرط الحساسية', pregnancy: 'آمن نسبياً (فئة C)', form: 'كبسولات، حقن', mechanism: 'تثبيط مضخة البروتون في المعدة' },
-            { id: 5, name: 'إيبوبروفين', nameEn: 'Ibuprofen', category: 'مضاد التهاب غير ستيرويدي', dose: '400-800 ملغ كل 8 ساعات', maxDose: '1200 ملغ/اليوم (بدون وصفة) أو 3200 ملغ (بإشراف طبي)', sideEffects: 'آلام معدة، قرحة، نزيف', interactions: 'أسبرين، وارفارين، كورتيزون', contraindications: 'قرحة المعدة، فشل كلوي', pregnancy: 'يتجنب (فئة D)', form: 'أقراص، شراب، جل', mechanism: 'تثبيط COX-1 و COX-2' },
-            { id: 6, name: 'سيتالوبرام', nameEn: 'Citalopram', category: 'مضاد اكتئاب (SSRI)', dose: '20 ملغ يومياً', maxDose: '40 ملغ/اليوم', sideEffects: 'غثيان، أرق، صداع، تعرق', interactions: 'MAOIs، تريبتانات', contraindications: 'فرط الحساسية، MAOIs', pregnancy: 'فئة C - يحتاج تقييم', form: 'أقراص، شراب', mechanism: 'تثبيط إعادة امتصاص السيروتونين' },
-            { id: 7, name: 'ميتفورمين', nameEn: 'Metformin', category: 'خافض سكر فموي', dose: '500-850 ملغ مرتين يومياً', maxDose: '2550 ملغ/اليوم', sideEffects: 'غثيان، إسهال، فقدان شهية', interactions: 'اليود المشع، كحول', contraindications: 'فشل كلوي حاد، حمضية', pregnancy: 'آمن (فئة B)', form: 'أقراص، شراب', mechanism: 'تقليل إنتاج الجلوكوز في الكبد' },
-            { id: 8, name: 'أتورفاستاتين', nameEn: 'Atorvastatin', category: 'خافض كوليسترول (ستاتين)', dose: '10-20 ملغ يومياً', maxDose: '80 ملغ/اليوم', sideEffects: 'آلام عضلية، ارتفاع إنزيمات الكبد', interactions: 'جراب فروت، سيكلوسبورين', contraindications: 'أمراض الكبد النشطة', pregnancy: 'ممنوع (فئة X)', form: 'أقراص', mechanism: 'تثبيط إنزيم HMG-CoA ريدكتاز' },
-            { id: 9, name: 'ليفوثيروكسين', nameEn: 'Levothyroxine', category: 'هرمون الغدة الدرقية', dose: '25-200 ميكروغرام يومياً', maxDose: 'حسب الحالة', sideEffects: 'عصبية، رعاش، عدم انتظام ضربات القلب', interactions: 'كالسيوم، حديد، سوكرالفات', contraindications: 'فرط نشاط الغدة الدرقية غير المعالج', pregnancy: 'آمن (فئة A)', form: 'أقراص', mechanism: 'استبدال هرمون T4 الطبيعي' },
-            { id: 10, name: 'لوسارتان', nameEn: 'Losartan', category: 'مضاد ارتفاع ضغط (ARB)', dose: '50 ملغ يومياً', maxDose: '100 ملغ/اليوم', sideEffects: 'دوخة، ارتفاع بوتاسيوم', interactions: 'مكملات البوتاسيوم، NSAIDs', contraindications: 'الحمل (فئة D)', pregnancy: 'ممنوع في الحمل', form: 'أقراص', mechanism: 'حصر مستقبلات أنجيوتنسين II' }
+            { id: 4, name: 'أوميبرازول', nameEn: 'Omeprazole', category: 'مثبط مضخة البروتون', dose: '20-40 ملغ يومياً', maxDose: '80 ملغ/اليوم', sideEffects: 'صداع، إسهال، إمساك', interactions: 'كلوبيدوقرل، كيتوكونازول', contraindications: 'فرط الحساسية', pregnancy: 'يُستخدم عند الحاجة وبإشراف الطبيب', form: 'كبسولات، حقن', mechanism: 'تثبيط مضخة البروتون في المعدة' },
+            { id: 5, name: 'إيبوبروفين', nameEn: 'Ibuprofen', category: 'مضاد التهاب غير ستيرويدي', dose: '400-800 ملغ كل 8 ساعات', maxDose: '1200 ملغ/اليوم (بدون وصفة)؛ حتى 2400 ملغ/اليوم بوصفة وإشراف الطبيب', sideEffects: 'آلام معدة، قرحة، نزيف', interactions: 'أسبرين، وارفارين، كورتيزون', contraindications: 'قرحة المعدة، فشل كلوي', pregnancy: 'يُتجنب، خصوصاً بعد الأسبوع 20 من الحمل', form: 'أقراص، شراب، جل', mechanism: 'تثبيط COX-1 و COX-2', source: 'NHS (ibuprofen for adults)؛ إرشادات UKMi: الحد الأعلى بوصفة 2.4 غ/اليوم' },
+            { id: 6, name: 'سيتالوبرام', nameEn: 'Citalopram', category: 'مضاد اكتئاب (SSRI)', dose: '20 ملغ يومياً', maxDose: '40 ملغ/اليوم', sideEffects: 'غثيان، أرق، صداع، تعرق', interactions: 'MAOIs، تريبتانات', contraindications: 'فرط الحساسية، MAOIs', pregnancy: 'يحتاج تقييماً طبياً قبل الاستخدام', form: 'أقراص، شراب', mechanism: 'تثبيط إعادة امتصاص السيروتونين' },
+            { id: 7, name: 'ميتفورمين', nameEn: 'Metformin', category: 'خافض سكر فموي', dose: '500-850 ملغ مرتين يومياً', maxDose: '2550 ملغ/اليوم', sideEffects: 'غثيان، إسهال، فقدان شهية', interactions: 'اليود المشع، كحول', contraindications: 'فشل كلوي حاد، حمضية', pregnancy: 'يُعد آمناً عموماً؛ استشر الطبيب', form: 'أقراص، شراب', mechanism: 'تقليل إنتاج الجلوكوز في الكبد' },
+            { id: 8, name: 'أتورفاستاتين', nameEn: 'Atorvastatin', category: 'خافض كوليسترول (ستاتين)', dose: '10-20 ملغ يومياً', maxDose: '80 ملغ/اليوم', sideEffects: 'آلام عضلية، ارتفاع إنزيمات الكبد', interactions: 'جراب فروت، سيكلوسبورين', contraindications: 'أمراض الكبد النشطة', pregnancy: 'ممنوع في الحمل', form: 'أقراص', mechanism: 'تثبيط إنزيم HMG-CoA ريدكتاز' },
+            { id: 9, name: 'ليفوثيروكسين', nameEn: 'Levothyroxine', category: 'هرمون الغدة الدرقية', dose: '25-200 ميكروغرام يومياً', maxDose: 'حسب الحالة', sideEffects: 'عصبية، رعاش، عدم انتظام ضربات القلب', interactions: 'كالسيوم، حديد، سوكرالفات', contraindications: 'فرط نشاط الغدة الدرقية غير المعالج', pregnancy: 'يُستخدم في الحمل مع متابعة الجرعة طبياً', form: 'أقراص', mechanism: 'استبدال هرمون T4 الطبيعي' },
+            { id: 10, name: 'لوسارتان', nameEn: 'Losartan', category: 'مضاد ارتفاع ضغط (ARB)', dose: '50 ملغ يومياً', maxDose: '100 ملغ/اليوم', sideEffects: 'دوخة، ارتفاع بوتاسيوم', interactions: 'مكملات البوتاسيوم، NSAIDs', contraindications: 'الحمل', pregnancy: 'ممنوع في الحمل', form: 'أقراص', mechanism: 'حصر مستقبلات أنجيوتنسين II' },
+            { id: 11, name: 'ديكلوفيناك', nameEn: 'Diclofenac', category: 'مضاد التهاب غير ستيرويدي', dose: 'للبالغين: 75-150 ملغ يومياً مقسمة على 2-3 جرعات بعد وجبة أو وجبة خفيفة', maxDose: '150 ملغ/اليوم', sideEffects: 'ألم بطن، غثيان، طفح؛ مع الاستخدام الطويل أو الجرعات العالية: قرحة المعدة', interactions: 'لا يُجمع مع الأسبرين أو الإيبوبروفين أو النابروكسين دون استشارة الطبيب؛ لا مشكلة مع الباراسيتامول', contraindications: 'فرط الحساسية للدواء أو لمضادات الالتهاب، نوبات الربو الشديدة، قرحة أو نزيف هضمي (راجع النشرة الكاملة)', pregnancy: 'يُتجنب، خصوصاً في الثلث الأخير من الحمل', form: 'أقراص، كبسولات، تحاميل، جل، لصقات، حقن', mechanism: 'تثبيط إنزيمات COX', source: 'NHS (diclofenac)، آخر مراجعة للصفحة: أغسطس 2024' },
+            { id: 12, name: 'جليكلازيد', nameEn: 'Gliclazide', category: 'خافض سكر فموي (سلفونيل يوريا)', dose: 'للبالغين: 40-80 ملغ يومياً في البداية وتُعدَّل حسب الاستجابة؛ ما فوق 160 ملغ يُقسَّم على جرعتين مع الوجبات', maxDose: '320 ملغ/اليوم (أقراص عادية)؛ 120 ملغ/اليوم (الممتدة المفعول)', sideEffects: 'هبوط السكر، زيادة الوزن', interactions: 'وارفارين (قد يزيد تأثيره)، الكحول، مضادات الالتهاب (قد تحتاج تعديل الجرعة)', contraindications: 'السكري من النوع 1، الحماض الكيتوني السكري، قصور الكبد أو الكلى الشديد', pregnancy: 'غير مناسب في الحمل', form: 'أقراص عادية، أقراص ممتدة المفعول', mechanism: 'تحفيز إفراز الإنسولين من البنكرياس', source: 'NHS (gliclazide)؛ SmPC على medicines.org.uk' }
         ]
     },
     diseases: {
@@ -137,7 +139,7 @@ const MEDICAL_DB = {
             { id: 3, name: 'الربو', nameEn: 'Asthma', category: 'الجهاز التنفسي', symptoms: 'صفير، ضيق تنفس، سعال، شعور بضيق الصدر', causes: 'حساسية، وراثة، تلوث، عدوى تنفسية', diagnosis: 'قياس التنفس (Spirometry)، اختبار الحساسية', treatment: 'بخاخات موسعة، كورتيزون استنشاقي، مضادات اللوكوترايين', complications: 'نوبات حادة، فشل تنفسي، تغيرات رئوية دائمة', prevention: 'تجنب المحفزات، لقاح الإنفلونزا' },
             { id: 4, name: 'فقر الدم', nameEn: 'Anemia', category: 'الدم', symptoms: 'تعب، شحوب، دوخة، ضيق تنفس، سرعة نبض', causes: 'نقص حديد، نقص B12، نزيف، أمراض مزمنة', diagnosis: 'Hb <13 (رجال) <12 (نساء)، Ferritin', treatment: 'حديد فموي/حقن، B12، علاج السبب', complications: 'فشل قلب، ضعف مناعة، تأخر نمو', prevention: 'غذاء غني بالحديد، فيتامينات' },
             { id: 5, name: 'التهاب المسالك البولية', nameEn: 'UTI', category: 'المسالك البولية', symptoms: 'حرقان بالتبول، كثرة تبول، دم بالبول، حمى', causes: 'E. coli، بكتيريا أخرى، قسطرة بولية', diagnosis: 'تحليل بول، زراعة بول', treatment: 'مضاد حيوي (نيتروفيورانتوين، سيفترياكسون)', complications: 'عدوى الكلى، تسمم دموي', prevention: 'شرب ماء، نظافة، تبول بعد الجماع' },
-            { id: 6, name: 'التهاب الكبد الوبائي B', nameEn: 'Hepatitis B', category: 'الجهاز الهضمي', symptoms: 'إرهاق، غثيان، يرقان، بول داكن، ألم بطن', causes: 'فيروس التهاب الكبد B (HBV)', diagnosis: 'HBsAg، Anti-HBc، PCR HBV', treatment: 'تينوفوفير، إنتيفير، العلاج', complications: 'تليف الكبد، سرطان الكبد', prevention: 'لقاح، دم آمن، تجنب الإبر المشتركة' }
+            { id: 6, name: 'التهاب الكبد الوبائي B', nameEn: 'Hepatitis B', category: 'الجهاز الهضمي', symptoms: 'إرهاق، غثيان، يرقان، بول داكن، ألم بطن', causes: 'فيروس التهاب الكبد B (HBV)', diagnosis: 'HBsAg، Anti-HBc، PCR HBV', treatment: 'تينوفوفير، إنتيفير، مراقبة دورية', complications: 'تليف الكبد، سرطان الكبد', prevention: 'لقاح، دم آمن، تجنب الإبر المشتركة' }
         ]
     },
     tissues: {
@@ -147,7 +149,7 @@ const MEDICAL_DB = {
         desc: 'أنسجة | خلايا | أعضاء | تشريح | وظائف | أنواع | تركيب',
         stats: ['أنسجة', 'خلايا', 'أعضاء'],
         data: [
-            { id: 1, name: 'النسيج الطلائي', nameEn: 'Epithelial Tissue', category: 'الأنسجة الأساسية', location: 'الجلد، بطانة الأعضاء، الغدد، الأنابيب', structure: 'خلايا متراصة، غشاء قاعدي، قليلة مادة بين خلوية', function: 'حماية، إفراز، امتصاص، حس، تحلل', types: 'حرشفي، مكعب، عمادي، انتقالي، حشوي', cells: 'خلايا كيراتينية، خلايا كأسية، خلايا قاعدية' },
+            { id: 1, name: 'النسيج الطلائي', nameEn: 'Epithelial Tissue', category: 'الأنسجة الأساسية', location: 'الجلد، بطانة الأعضاء، الغدد، الأنابيب', structure: 'خلايا متراصة، غشاء قاعدي، قليلة مادة بين خلوية', function: 'حماية، إفراز، امتصاص، حس، ترشيح', types: 'حرشفي، مكعب، عمادي، انتقالي، حشوي', cells: 'خلايا كيراتينية، خلايا كأسية، خلايا قاعدية' },
             { id: 2, name: 'النسيج الضام', nameEn: 'Connective Tissue', category: 'الأنسجة الأساسية', location: 'جميع أنحاء الجسم، بين الأعضاء', structure: 'خلايا متفرقة، مادة بين خلوية غنية، ألياف', function: 'دعم، ربط، حماية، تخزين، نقل', types: 'رخو، كثيف، دهني، غضروفي، عظمي، دموي، لمفي', cells: 'أرومات ليفية، خلايا دهنية، خلايا دم' },
             { id: 3, name: 'النسيج العضلي', nameEn: 'Muscle Tissue', category: 'الأنسجة الأساسية', location: 'العضلات، القلب، الأعضاء المجوفة', structure: 'ألياف طويلة، أكتين وميوسين، ساركوميرات', function: 'الحركة، الانقباض، ضخ الدم، هضم', types: 'هيكلي (إرادي)، قلبي، أملس (لا إرادي)', cells: 'خلايا عضلية، خلايا قلبية' },
             { id: 4, name: 'النسيج العصبي', nameEn: 'Nervous Tissue', category: 'الأنسجة الأساسية', location: 'الدماغ، النخاع الشوكي، الأعصاب', structure: 'خلايا عصبية (عصبونات)، خلايا دبقية', function: 'نقل الإشارات، معالجة المعلومات، تحكم', types: 'حسية، حركية، رابطة', cells: 'عصبونات، خلايا شوان، خلايا نجمية' },
@@ -161,12 +163,12 @@ const MEDICAL_DB = {
         desc: 'تحاليل | قيم طبيعية | تفسير | دواعي | عينة',
         stats: ['قيم طبيعية', 'طريقة', 'تفسير'],
         data: [
-            { id: 1, name: 'تعداد الدم الكامل', nameEn: 'CBC', category: 'تحاليل الدم', normalValues: 'WBC: 4000-11000، Hb: 13-17 غ/دل، PLT: 150-450 ألف', specimen: 'دم كامل (EDTA)', preparation: 'لا يحتاج صيام', turnaround: '1-2 ساعة', indications: 'فحص روتيني، فقر دم، عدوى، نزيف' },
-            { id: 2, name: 'سكر الدم الصائم', nameEn: 'FBS', category: 'تحاليل السكر', normalValues: '70-110 ملغ/دل', specimen: 'دم (مصل)', preparation: 'صيام 8-12 ساعة', turnaround: '1 ساعة', indications: 'تشخيص ومتابعة السكري، فحص روتيني' },
-            { id: 3, name: 'وظائف الكبد', nameEn: 'LFT', category: 'تحاليل الكبد', normalValues: 'ALT: 10-40، AST: 10-40، ALP: 40-130، Bilirubin: 0.3-1.2', specimen: 'دم (مصل)', preparation: 'لا يحتاج صيام', turnaround: '2-4 ساعات', indications: 'أمراض الكبد، يرقان، مالعلاجة الأدوية' },
-            { id: 4, name: 'وظائف الكلى', nameEn: 'RFT', category: 'تحاليل الكلى', normalValues: 'Creatinine: 0.7-1.3، BUN: 7-20، eGFR: >90', specimen: 'دم (مصل)', preparation: 'لا يحتاج صيام', turnaround: '2-4 ساعات', indications: 'فشل كلوي، مرض السكري، ضغط دم' },
-            { id: 5, name: 'الدهون في الدم', nameEn: 'Lipid Profile', category: 'تحاليل الدهون', normalValues: 'Cholesterol: <200، LDL: <100، HDL: >40، TG: <150', specimen: 'دم (مصل)', preparation: 'صيام 12 ساعة', turnaround: '2-4 ساعات', indications: 'تقييم خطر القلب، مالعلاجة العلاج' },
-            { id: 6, name: 'تخثر الدم', nameEn: 'Coagulation Profile', category: 'تحاليل التخثر', normalValues: 'PT: 11-13.5 ثانية، INR: 0.8-1.2، aPTT: 25-35 ثانية', specimen: 'دم (سيترات)', preparation: 'لا يحتاج صيام', turnaround: '1-2 ساعة', indications: 'قبل العمليات، مالعلاجة الوارفارين، نزيف' }
+            { id: 1, name: 'تعداد الدم الكامل', nameEn: 'CBC', category: 'تحاليل الدم', normalValues: 'WBC: 4000-11000، Hb: 13-17 (رجال)، 12-15 (نساء) غ/دل، PLT: 150-450 ألف', specimen: 'دم كامل (EDTA)', preparation: 'لا يحتاج صيام', turnaround: '1-2 ساعة', indications: 'فحص روتيني، فقر دم، عدوى، نزيف' },
+            { id: 2, name: 'سكر الدم الصائم', nameEn: 'FBS', category: 'تحاليل السكر', normalValues: '70-99 ملغ/دل', specimen: 'دم (مصل)', preparation: 'صيام 8-12 ساعة', turnaround: '1 ساعة', indications: 'تشخيص ومتابعة السكري، فحص روتيني' },
+            { id: 3, name: 'وظائف الكبد', nameEn: 'LFT', category: 'تحاليل الكبد', normalValues: 'ALT: 10-40، AST: 10-40، ALP: 40-130، Bilirubin: 0.3-1.2', specimen: 'دم (مصل)', preparation: 'لا يحتاج صيام', turnaround: '2-4 ساعات', indications: 'أمراض الكبد، يرقان، مراقبة الأدوية' },
+            { id: 4, name: 'وظائف الكلى', nameEn: 'RFT', category: 'تحاليل الكلى', normalValues: 'Creatinine: 0.7-1.3 (رجال)، 0.6-1.1 (نساء)، BUN: 7-20، eGFR: >90', specimen: 'دم (مصل)', preparation: 'لا يحتاج صيام', turnaround: '2-4 ساعات', indications: 'فشل كلوي، مرض السكري، ضغط دم' },
+            { id: 5, name: 'الدهون في الدم', nameEn: 'Lipid Profile', category: 'تحاليل الدهون', normalValues: 'Cholesterol: <200، LDL: <100، HDL: >40 (رجال)، >50 (نساء)، TG: <150', specimen: 'دم (مصل)', preparation: 'صيام 12 ساعة', turnaround: '2-4 ساعات', indications: 'تقييم خطر القلب، مراقبة العلاج' },
+            { id: 6, name: 'تخثر الدم', nameEn: 'Coagulation Profile', category: 'تحاليل التخثر', normalValues: 'PT: 11-13.5 ثانية، INR: 0.8-1.2، aPTT: 25-35 ثانية', specimen: 'دم (سيترات)', preparation: 'لا يحتاج صيام', turnaround: '1-2 ساعة', indications: 'قبل العمليات، مراقبة الوارفارين، نزيف' }
         ]
     }
 };
@@ -313,7 +315,7 @@ function populateGlobalSources() {
         { name: 'Mayo Clinic', desc: 'موسوعة طبية شاملة', icon: '\u{1F3E5}', color: '#ff6f00', url: 'https://www.mayoclinic.org/' },
         { name: 'WebMD', desc: 'صحة وأدوية وأعراض', icon: '\u{1F4BB}', color: '#00acc1', url: 'https://www.webmd.com/' },
         { name: 'Medscape', desc: 'أخبار طبية وتعليم', icon: '\u{1F4F0}', color: '#5e35b1', url: 'https://www.medscape.com/' },
-        { name: 'Drugs.com', desc: '+24000 دواء', icon: '\u{1F48A}', color: '#00897b', url: 'https://www.drugs.com/' },
+        { name: 'Drugs.com', desc: 'مرجع شامل للأدوية والتداخلات الدوائية', icon: '\u{1F48A}', color: '#00897b', url: 'https://www.drugs.com/' },
         { name: 'NHS', desc: 'الخدمات الصحية البريطانية', icon: '\u{1F1EC}\u{1F1E7}', color: '#005eb8', url: 'https://www.nhs.uk/' },
         { name: 'DailyMed', desc: 'نشرات أدوية FDA', icon: '\u{1F4CB}', color: '#1565c0', url: 'https://dailymed.nlm.nih.gov/' }
     ];
@@ -342,7 +344,7 @@ const LABEL_MAP = {
     treatment: 'العلاج', complications: 'المضاعفات', prevention: 'الوقاية', location: 'الموقع',
     structure: 'التركيب', function: 'الوظيفة', types: 'الأنواع', cells: 'الخلايا',
     normalValues: 'القيم الطبيعية', specimen: 'العينة', preparation: 'التحضير',
-    turnaround: 'مدة التحليل', indications: 'دواعي الاستعمال', diagnosis: 'التشخيص'
+    turnaround: 'مدة التحليل', indications: 'دواعي الاستعمال', diagnosis: 'التشخيص', source: 'المرجع'
 };
 
 function renderDictionaryPage(dict, type) {
@@ -789,7 +791,7 @@ function startVoiceSearch() {
 async function shareApp() {
     const shareData = {
         title: `${APP_NAME} - محرك البحث الطبي العالمي`,
-        text: `تطبيق ${APP_NAME} - قواميس طبية شاملة ومصادر عالمية`,
+        text: `تطبيق ${APP_NAME} - قواميس طبية مختصرة ومصادر عالمية`,
         url: window.location.href
     };
     if (navigator.share) {
@@ -839,76 +841,11 @@ async function copyToClipboard(text) {
 // 15. Geolocation
 // ═══════════════════════════════════════════════════════════
 
-function getLocation() {
-    if (!navigator.geolocation) {
-        showToast('\u{274C} تحديد الموقع غير مدعوم');
-        updateNativeStatus('locationStatus', 'غير مدعوم');
-        return;
-    }
-    updateNativeStatus('locationStatus', 'يجلب...');
-    const getPos = (opts) => new Promise((res, rej) => navigator.geolocation.getCurrentPosition(res, rej, opts));
-    const onOk = (pos) => {
-        const { latitude, longitude, accuracy } = pos.coords;
-        const mapsUrl = `https://www.google.com/maps?q=${latitude},${longitude}`;
-        showNativeOutput(
-            `\u{1F4CD} موقعك الحالي:\n` +
-            `خط العرض: ${latitude.toFixed(6)}\n` +
-            `خط الطول: ${longitude.toFixed(6)}\n` +
-            `الدقة: ${accuracy ? accuracy.toFixed(0) : 'غير معروف'} متر\n\n` +
-            `\u{1F517} ${mapsUrl}`
-        );
-        updateNativeStatus('locationStatus', 'تم الحصول');
-        showToast('\u{1F4CD} تم تحديد الموقع');
-    };
-    const onErr = (err) => {
-        const msgs = {
-            1: 'تم رفض إذن الموقع، فعّله من إعدادات المتصفح',
-            2: 'الموقع غير متاح، فعّل GPS وجرّب مجدداً',
-            3: 'انتهت المهلة، جرّب قرب نافذة أو في الخارج'
-        };
-        showToast('\u{274C} ' + (msgs[err && err.code] || 'تعذر تحديد الموقع'));
-        updateNativeStatus('locationStatus', 'خطأ');
-    };
-    getPos({ enableHighAccuracy: false, timeout: 8000, maximumAge: 300000 })
-        .then(onOk)
-        .catch((e) => {
-            if (e && e.code === 1) return onErr(e);
-            showToast('\u{23F3} جارٍ استخدام GPS الدقيق...');
-            return getPos({ enableHighAccuracy: true, timeout: 25000, maximumAge: 0 }).then(onOk).catch(onErr);
-        });
-}
 
 // ═══════════════════════════════════════════════════════════
 // 16. Battery API
 // ═══════════════════════════════════════════════════════════
 
-async function getBatteryInfo() {
-    let out = '';
-    let status = 'جاهز';
-    if (navigator.getBattery) {
-        try {
-            const b = await navigator.getBattery();
-            const level = Math.round(b.level * 100);
-            out += `\u{1F50B} البطارية: ${level}% (${b.charging ? 'يشحن' : 'على البطارية'})\n\n`;
-            status = `${level}%`;
-        } catch (e) { /* تجاهل */ }
-    }
-    const conn = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
-    out += `\u{1F4F1} معلومات الجهاز:\n`;
-    out += `الاتصال: ${navigator.onLine ? 'متصل \u{2705}' : 'غير متصل \u{274C}'}\n`;
-    if (conn) {
-        out += `نوع الشبكة: ${conn.effectiveType || 'غير معروف'}\n`;
-        out += `سرعة التنزيل: ${(conn.downlink || 0).toFixed(1)} Mbps\n`;
-        if (status === 'جاهز') status = conn.effectiveType || 'متصل';
-    }
-    if (navigator.deviceMemory) out += `الذاكرة: ${navigator.deviceMemory} GB\n`;
-    if (navigator.hardwareConcurrency) out += `أنوية المعالج: ${navigator.hardwareConcurrency}\n`;
-    out += `اللغة: ${navigator.language}\n`;
-    if (!navigator.getBattery) out += `\n\u{2139}\u{FE0F} معلومات البطارية غير متاحة في هذا المتصفح.`;
-    showNativeOutput(out.trim());
-    updateNativeStatus('batteryStatus', status);
-    showToast('\u{1F4F1} تم عرض معلومات الجهاز');
-}
 
 // ═══════════════════════════════════════════════════════════
 // 17. Network Info
@@ -932,20 +869,6 @@ function getNetworkInfo() {
 // 18. Vibration
 // ═══════════════════════════════════════════════════════════
 
-function vibrateDevice() {
-    if (!navigator.vibrate) {
-        showToast('\u{274C} الاهتزاز غير مدعوم');
-        updateNativeStatus('vibrateStatus', 'غير مدعوم');
-        return;
-    }
-    try {
-        navigator.vibrate([100, 50, 100, 50, 200]);
-        showToast('\u{1F4F3} اهتزاز الجهاز');
-        updateNativeStatus('vibrateStatus', 'اهتز');
-    } catch (e) {
-        updateNativeStatus('vibrateStatus', 'خطأ');
-    }
-}
 
 // ═══════════════════════════════════════════════════════════
 // 19. Wake Lock
@@ -1028,34 +951,6 @@ function lockOrientation() {
 // 22. Push Notifications
 // ═══════════════════════════════════════════════════════════
 
-function requestPushNotifications() {
-    if (!('Notification' in window)) {
-        showToast('\u{274C} الإشعارات غير مدعومة');
-        updateNativeStatus('pushStatus', 'غير مدعوم');
-        return;
-    }
-    Notification.requestPermission().then(permission => {
-        if (permission === 'granted') {
-            showToast('\u{2705} تم تفعيل الإشعارات');
-            updateNativeStatus('pushStatus', 'مفعل');
-            try {
-                new Notification(APP_NAME, {
-                    body: '\u{2705} الإشعارات تعمل بنجاح!',
-                    icon: 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"%3E%3Crect fill="%230d7377" width="100" height="100" rx="20"/%3E%3Ctext x="50" y="68" font-size="60" text-anchor="middle" fill="white"%3E\u{2695}%3C/text%3E%3C/svg%3E',
-                    tag: 'test-notification'
-                });
-            } catch (e) { /* silent */ }
-        } else if (permission === 'denied') {
-            showToast('\u{274C} تم رفض الإشعارات');
-            updateNativeStatus('pushStatus', 'مرفوض');
-        } else {
-            updateNativeStatus('pushStatus', 'مغلق');
-        }
-    }).catch(() => {
-        showToast('\u{274C} خطأ في طلب الإشعارات');
-        updateNativeStatus('pushStatus', 'خطأ');
-    });
-}
 
 // ═══════════════════════════════════════════════════════════
 // 23. Native Output Helper
@@ -1101,90 +996,9 @@ function initIndexedDB() {
     };
 }
 
-function saveToLocalDB() {
-    if (!db) {
-        showToast('\u{274C} قاعدة البيانات غير جاهزة');
-        updateNativeStatus('dbSaveStatus', 'خطأ');
-        return;
-    }
-    try {
-        const tx = db.transaction(['searches'], 'readwrite');
-        const store = tx.objectStore('searches');
-        store.add({
-            query: lastQuery || 'test',
-            timestamp: new Date().toISOString(),
-            type: currentDictionary || 'global'
-        });
-        showToast('\u{2705} تم الحفظ في قاعدة البيانات المحلية');
-        updateNativeStatus('dbSaveStatus', 'تم الحفظ');
-    } catch (err) {
-        showToast('\u{274C} خطأ في الحفظ');
-        updateNativeStatus('dbSaveStatus', 'خطأ');
-    }
-}
 
-function loadFromLocalDB() {
-    if (!db) {
-        showToast('\u{274C} قاعدة البيانات غير جاهزة');
-        updateNativeStatus('dbLoadStatus', 'خطأ');
-        return;
-    }
-    try {
-        const tx = db.transaction(['searches'], 'readonly');
-        tx.objectStore('searches').getAll().onsuccess = (e) => {
-            const data = e.target.result;
-            showNativeOutput(`\u{1F4C2} البيانات المحفوظة:\n${JSON.stringify(data.slice(-5), null, 2)}`);
-            updateNativeStatus('dbLoadStatus', `${data.length} سجل`);
-        };
-    } catch (err) {
-        showToast('\u{274C} خطأ في الاسترجاع');
-        updateNativeStatus('dbLoadStatus', 'خطأ');
-    }
-}
 
-function clearLocalDB() {
-    if (!db) {
-        showToast('\u{274C} قاعدة البيانات غير جاهزة');
-        updateNativeStatus('clearStatus', 'خطأ');
-        return;
-    }
-    try {
-        const tx = db.transaction(['searches', 'favorites'], 'readwrite');
-        tx.objectStore('searches').clear();
-        tx.objectStore('favorites').clear();
-        showToast('\u{1F5D1}\u{FE0F} تم مسح التخزين المحلي');
-        updateNativeStatus('clearStatus', 'تم المسح');
-    } catch (err) {
-        showToast('\u{274C} خطأ في المسح');
-        updateNativeStatus('clearStatus', 'خطأ');
-    }
-}
 
-function exportData() {
-    if (!db) {
-        showToast('\u{274C} قاعدة البيانات غير جاهزة');
-        updateNativeStatus('exportStatus', 'خطأ');
-        return;
-    }
-    try {
-        const tx = db.transaction(['searches'], 'readonly');
-        tx.objectStore('searches').getAll().onsuccess = (e) => {
-            const data = e.target.result;
-            const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = 'medsearch-yemen-data.json';
-            a.click();
-            URL.revokeObjectURL(url);
-            showToast('\u{1F4E5} تم تصدير البيانات');
-            updateNativeStatus('exportStatus', 'تم التصدير');
-        };
-    } catch (err) {
-        showToast('\u{274C} خطأ في التصدير');
-        updateNativeStatus('exportStatus', 'خطأ');
-    }
-}
 
 // ═══════════════════════════════════════════════════════════
 // 25. PWA Install
@@ -1439,4 +1253,232 @@ if (typeof module !== 'undefined' && module.exports) {
         showPage, showDictionary, performGlobalSearch,
         toggleTheme, showToast, escapeHtml
     };
+}
+
+
+// ===== MS103: بحث محلي في القواميس + إتاحة لوحة المفاتيح =====
+(function () {
+    const _origSearch = performGlobalSearch;
+    window.performGlobalSearch = function () {
+        _origSearch();
+        const input = document.getElementById('globalSearchInput');
+        const content = document.getElementById('externalResultsContent');
+        const q = input ? input.value.trim() : '';
+        if (!q || !content) return;
+        const nq = normalizeArabic(q);
+        const hits = [];
+        Object.entries(MEDICAL_DB).forEach(([type, dict]) => {
+            dict.data.forEach(item => {
+                const hay = normalizeArabic(Object.entries(item).filter(e => e[0] !== 'id').map(e => e[1]).join(' '));
+                if (hay.includes(nq)) hits.push({ type, dict, item });
+            });
+        });
+        if (!hits.length) return;
+        const cards = hits.slice(0, 8).map(h =>
+            `<div class="external-source-card" onclick="showItemDetail('${h.type}', ${h.item.id})">` +
+            `<div class="external-source-icon" style="background:var(--primary-light)">${h.dict.icon}</div>` +
+            `<div class="external-source-info"><div class="external-source-name">${escapeHtml(h.item.name)}</div>` +
+            `<div class="external-source-desc">${escapeHtml(h.item.nameEn)} · ${escapeHtml(h.dict.name)}</div></div></div>`
+        ).join('');
+        content.insertAdjacentHTML('afterbegin',
+            `<div style="font-weight:800;margin-bottom:10px;color:var(--primary)">\u{1F4DA} نتائج في القواميس (${hits.length})</div>${cards}` +
+            `<div style="font-weight:800;margin:16px 0 10px;color:var(--primary)">\u{1F310} المصادر العالمية</div>`);
+    };
+})();
+
+document.addEventListener('keydown', (e) => {
+    if (e.key !== 'Enter' && e.key !== ' ') return;
+    const el = e.target;
+    if (el && el.getAttribute && el.getAttribute('role') === 'button' && el.tagName !== 'BUTTON') {
+        e.preventDefault();
+        el.click();
+    }
+});
+
+
+// ═══════════════════════════════════════════════════════════
+// Clinical Calculators v3 — تصميم أزرار + نافذة منبثقة
+// ═══════════════════════════════════════════════════════════
+function initClinicalCalculators() {
+    if (document.getElementById('clinicalCalcPanel')) return;
+    const anchor = document.querySelector('.native-panel');
+    if (!anchor || !anchor.parentNode) return;
+
+    const CALCS = [
+        { id: 'gfr', icon: '\u{1F9EA}', shortName: 'تصفية الكرياتينين', 
+          title: 'تصفية الكرياتينين (Cockcroft-Gault)', 
+          fields: [ {id:'sex',label:'الجنس',type:'select',options:[['m','ذكر'],['f','أنثى']]}, {id:'age',label:'العمر (سنة)',type:'number'}, {id:'w',label:'الوزن (كغ)',type:'number'}, {id:'scr',label:'كرياتينين المصل',type:'number'}, {id:'unit',label:'الوحدة',type:'select',options:[['mg','mg/dL'],['umol','µmol/L']]} ],
+          run: (v) => {
+              let r;
+              if (v.unit === 'mg') r = (140 - v.age) * v.w * (v.sex === 'f' ? 0.85 : 1) / (72 * v.scr);
+              else r = (140 - v.age) * v.w * (v.sex === 'f' ? 1.04 : 1.23) / v.scr;
+              return `التصفية المقدّرة: ${Number(r.toFixed(0))} مل/دقيقة\n\nتنبيه: تقدير تقريبي، راجع الطبيب.`;
+          }
+        },
+        { id: 'bmi', icon: '\u{2696}\u{FE0F}', shortName: 'مؤشر كتلة الجسم', 
+          title: 'مؤشر كتلة الجسم ومساحة السطح', 
+          fields: [ {id:'h',label:'الطول (سم)',type:'number'}, {id:'w',label:'الوزن (كغ)',type:'number'} ],
+          run: (v) => {
+              const bmi = v.w / Math.pow(v.h / 100, 2);
+              const bsa = Math.sqrt(v.h * v.w / 3600);
+              const cat = bmi < 18.5 ? 'نحافة' : bmi < 25 ? 'وزن طبيعي' : bmi < 30 ? 'وزن زائد' : 'سمنة';
+              return `مؤشر كتلة الجسم: ${Number(bmi.toFixed(1))} (${cat})\nمساحة السطح: ${Number(bsa.toFixed(2))} م²\n\nللبالغين فقط.`;
+          }
+        },
+        { id: 'iv', icon: '\u{1F4A7}', shortName: 'معدل التسريب', 
+          title: 'معدل التسريب الوريدي', 
+          fields: [ {id:'vol',label:'الحجم (مل)',type:'number'}, {id:'hrs',label:'المدة (ساعات)',type:'number'}, {id:'df',label:'معامل القطرة',type:'select',options:[['10','10'],['15','15'],['20','20'],['60','60']]} ],
+          run: (v) => {
+              const df = Number(v.df);
+              return `المعدل: ${Number((v.vol/v.hrs).toFixed(1))} مل/ساعة\nالقطرات: ${Math.round(v.vol*df/(v.hrs*60))} قطرة/دقيقة\n\nتحقق من معامل القطرة.`;
+          }
+        },
+        { id: 'conv', icon: '\u{1F501}', shortName: 'تحويل الوحدات', 
+          title: 'تحويل وحدات التحاليل', 
+          fields: [ {id:'test',label:'التحليل',type:'select',options:[['glu','سكر'],['cr','كرياتينين'],['chol','كوليسترول']]}, {id:'dir',label:'الاتجاه',type:'select',options:[['si','mg/dL إلى دولي'],['cv','دولي إلى mg/dL']]}, {id:'val',label:'القيمة',type:'number'} ],
+          run: (v) => {
+              const C = { glu:{f:18.016,mul:false}, cr:{f:88.4,mul:true}, chol:{f:38.67,mul:false} };
+              const c = C[v.test]; let res;
+              if (v.dir === 'si') res = c.mul ? v.val * c.f : v.val / c.f;
+              else res = c.mul ? v.val / c.f : v.val * c.f;
+              return `النتيجة: ${Number(res.toFixed(2))}\n\nقارن بالمدى المرجعي لمختبرك.`;
+          }
+        },
+        { id: 'edd', icon: '\u{1F930}', shortName: 'تاريخ الولادة', 
+          title: 'تاريخ الولادة المتوقع (نيجل)', 
+          fields: [ {id:'lmp',label:'أول يوم لآخر دورة',type:'date'} ],
+          run: (v) => {
+              const p = v.lmp.split('-').map(Number);
+              const lmp = Date.UTC(p[0], p[1] - 1, p[2]);
+              const e = new Date(lmp + 280 * 86400000);
+              const pad = (x) => String(x).padStart(2, '0');
+              return `تاريخ الولادة: ${pad(e.getUTCDate())}/${pad(e.getUTCMonth()+1)}/${e.getUTCFullYear()}\n\nقاعدة 280 يوماً.`;
+          }
+        }
+    ];
+
+    const panel = document.createElement('div');
+    panel.className = 'native-panel active';
+    panel.id = 'clinicalCalcPanel';
+
+    const title = document.createElement('div');
+    title.className = 'native-panel-title';
+    title.textContent = '\u{1F9EE} حاسبات سريرية';
+    panel.appendChild(title);
+
+    const grid = document.createElement('div');
+    grid.className = 'native-grid';
+
+    CALCS.forEach(c => {
+        const btn = document.createElement('button');
+        btn.className = 'native-btn';
+        btn.innerHTML = `<span class="native-icon">${c.icon}</span><span class="native-label">${c.shortName}</span><span class="native-status">احسب</span>`;
+        btn.onclick = () => openCalcModal(c);
+        grid.appendChild(btn);
+    });
+    panel.appendChild(grid);
+    anchor.parentNode.insertBefore(panel, anchor);
+
+    // إضافة المودال (النافذة المنبثقة) إلى الصفحة
+    if (!document.getElementById('calcModalOverlay')) {
+        const overlay = document.createElement('div');
+        overlay.id = 'calcModalOverlay';
+        overlay.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.8);z-index:10005;display:none;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(3px);';
+        
+        const content = document.createElement('div');
+        content.id = 'calcModalContent';
+        content.style.cssText = 'background:var(--bg-card);width:100%;max-width:500px;border-radius:16px;padding:20px;max-height:90vh;overflow-y:auto;position:relative;box-shadow:0 10px 30px rgba(0,0,0,0.5);border:1px solid var(--border);';
+        
+        const closeBtn = document.createElement('button');
+        closeBtn.innerHTML = '✕';
+        closeBtn.style.cssText = 'position:absolute;top:15px;left:15px;background:transparent;border:none;color:var(--text);font-size:20px;cursor:pointer;';
+        closeBtn.onclick = () => overlay.style.display = 'none';
+        
+        content.appendChild(closeBtn);
+        
+        const body = document.createElement('div');
+        body.id = 'calcModalBody';
+        content.appendChild(body);
+        
+        overlay.appendChild(content);
+        document.body.appendChild(overlay);
+    }
+}
+
+function openCalcModal(c) {
+    const overlay = document.getElementById('calcModalOverlay');
+    const body = document.getElementById('calcModalBody');
+    if (!overlay || !body) return;
+
+    body.innerHTML = `<h2 style="font-family:var(--font-display);font-size:20px;margin-bottom:16px;color:var(--primary);">${c.title}</h2>`;
+    
+    const inputs = {};
+    c.fields.forEach(f => {
+        const wrapper = document.createElement('div');
+        wrapper.style.marginBottom = '12px';
+        
+        const lab = document.createElement('label');
+        lab.textContent = f.label;
+        lab.style.cssText = 'display:block;font-size:14px;font-weight:bold;margin-bottom:6px;color:var(--text-secondary);';
+        wrapper.appendChild(lab);
+
+        let inp;
+        if (f.type === 'select') {
+            inp = document.createElement('select');
+            f.options.forEach(o => {
+                const op = document.createElement('option');
+                op.value = o[0]; op.textContent = o[1];
+                inp.appendChild(op);
+            });
+        } else {
+            inp = document.createElement('input');
+            inp.type = f.type;
+            if (f.type === 'number') inp.inputMode = 'decimal';
+        }
+        inp.style.cssText = 'width:100%;padding:12px;border-radius:10px;border:1px solid var(--border);background:var(--bg);color:var(--text);font-family:inherit;font-size:16px;';
+        inputs[f.id] = inp;
+        wrapper.appendChild(inp);
+        body.appendChild(wrapper);
+    });
+
+    const calcBtn = document.createElement('button');
+    calcBtn.textContent = 'احسب النتيجة';
+    calcBtn.style.cssText = 'width:100%;padding:14px;border-radius:10px;background:var(--primary);color:#fff;border:none;font-size:16px;font-weight:bold;margin-top:10px;cursor:pointer;';
+    
+    const resultBox = document.createElement('div');
+    resultBox.style.cssText = 'margin-top:16px;padding:16px;border-radius:10px;background:rgba(13,115,119,0.1);border:1px solid rgba(13,115,119,0.3);color:var(--text);font-size:15px;line-height:1.6;white-space:pre-line;display:none;';
+
+    calcBtn.onclick = () => {
+        try {
+            const v = {};
+            c.fields.forEach(f => {
+                const raw = inputs[f.id].value;
+                if (f.type === 'number') {
+                    v[f.id] = Number(String(raw).replace(/[٠-٩]/g, d => '٠١٢٣٤٥٦٧٨٩'.indexOf(d)).replace(/[٫,]/g, '.'));
+                    if (isNaN(v[f.id])) throw new Error('أدخل أرقاماً صحيحة');
+                } else {
+                    v[f.id] = raw;
+                    if (f.type === 'date' && !raw) throw new Error('اختر التاريخ');
+                }
+            });
+            resultBox.style.color = 'var(--text)';
+            resultBox.style.borderColor = 'rgba(13,115,119,0.3)';
+            resultBox.textContent = c.run(v);
+        } catch (e) {
+            resultBox.style.color = '#e57373';
+            resultBox.style.borderColor = '#e57373';
+            resultBox.textContent = '⚠️ ' + e.message;
+        }
+        resultBox.style.display = 'block';
+    };
+
+    body.appendChild(calcBtn);
+    body.appendChild(resultBox);
+    overlay.style.display = 'flex';
+}
+
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initClinicalCalculators);
+} else {
+    initClinicalCalculators();
 }

@@ -17,7 +17,7 @@
 
     <!-- Open Graph -->
     <meta property="og:title" content="MedSearch Yemen | محرك البحث الطبي العالمي">
-    <meta property="og:description" content="قواميس طبية شاملة + مصادر عالمية + ميزات أصلية للجوال">
+    <meta property="og:description" content="قواميس طبية مختصرة + مصادر عالمية + ميزات أصلية للجوال">
     <meta property="og:image" content="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 630'%3E%3Crect fill='%230d7377' width='1200' height='630' rx='40'/%3E%3Ctext x='600' y='340' font-size='120' text-anchor='middle' fill='white' font-family='serif'%3E%26%23x2695%3B MedSearch Yemen%3C/text%3E%3C/svg%3E">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
@@ -65,7 +65,7 @@
             --bg-tertiary: #eef1f5;
             --text: #1a1a2e;
             --text-secondary: #4a5568;
-            --text-tertiary: #a0aec0;
+            --text-tertiary: #64748b;
             --border: #e2e8f0;
             --border-light: #edf2f7;
             --shadow-sm: 0 1px 2px rgba(13, 115, 119, 0.04);
@@ -95,7 +95,7 @@
             --bg-tertiary: #334155;
             --text: #f1f5f9;
             --text-secondary: #94a3b8;
-            --text-tertiary: #64748b;
+            --text-tertiary: #94a3b8;
             --border: #334155;
             --border-light: #1e293b;
             --gold-light: #1a1a0a;
@@ -366,7 +366,7 @@
         .result-details { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; margin-top: 12px; }
         .detail-item { display: flex; flex-direction: column; gap: 3px; padding: 10px 12px; background: var(--bg-secondary); border-radius: var(--radius-sm); border: 1px solid var(--border-light); transition: var(--transition-fast); }
         .dictionary-result-card:hover .detail-item { background: var(--bg); }
-        .detail-label { font-size: 10px; color: var(--text-tertiary); text-transform: uppercase; font-weight: 800; letter-spacing: 0.5px; }
+        .detail-label { font-size: 12px; color: var(--text-tertiary); text-transform: uppercase; font-weight: 800; letter-spacing: 0.5px; }
         .detail-value { font-size: 13px; color: var(--text-secondary); font-weight: 600; }
         .result-actions { display: flex; gap: 8px; margin-top: 14px; flex-wrap: wrap; }
         .result-btn { padding: 8px 16px; border-radius: 20px; border: 1px solid var(--border); background: var(--bg); color: var(--text-secondary); font-family: var(--font-body); font-size: 12px; font-weight: 700; cursor: pointer; transition: var(--transition-fast); display: flex; align-items: center; gap: 5px; position: relative; overflow: hidden; }
@@ -576,6 +576,12 @@
             border-top: none;
             border-bottom-right-radius: 12px;
         }
+    
+        /* MS103 */
+        .detail-modal { z-index: 10002; }
+        .alphabet-btn { min-width: 48px; height: 48px; }
+        .icon-btn { width: 48px; height: 48px; }
+        .nav-link, .native-feature-chip, .result-btn, .qr-scanner-close { min-height: 48px; }
     </style>
 </head>
 <body>
@@ -634,9 +640,8 @@
     
     <!-- أزرار التحكم -->
     <div style="display:flex;gap:10px;margin-top:16px;justify-content:center;flex-wrap:wrap">
-        <button class="qr-scanner-close" onclick="toggleTorch()" title="فلاش">🔦</button>
-        <button class="qr-scanner-close" onclick="switchCamera()" title="تبديل كاميرا">🔄</button>
-        <button class="qr-scanner-close" onclick="showQRHistory()" title="السجل">📜</button>
+        <button class="qr-scanner-close" onclick="toggleTorch()" title="فلاش" aria-label="فلاش">🔦</button>
+        <button class="qr-scanner-close" onclick="showQRHistory()" title="السجل" aria-label="سجل المسح">📜</button>
         <button class="qr-scanner-close" onclick="stopQRScanner()" style="background:var(--danger)">✕ إغلاق</button>
     </div>
     
@@ -668,8 +673,6 @@
             <div class="header-actions">
                 <button class="icon-btn" onclick="toggleTheme()" title="تبديل الوضع" aria-label="تبديل الوضع الليلي">&#x1F313;</button>
                 <button class="icon-btn" onclick="showPwaSheet()" title="تثبيت التطبيق" aria-label="تثبيت التطبيق">&#x1F4F2;</button>
-                <button class="icon-btn" onclick="requestPushNotifications()" title="الإشعارات" aria-label="الإشعارات">&#x1F514;</button>
-                <div class="user-avatar" onclick="showToast('الملف الشخصي - قريباً')" title="الملف الشخصي" role="button" tabindex="0" aria-label="الملف الشخصي">ط</div>
             </div>
         </div>
         <div class="header-nav">
@@ -693,7 +696,7 @@
                     <span class="nav-icon">&#x1F9EA;</span> المختبرات
                 </a>
                 <a class="nav-link" onclick="showPage('native');return false" role="button" tabindex="0">
-                    <span class="nav-icon">&#x1F4F1;</span> أدوات الجوال
+                    <span class="nav-icon">&#x1F9EE;</span> حاسبات سريرية وأدوات
                 </a>
             </div>
         </div>
@@ -717,13 +720,10 @@
                 <button class="native-feature-chip" onclick="startVoiceSearch()"><span class="chip-icon">&#x1F3A4;</span> بحث صوتي</button>
                 <button class="native-feature-chip" onclick="startQRScanner()"><span class="chip-icon">&#x1F4F7;</span> مسح QR</button>
                 <button class="native-feature-chip" onclick="shareApp()"><span class="chip-icon">&#x1F4E4;</span> مشاركة</button>
-                <button class="native-feature-chip" onclick="getLocation()"><span class="chip-icon">&#x1F4CD;</span> موقعي</button>
                 <button class="native-feature-chip" onclick="copyToClipboard()"><span class="chip-icon">&#x1F4CB;</span> نسخ</button>
                 <button class="native-feature-chip" onclick="requestWakeLock()"><span class="chip-icon">&#x1F512;</span> شاشة نشطة</button>
-                <button class="native-feature-chip" onclick="getBatteryInfo()"><span class="chip-icon">&#x1F50B;</span> الجهاز</button>
                 <button class="native-feature-chip" onclick="getNetworkInfo()"><span class="chip-icon">&#x1F4F6;</span> الشبكة</button>
                 <button class="native-feature-chip" onclick="requestFullscreen()"><span class="chip-icon">&#x26F6;</span> ملء الشاشة</button>
-                <button class="native-feature-chip" onclick="vibrateDevice()"><span class="chip-icon">&#x1F4F3;</span> اهتزاز</button>
             </div>
 
             <!-- Global Search -->
@@ -768,7 +768,7 @@
 
     <!-- DICTIONARIES PAGE -->
     <div id="dictionariesPage" class="main-container page" style="text-align:center;padding-top:30px">
-        <div style="font-family:var(--font-display);font-size:clamp(1.8rem,4vw,2.5rem);font-weight:900;color:var(--primary);margin-bottom:10px">&#x1F4DA; القواميس الطبية الشاملة</div>
+        <div style="font-family:var(--font-display);font-size:clamp(1.8rem,4vw,2.5rem);font-weight:900;color:var(--primary);margin-bottom:10px">&#x1F4DA; القواميس الطبية</div>
         <div style="font-size:15px;color:var(--text-secondary);margin-bottom:28px;max-width:600px;margin-left:auto;margin-right:auto;line-height:1.8">
             ابحث في قواميس الأدوية والأمراض والأنسجة والمختبرات مع ربط فوري بالمصادر العالمية
         </div>
@@ -780,8 +780,8 @@
     <!-- NATIVE TOOLS PAGE -->
     <div id="nativePage" class="main-container page">
         <div style="text-align:center;margin-bottom:28px">
-            <div style="font-family:var(--font-display);font-size:clamp(1.8rem,4vw,2.5rem);font-weight:900;color:var(--primary);margin-bottom:8px">&#x1F4F1; أدوات الجوال الأصلية</div>
-            <div style="font-size:14px;color:var(--text-secondary)">ميزات أصلية متقدمة للجوال - تتطلب أذونات</div>
+            <div style="font-family:var(--font-display);font-size:clamp(1.8rem,4vw,2.5rem);font-weight:900;color:var(--primary);margin-bottom:8px">&#x1F4F1; حاسبات سريرية وأدوات</div>
+            <div style="font-size:14px;color:var(--text-secondary)">أدوات ذكية وحاسبات سريرية - تعمل بخصوصية تامة</div>
         </div>
 
         <div class="native-panel active">
@@ -795,12 +795,9 @@
         </div>
 
         <div class="native-panel active">
-            <div class="native-panel-title">&#x1F4CD; الموقع والجهاز</div>
+            <div class="native-panel-title">&#x1F4F6; الاتصال</div>
             <div class="native-grid">
-                <button class="native-btn" onclick="getLocation()"><span class="native-icon">&#x1F4CD;</span><span class="native-label">موقعي الحالي</span><span class="native-status" id="locationStatus">انقر للحصول</span></button>
-                <button class="native-btn" onclick="getBatteryInfo()"><span class="native-icon">&#x1F50B;</span><span class="native-label">معلومات الجهاز</span><span class="native-status" id="batteryStatus">انقر للحصول</span></button>
                 <button class="native-btn" onclick="getNetworkInfo()"><span class="native-icon">&#x1F4F6;</span><span class="native-label">معلومات الشبكة</span><span class="native-status" id="networkStatus">انقر للحصول</span></button>
-                <button class="native-btn" onclick="vibrateDevice()"><span class="native-icon">&#x1F4F3;</span><span class="native-label">اهتزاز الجهاز</span><span class="native-status" id="vibrateStatus">جاهز</span></button>
             </div>
         </div>
 
@@ -810,19 +807,9 @@
                 <button class="native-btn" onclick="requestWakeLock()"><span class="native-icon">&#x1F512;</span><span class="native-label">إبقاء الشاشة نشطة</span><span class="native-status" id="wakeStatus">انقر لتفعيل</span></button>
                 <button class="native-btn" onclick="requestFullscreen()"><span class="native-icon">&#x26F6;</span><span class="native-label">ملء الشاشة</span><span class="native-status" id="fullscreenStatus">انقر لتفعيل</span></button>
                 <button class="native-btn" onclick="lockOrientation()"><span class="native-icon">&#x1F504;</span><span class="native-label">تثبيت الاتجاه</span><span class="native-status" id="orientationStatus">انقر لتفعيل</span></button>
-                <button class="native-btn" onclick="requestPushNotifications()"><span class="native-icon">&#x1F514;</span><span class="native-label">إشعارات Push</span><span class="native-status" id="pushStatus">انقر للسماح</span></button>
             </div>
         </div>
 
-        <div class="native-panel active">
-            <div class="native-panel-title">&#x1F4BE; التخزين المحلي</div>
-            <div class="native-grid">
-                <button class="native-btn" onclick="saveToLocalDB()"><span class="native-icon">&#x1F4BE;</span><span class="native-label">حفظ في قاعدة البيانات</span><span class="native-status" id="dbSaveStatus">جاهز</span></button>
-                <button class="native-btn" onclick="loadFromLocalDB()"><span class="native-icon">&#x1F4C2;</span><span class="native-label">استرجاع من القاعدة</span><span class="native-status" id="dbLoadStatus">جاهز</span></button>
-                <button class="native-btn" onclick="exportData()"><span class="native-icon">&#x1F4E5;</span><span class="native-label">تصدير البيانات</span><span class="native-status" id="exportStatus">جاهز</span></button>
-                <button class="native-btn" onclick="clearLocalDB()"><span class="native-icon">&#x1F5D1;&#xFE0F;</span><span class="native-label">مسح التخزين</span><span class="native-status" id="clearStatus">جاهز</span></button>
-            </div>
-        </div>
 
         <div id="nativeOutput" style="margin-top:20px;padding:20px;background:var(--bg-secondary);border-radius:var(--radius);border:1px solid var(--border);font-family:monospace;font-size:13px;direction:ltr;text-align:left;white-space:pre-wrap;min-height:100px;display:none"></div>
     </div>
@@ -864,7 +851,7 @@
                 <div class="footer-watermark-left">&#x1FA7A;</div>
                 <div class="footer-label">برمجة وتطوير</div>
                 <div class="footer-dev-name">Dr. Salah Al-Ahdal</div>
-                <div class="footer-dev-title">&#x1FA7A; استشاري التصميم والتطوير الطبي</div>
+                <div class="footer-dev-title">&#x1FA7A; طبيب ومطوّر تطبيقات صحية</div>
                 <div class="footer-divider"></div>
                 <div style="font-size:14px;color:var(--text-secondary);margin-bottom:16px;position:relative;z-index:1;font-weight:500">
                     مطور محرك البحث الطبي العالمي - MedSearch Yemen

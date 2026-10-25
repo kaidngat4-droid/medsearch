@@ -14,7 +14,7 @@
 //   and the app icon actually shipped by the developer.
 // - Bumped cache version to force old caches to be evicted on update.
 
-const SW_VERSION = 'v6';
+const SW_VERSION = 'v16';
 const STATIC_CACHE = `medsearch-static-${SW_VERSION}`;
 const DYNAMIC_CACHE = `medsearch-dynamic-${SW_VERSION}`;
 const IMAGE_CACHE = `medsearch-images-${SW_VERSION}`;
@@ -236,7 +236,7 @@ async function fontStrategy(request) {
   if (cached) return cached;
 
   try {
-    const response = await fetch(request, { mode: 'cors' });
+    const response = await fetch(request.url, { mode: 'cors', credentials: 'omit' });
     if (response && response.ok) {
       cache.put(request, response.clone());
       cleanupCache(FONT_CACHE, MAX_FONT_ITEMS);
