@@ -110,14 +110,14 @@ const MEDICAL_DB = {
         name: 'قاموس علم الأدوية',
         icon: '\u{1F48A}',
         color: 'warning',
-        desc: '+5000 دواء | جرعات | تفاعلات | آثار جانبية | موانع | تصنيف | آلية عمل',
+        desc: 'أدوية | جرعات | تفاعلات | آثار جانبية | موانع | تصنيف | آلية عمل',
         stats: ['جرعات', 'تفاعلات', 'موانع'],
         data: [
             { id: 1, name: 'باراسيتامول', nameEn: 'Paracetamol', category: 'مسكن ألم / خافض حرارة', dose: '500-1000 ملغ كل 6 ساعات', maxDose: '4000 ملغ/اليوم', sideEffects: 'غثيان، طفح، نادراً سمية كبدية', interactions: 'الكحول يزيد سمية الكبد', contraindications: 'أمراض الكبد الحادة', pregnancy: 'آمن نسبياً (فئة B)', form: 'أقراص، شراب، تحاميل، حقن', mechanism: 'تثبيط COX في الجهاز العصبي المركزي' },
             { id: 2, name: 'أموكسيسيلين', nameEn: 'Amoxicillin', category: 'مضاد حيوي (بنسلين)', dose: '500 ملغ كل 8 ساعات', maxDose: '3000 ملغ/اليوم', sideEffects: 'إسهال، غثيان، طفح، حساسية', interactions: 'ميثوتريكسات، وارفارين', contraindications: 'حساسية البنسلين', pregnancy: 'آمن (فئة B)', form: 'كبسولات، شراب، حقن', mechanism: 'تثبيط بناء جدار الخلية البكتيرية' },
             { id: 3, name: 'ميترونيدازول', nameEn: 'Metronidazole', category: 'مضاد حيوي / مضاد طفيليات', dose: '500 ملغ كل 8 ساعات', maxDose: '2000 ملغ/اليوم', sideEffects: 'طعم معدني، غثيان، صداع', interactions: 'الكحول، وارفارين', contraindications: 'الحمل (ثلاثة أشهر الأولى)', pregnancy: 'يتجنب في الثلث الأول', form: 'أقراص، جل، تحاميل، حقن', mechanism: 'تدمير الحمض النووي للكائنات الدقيقة' },
             { id: 4, name: 'أوميبرازول', nameEn: 'Omeprazole', category: 'مثبط مضخة البروتون', dose: '20-40 ملغ يومياً', maxDose: '80 ملغ/اليوم', sideEffects: 'صداع، إسهال، إمساك', interactions: 'كلوبيدوقرل، كيتوكونازول', contraindications: 'فرط الحساسية', pregnancy: 'آمن نسبياً (فئة C)', form: 'كبسولات، حقن', mechanism: 'تثبيط مضخة البروتون في المعدة' },
-            { id: 5, name: 'إيبوبروفين', nameEn: 'Ibuprofen', category: 'مضاد التهاب غير ستيرويدي', dose: '400-800 ملغ كل 8 ساعات', maxDose: '3200 ملغ/اليوم', sideEffects: 'آلام معدة، قرحة، نزيف', interactions: 'أسبرين، وارفارين، كورتيزون', contraindications: 'قرحة المعدة، فشل كلوي', pregnancy: 'يتجنب (فئة D)', form: 'أقراص، شراب، جل', mechanism: 'تثبيط COX-1 و COX-2' },
+            { id: 5, name: 'إيبوبروفين', nameEn: 'Ibuprofen', category: 'مضاد التهاب غير ستيرويدي', dose: '400-800 ملغ كل 8 ساعات', maxDose: '1200 ملغ/اليوم (بدون وصفة) أو 3200 ملغ (بإشراف طبي)', sideEffects: 'آلام معدة، قرحة، نزيف', interactions: 'أسبرين، وارفارين، كورتيزون', contraindications: 'قرحة المعدة، فشل كلوي', pregnancy: 'يتجنب (فئة D)', form: 'أقراص، شراب، جل', mechanism: 'تثبيط COX-1 و COX-2' },
             { id: 6, name: 'سيتالوبرام', nameEn: 'Citalopram', category: 'مضاد اكتئاب (SSRI)', dose: '20 ملغ يومياً', maxDose: '40 ملغ/اليوم', sideEffects: 'غثيان، أرق، صداع، تعرق', interactions: 'MAOIs، تريبتانات', contraindications: 'فرط الحساسية، MAOIs', pregnancy: 'فئة C - يحتاج تقييم', form: 'أقراص، شراب', mechanism: 'تثبيط إعادة امتصاص السيروتونين' },
             { id: 7, name: 'ميتفورمين', nameEn: 'Metformin', category: 'خافض سكر فموي', dose: '500-850 ملغ مرتين يومياً', maxDose: '2550 ملغ/اليوم', sideEffects: 'غثيان، إسهال، فقدان شهية', interactions: 'اليود المشع، كحول', contraindications: 'فشل كلوي حاد، حمضية', pregnancy: 'آمن (فئة B)', form: 'أقراص، شراب', mechanism: 'تقليل إنتاج الجلوكوز في الكبد' },
             { id: 8, name: 'أتورفاستاتين', nameEn: 'Atorvastatin', category: 'خافض كوليسترول (ستاتين)', dose: '10-20 ملغ يومياً', maxDose: '80 ملغ/اليوم', sideEffects: 'آلام عضلية، ارتفاع إنزيمات الكبد', interactions: 'جراب فروت، سيكلوسبورين', contraindications: 'أمراض الكبد النشطة', pregnancy: 'ممنوع (فئة X)', form: 'أقراص', mechanism: 'تثبيط إنزيم HMG-CoA ريدكتاز' },
@@ -129,7 +129,7 @@ const MEDICAL_DB = {
         name: 'قاموس الأمراض',
         icon: '\u{1F9A0}',
         color: 'danger',
-        desc: '+3000 مرض | أعراض | تشخيص | علاج | مضاعفات | وقاية',
+        desc: 'أمراض | أعراض | تشخيص | علاج | مضاعفات | وقاية',
         stats: ['أعراض', 'علاج', 'وقاية'],
         data: [
             { id: 1, name: 'السكري نوع 2', nameEn: 'Type 2 Diabetes', category: 'الغدد الصماء', symptoms: 'عطش، كثرة تبول، تعب، جوع، ضبابية رؤية', causes: 'مقاومة الإنسولين، سمنة، وراثة، قلة النشاط', diagnosis: 'سكر صائم >126، HbA1c >6.5%', treatment: 'ميتفورمين، نظام غذائي، رياضة، إنسولين', complications: 'أمراض قلب، فشل كلوي، عمى، بتر', prevention: 'وزن صحي، رياضة، غذاء متوازن' },
@@ -137,7 +137,7 @@ const MEDICAL_DB = {
             { id: 3, name: 'الربو', nameEn: 'Asthma', category: 'الجهاز التنفسي', symptoms: 'صفير، ضيق تنفس، سعال، شعور بضيق الصدر', causes: 'حساسية، وراثة، تلوث، عدوى تنفسية', diagnosis: 'قياس التنفس (Spirometry)، اختبار الحساسية', treatment: 'بخاخات موسعة، كورتيزون استنشاقي، مضادات اللوكوترايين', complications: 'نوبات حادة، فشل تنفسي، تغيرات رئوية دائمة', prevention: 'تجنب المحفزات، لقاح الإنفلونزا' },
             { id: 4, name: 'فقر الدم', nameEn: 'Anemia', category: 'الدم', symptoms: 'تعب، شحوب، دوخة، ضيق تنفس، سرعة نبض', causes: 'نقص حديد، نقص B12، نزيف، أمراض مزمنة', diagnosis: 'Hb <13 (رجال) <12 (نساء)، Ferritin', treatment: 'حديد فموي/حقن، B12، علاج السبب', complications: 'فشل قلب، ضعف مناعة، تأخر نمو', prevention: 'غذاء غني بالحديد، فيتامينات' },
             { id: 5, name: 'التهاب المسالك البولية', nameEn: 'UTI', category: 'المسالك البولية', symptoms: 'حرقان بالتبول، كثرة تبول، دم بالبول، حمى', causes: 'E. coli، بكتيريا أخرى، قسطرة بولية', diagnosis: 'تحليل بول، زراعة بول', treatment: 'مضاد حيوي (نيتروفيورانتوين، سيفترياكسون)', complications: 'عدوى الكلى، تسمم دموي', prevention: 'شرب ماء، نظافة، تبول بعد الجماع' },
-            { id: 6, name: 'التهاب الكبد الوبائي B', nameEn: 'Hepatitis B', category: 'الجهاز الهضمي', symptoms: 'إرهاق، غثيان، يرقان، بول داكن، ألم بطن', causes: 'فيروس التهاب الكبد B (HBV)', diagnosis: 'HBsAg، Anti-HBc، PCR HBV', treatment: 'تينوفوفير، إنتيفير، راقب', complications: 'تليف الكبد، سرطان الكبد', prevention: 'لقاح، دم آمن، تجنب الإبر المشتركة' }
+            { id: 6, name: 'التهاب الكبد الوبائي B', nameEn: 'Hepatitis B', category: 'الجهاز الهضمي', symptoms: 'إرهاق، غثيان، يرقان، بول داكن، ألم بطن', causes: 'فيروس التهاب الكبد B (HBV)', diagnosis: 'HBsAg، Anti-HBc، PCR HBV', treatment: 'تينوفوفير، إنتيفير، العلاج', complications: 'تليف الكبد، سرطان الكبد', prevention: 'لقاح، دم آمن، تجنب الإبر المشتركة' }
         ]
     },
     tissues: {
@@ -147,7 +147,7 @@ const MEDICAL_DB = {
         desc: 'أنسجة | خلايا | أعضاء | تشريح | وظائف | أنواع | تركيب',
         stats: ['أنسجة', 'خلايا', 'أعضاء'],
         data: [
-            { id: 1, name: 'النسيج الطلائي', nameEn: 'Epithelial Tissue', category: 'الأنسجة الأساسية', location: 'الجلد، بطانة الأعضاء، الغدد، الأنابيب', structure: 'خلايا متراصة، غشاء قاعدي، قليلة مادة بين خلوية', function: 'حماية، إفراز، امتصاص، حس، تبولين', types: 'حرشفي، مكعب، عمادي، انتقالي، حشوي', cells: 'خلايا كيراتينية، خلايا كأسية، خلايا قاعدية' },
+            { id: 1, name: 'النسيج الطلائي', nameEn: 'Epithelial Tissue', category: 'الأنسجة الأساسية', location: 'الجلد، بطانة الأعضاء، الغدد، الأنابيب', structure: 'خلايا متراصة، غشاء قاعدي، قليلة مادة بين خلوية', function: 'حماية، إفراز، امتصاص، حس، تحلل', types: 'حرشفي، مكعب، عمادي، انتقالي، حشوي', cells: 'خلايا كيراتينية، خلايا كأسية، خلايا قاعدية' },
             { id: 2, name: 'النسيج الضام', nameEn: 'Connective Tissue', category: 'الأنسجة الأساسية', location: 'جميع أنحاء الجسم، بين الأعضاء', structure: 'خلايا متفرقة، مادة بين خلوية غنية، ألياف', function: 'دعم، ربط، حماية، تخزين، نقل', types: 'رخو، كثيف، دهني، غضروفي، عظمي، دموي، لمفي', cells: 'أرومات ليفية، خلايا دهنية، خلايا دم' },
             { id: 3, name: 'النسيج العضلي', nameEn: 'Muscle Tissue', category: 'الأنسجة الأساسية', location: 'العضلات، القلب، الأعضاء المجوفة', structure: 'ألياف طويلة، أكتين وميوسين، ساركوميرات', function: 'الحركة، الانقباض، ضخ الدم، هضم', types: 'هيكلي (إرادي)، قلبي، أملس (لا إرادي)', cells: 'خلايا عضلية، خلايا قلبية' },
             { id: 4, name: 'النسيج العصبي', nameEn: 'Nervous Tissue', category: 'الأنسجة الأساسية', location: 'الدماغ، النخاع الشوكي، الأعصاب', structure: 'خلايا عصبية (عصبونات)، خلايا دبقية', function: 'نقل الإشارات، معالجة المعلومات، تحكم', types: 'حسية، حركية، رابطة', cells: 'عصبونات، خلايا شوان، خلايا نجمية' },
@@ -158,15 +158,15 @@ const MEDICAL_DB = {
         name: 'قاموس المختبرات',
         icon: '\u{1F9EA}',
         color: 'info',
-        desc: '+2000 تحليل | قيم طبيعية | تفسير | دواعي | عينة',
+        desc: 'تحاليل | قيم طبيعية | تفسير | دواعي | عينة',
         stats: ['قيم طبيعية', 'طريقة', 'تفسير'],
         data: [
             { id: 1, name: 'تعداد الدم الكامل', nameEn: 'CBC', category: 'تحاليل الدم', normalValues: 'WBC: 4000-11000، Hb: 13-17 غ/دل، PLT: 150-450 ألف', specimen: 'دم كامل (EDTA)', preparation: 'لا يحتاج صيام', turnaround: '1-2 ساعة', indications: 'فحص روتيني، فقر دم، عدوى، نزيف' },
             { id: 2, name: 'سكر الدم الصائم', nameEn: 'FBS', category: 'تحاليل السكر', normalValues: '70-110 ملغ/دل', specimen: 'دم (مصل)', preparation: 'صيام 8-12 ساعة', turnaround: '1 ساعة', indications: 'تشخيص ومتابعة السكري، فحص روتيني' },
-            { id: 3, name: 'وظائف الكبد', nameEn: 'LFT', category: 'تحاليل الكبد', normalValues: 'ALT: 10-40، AST: 10-40، ALP: 40-130، Bilirubin: 0.3-1.2', specimen: 'دم (مصل)', preparation: 'لا يحتاج صيام', turnaround: '2-4 ساعات', indications: 'أمراض الكبد، يرقان، مراقبة الأدوية' },
+            { id: 3, name: 'وظائف الكبد', nameEn: 'LFT', category: 'تحاليل الكبد', normalValues: 'ALT: 10-40، AST: 10-40، ALP: 40-130، Bilirubin: 0.3-1.2', specimen: 'دم (مصل)', preparation: 'لا يحتاج صيام', turnaround: '2-4 ساعات', indications: 'أمراض الكبد، يرقان، مالعلاجة الأدوية' },
             { id: 4, name: 'وظائف الكلى', nameEn: 'RFT', category: 'تحاليل الكلى', normalValues: 'Creatinine: 0.7-1.3، BUN: 7-20، eGFR: >90', specimen: 'دم (مصل)', preparation: 'لا يحتاج صيام', turnaround: '2-4 ساعات', indications: 'فشل كلوي، مرض السكري، ضغط دم' },
-            { id: 5, name: 'الدهون في الدم', nameEn: 'Lipid Profile', category: 'تحاليل الدهون', normalValues: 'Cholesterol: <200، LDL: <100، HDL: >40، TG: <150', specimen: 'دم (مصل)', preparation: 'صيام 12 ساعة', turnaround: '2-4 ساعات', indications: 'تقييم خطر القلب، مراقبة العلاج' },
-            { id: 6, name: 'تخثر الدم', nameEn: 'Coagulation Profile', category: 'تحاليل التخثر', normalValues: 'PT: 11-13.5 ثانية، INR: 0.8-1.2، aPTT: 25-35 ثانية', specimen: 'دم (سيترات)', preparation: 'لا يحتاج صيام', turnaround: '1-2 ساعة', indications: 'قبل العمليات، مراقبة الوارفارين، نزيف' }
+            { id: 5, name: 'الدهون في الدم', nameEn: 'Lipid Profile', category: 'تحاليل الدهون', normalValues: 'Cholesterol: <200، LDL: <100، HDL: >40، TG: <150', specimen: 'دم (مصل)', preparation: 'صيام 12 ساعة', turnaround: '2-4 ساعات', indications: 'تقييم خطر القلب، مالعلاجة العلاج' },
+            { id: 6, name: 'تخثر الدم', nameEn: 'Coagulation Profile', category: 'تحاليل التخثر', normalValues: 'PT: 11-13.5 ثانية، INR: 0.8-1.2، aPTT: 25-35 ثانية', specimen: 'دم (سيترات)', preparation: 'لا يحتاج صيام', turnaround: '1-2 ساعة', indications: 'قبل العمليات، مالعلاجة الوارفارين، نزيف' }
         ]
     }
 };
@@ -179,6 +179,7 @@ let currentTheme = 'light';
 let currentDictionary = null;
 let currentLetter = 'all';
 let dictionarySearchResults = [];
+let dictionarySearchActive = false;
 let lastQuery = '';
 let deferredPrompt = null;
 let installDismissed = false;
@@ -269,6 +270,7 @@ function showDictionary(type) {
     updateActiveNav(type);
     currentLetter = 'all';
     dictionarySearchResults = [];
+    dictionarySearchActive = false;
     renderDictionaryPage(dict, type);
     window.scrollTo({ top: 0, behavior: 'smooth' });
 }
@@ -294,7 +296,7 @@ function populateDictionaryCards() {
         <div class="dictionary-card ${key}" onclick="showDictionary('${key}')">
             <div class="dictionary-icon">${dict.icon}</div>
             <div class="dictionary-name">${dict.name}</div>
-            <div class="dictionary-desc">${dict.desc}</div>
+            <div class="dictionary-desc">المتوفر الآن: ${dict.data.length} | ${dict.desc}</div>
             <div class="dictionary-stats">${statsHTML}</div>
         </div>`;
     }).join('');
@@ -389,8 +391,8 @@ function renderFilteredResults(type) {
     const dict = MEDICAL_DB[type];
     if (!dict) return;
     let data = dict.data;
-    if (currentLetter !== 'all') data = data.filter(item => item.name.startsWith(currentLetter));
-    if (dictionarySearchResults.length > 0) data = dictionarySearchResults;
+    if (currentLetter !== 'all') data = data.filter(item => normalizeArabic(item.name).startsWith(normalizeArabic(currentLetter)));
+    if (dictionarySearchActive) data = dictionarySearchResults;
     const container = document.getElementById('filteredResultsContainer');
     if (!container) return;
     if (data.length === 0) {
@@ -419,11 +421,13 @@ function searchInDictionary(type) {
     const input = document.getElementById('dictSearchInput');
     if (!input) return;
     const query = input.value.trim();
-    if (!query) { dictionarySearchResults = []; renderFilteredResults(type); return; }
+    if (!query) { dictionarySearchResults = []; dictionarySearchActive = false; renderFilteredResults(type); return; }
     const dict = MEDICAL_DB[type];
     if (!dict) return;
     const lowerQuery = query.toLowerCase();
-    dictionarySearchResults = dict.data.filter(item => JSON.stringify(item).toLowerCase().includes(lowerQuery));
+    dictionarySearchActive = true;
+    const nq = normalizeArabic(query);
+    dictionarySearchResults = dict.data.filter(item => normalizeArabic(Object.values(item).join(' ')).includes(nq));
     renderFilteredResults(type);
 }
 
@@ -467,7 +471,7 @@ function performGlobalSearch() {
     if (!panel || !content) return;
     if (display) display.textContent = query;
     content.innerHTML = SEARCH_SOURCES.map((s, i) => `
-        <div class="external-source-card" onclick="openInNewTab('${s.url(query)}')" style="animation:fadeInUp 0.3s ease ${i * 0.05}s both">
+        <div class="external-source-card" onclick="openSearchSource('${s.key}')" style="animation:fadeInUp 0.3s ease ${i * 0.05}s both">
             <div class="external-source-icon" style="background:${s.color}20;color:${s.color}">${s.icon}</div>
             <div class="external-source-info"><div class="external-source-name">${s.name}</div><div class="external-source-desc">${s.desc}</div></div>
             <div class="external-source-arrow">\u{1F517}</div>
@@ -696,11 +700,11 @@ function showQRHistory() {
         const history = JSON.parse(localStorage.getItem(QR_HISTORY_KEY) || '[]');
         if (history.length === 0) { showToast('\u{1F4ED} لا يوجد سجل مسح'); return; }
         let html = '<div style="max-height:300px;overflow-y:auto;">';
-        history.slice(0, 10).forEach((item) => {
+        history.slice(0, 10).forEach((item, idx) => {
             const date = new Date(item.timestamp).toLocaleString('ar-SA');
             const shortData = item.data.substring(0, 40) + (item.data.length > 40 ? '...' : '');
-            html += `<div style="padding:8px;border-bottom:1px solid var(--border);cursor:pointer;" onclick="copyToClipboard('${escapeHtml(item.data)}');showToast('تم النسخ')">`;
-            html += `<div style="font-size:11px;color:var(--text-tertiary)">${item.format} | ${date}</div>`;
+            html += `<div style="padding:8px;border-bottom:1px solid var(--border);cursor:pointer;" onclick="copyQRHistoryItem(${idx})">`;
+            html += `<div style="font-size:11px;color:var(--text-tertiary)">${escapeHtml(item.format)} | ${date}</div>`;
             html += `<div style="font-size:13px;font-weight:600">${escapeHtml(shortData)}</div>`;
             html += `</div>`;
         });
@@ -1379,10 +1383,38 @@ function showToast(message) {
 // ═══════════════════════════════════════════════════════════
 
 function escapeHtml(text) {
-    if (!text) return '';
-    const div = document.createElement('div');
-    div.textContent = text;
-    return div.innerHTML;
+    if (text === null || text === undefined || text === '') return '';
+    return String(text)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+}
+
+// توحيد الحروف العربية للبحث: أ/إ/آ -> ا ، ى -> ي ، ة -> ه ، وحذف التشكيل
+function normalizeArabic(text) {
+    return String(text === null || text === undefined ? '' : text)
+        .toLowerCase()
+        .replace(/[\u064B-\u065F\u0670\u0640]/g, '')
+        .replace(/[أإآٱ]/g, 'ا')
+        .replace(/ى/g, 'ي')
+        .replace(/ة/g, 'ه');
+}
+
+// فتح مصدر بحث دون تمرير نص المستخدم داخل onclick
+function openSearchSource(key) {
+    const s = SEARCH_SOURCES.find(x => x.key === key);
+    const q = lastQuery || getQuery();
+    if (s && q) openInNewTab(s.url(q));
+}
+
+// نسخ عنصر من سجل QR بالفهرس بدل تمرير محتواه داخل onclick
+function copyQRHistoryItem(idx) {
+    try {
+        const history = JSON.parse(localStorage.getItem(QR_HISTORY_KEY) || '[]');
+        if (history[idx]) copyToClipboard(history[idx].data);
+    } catch (e) { /* silent */ }
 }
 
 // ═══════════════════════════════════════════════════════════

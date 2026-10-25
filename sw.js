@@ -14,7 +14,7 @@
 //   and the app icon actually shipped by the developer.
 // - Bumped cache version to force old caches to be evicted on update.
 
-const SW_VERSION = 'v5';
+const SW_VERSION = 'v6';
 const STATIC_CACHE = `medsearch-static-${SW_VERSION}`;
 const DYNAMIC_CACHE = `medsearch-dynamic-${SW_VERSION}`;
 const IMAGE_CACHE = `medsearch-images-${SW_VERSION}`;
@@ -130,6 +130,7 @@ self.addEventListener('fetch', (event) => {
 
   if (request.method !== 'GET') return;
   if (!url.protocol.startsWith('http')) return;
+  if (url.pathname.startsWith('/.well-known/')) return;
 
   if (request.mode === 'navigate') {
     event.respondWith(navigationStrategy(request));
@@ -187,25 +188,21 @@ async function navigationStrategy(request) {
   }
 }
 
-// Cache First, Network Fallback (static assets: html/js/css/json)
+// Network First (مهلة 4 ثوانٍ عند وجود نسخة محفوظة)، ثم الكاش (html/js/css/json)
 async function staticAssetStrategy(request) {
   const cache = await caches.open(STATIC_CACHE);
   const cached = await cache.match(request);
-
-  if (cached) {
-    fetch(request)
-      .then((response) => {
-        if (response && response.ok) cache.put(request, response.clone());
-      })
-      .catch(() => {});
-    return cached;
-  }
-
+  // شبكة أولًا (حتى تصل التحديثات فورًا)، مع مهلة 4 ثوانٍ إن وُجدت نسخة محفوظة
+  const controller = cached && typeof AbortController !== 'undefined' ? new AbortController() : null;
+  const timer = controller ? setTimeout(() => controller.abort(), 4000) : null;
   try {
-    const response = await fetch(request);
+    const response = await fetch(request, controller ? { signal: controller.signal } : undefined);
+    if (timer) clearTimeout(timer);
     if (response && response.ok) cache.put(request, response.clone());
     return response;
   } catch (error) {
+    if (timer) clearTimeout(timer);
+    if (cached) return cached;
     console.error('[SW] Static asset fetch failed:', error);
     throw error;
   }
