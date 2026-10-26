@@ -1335,13 +1335,31 @@ function initClinicalCalculators() {
         },
         { id: 'conv', icon: '\u{1F501}', shortName: 'تحويل الوحدات', 
           title: 'تحويل وحدات التحاليل', 
-          fields: [ {id:'test',label:'التحليل',type:'select',options:[['glu','سكر'],['cr','كرياتينين'],['chol','كوليسترول']]}, {id:'dir',label:'الاتجاه',type:'select',options:[['si','mg/dL إلى دولي'],['cv','دولي إلى mg/dL']]}, {id:'val',label:'القيمة',type:'number'} ],
+          fields: [
+              {id:'test',label:'التحليل',type:'select',options:[['glu','سكر الدم'],['cr','الكرياتينين'],['chol','الكوليسترول']]},
+              {id:'dir',label:'الاتجاه',type:'select',options:[
+                  ['si','من التقليدي \u2066(mg/dL)\u2069 إلى الدولي \u2066(mmol/L)\u2069'],
+                  ['cv','من الدولي \u2066(mmol/L)\u2069 إلى التقليدي \u2066(mg/dL)\u2069']
+              ]},
+              {id:'val',label:'القيمة',type:'number'}
+          ],
           run: (v) => {
-              const C = { glu:{f:18.016,mul:false}, cr:{f:88.4,mul:true}, chol:{f:38.67,mul:false} };
-              const c = C[v.test]; let res;
-              if (v.dir === 'si') res = c.mul ? v.val * c.f : v.val / c.f;
-              else res = c.mul ? v.val / c.f : v.val * c.f;
-              return `النتيجة: ${Number(res.toFixed(2))}\n\nقارن بالمدى المرجعي لمختبرك.`;
+              const C = {
+                  glu:{f:18.016, mul:false, cv:'mg/dL', si:'mmol/L'},
+                  cr:{f:88.4, mul:true, cv:'mg/dL', si:'µmol/L'},
+                  chol:{f:38.67, mul:false, cv:'mg/dL', si:'mmol/L'}
+              };
+              const c = C[v.test]; let res, inUnit, outUnit;
+              if (v.dir === 'si') {
+                  res = c.mul ? v.val * c.f : v.val / c.f;
+                  inUnit = c.cv;
+                  outUnit = c.si;
+              } else {
+                  res = c.mul ? v.val / c.f : v.val * c.f;
+                  inUnit = c.si;
+                  outUnit = c.cv;
+              }
+              return `النتيجة: ${Number(res.toFixed(2))} ${outUnit}\n\nالمعادلة: تحويل من ${inUnit} إلى ${outUnit}\n\nقارن بالمدى المرجعي لمختبرك.`;
           }
         },
         { id: 'edd', icon: '\u{1F930}', shortName: 'تاريخ الولادة', 
