@@ -1721,3 +1721,37 @@ if (document.readyState === 'loading') {
 } else {
     initPediatricDose();
 }
+
+
+// ═══════════════════════════════════════════════════════════
+// Barcode Handling: بحث ذكي عن الباركود (بدون بيانات وهمية)
+// ═══════════════════════════════════════════════════════════
+function findDrugByBarcode(barcode) {
+    if (!barcode || !MEDICAL_DB || !MEDICAL_DB.drugs) return null;
+    const code = String(barcode).trim();
+    return MEDICAL_DB.drugs.data.find(item => 
+        (item.barcode && Array.isArray(item.barcode) && item.barcode.includes(code)) || 
+        (item.barcode && String(item.barcode) === code)
+    ) || null;
+}
+
+const originalHandleQRResult = handleQRResult;
+window.handleQRResult = function(data, format) {
+    // 1. البحث في القاعدة المحلية
+    const drug = findDrugByBarcode(data);
+    if (drug) {
+        if (typeof stopQRScanner === 'function') stopQRScanner();
+        if (navigator.vibrate) navigator.vibrate([50, 30, 100]);
+        showToast(`✅ تم العثور على: ${drug.name}`);
+        if (typeof showItemDetail === 'function') showItemDetail('drugs', drug.id);
+        return;
+    }
+    
+    // 2. إذا لم يوجد في القاعدة، نفتح بحث Google عن الباركود
+    if (typeof stopQRScanner === 'function') stopQRScanner();
+    if (navigator.vibrate) navigator.vibrate([50, 30, 100]);
+    
+    const searchUrl = `https://www.google.com/search?q=${encodeURIComponent(data)}`;
+    showToast(`🔍 لم يتم العثور عليه محلياً. جارٍ البحث في Google...`);
+    setTimeout(() => openInNewTab(searchUrl), 500);
+};
