@@ -1322,7 +1322,11 @@ function initClinicalCalculators() {
               const bmi = v.w / Math.pow(v.h / 100, 2);
               const bsa = Math.sqrt(v.h * v.w / 3600);
               const cat = bmi < 18.5 ? 'نحافة' : bmi < 25 ? 'وزن طبيعي' : bmi < 30 ? 'وزن زائد' : 'سمنة';
-              return `مؤشر كتلة الجسم: ${Number(bmi.toFixed(1))} (${cat})\nمساحة السطح: ${Number(bsa.toFixed(2))} م²\n\nللبالغين فقط.`;
+              const _r = (n, d) => Number(n.toFixed(d));
+              const lowW = 18.5 * Math.pow(v.h / 100, 2);
+              const highW = 24.9 * Math.pow(v.h / 100, 2);
+              const rangeNote = v.w > highW ? 'وزنك أعلى من النطاق الصحي بحوالي ' + _r(v.w - highW, 1) + ' كغ.' : v.w < lowW ? 'وزنك أقل من النطاق الصحي بحوالي ' + _r(lowW - v.w, 1) + ' كغ.' : 'وزنك ضمن النطاق الصحي.';
+              return `مؤشر كتلة الجسم: ${Number(bmi.toFixed(1))} (${cat})\nمساحة السطح: ${Number(bsa.toFixed(2))} م²\nالنطاق الصحي للوزن عند هذا الطول (BMI 18.5–24.9): ${_r(lowW, 1)} – ${_r(highW, 1)} كغ\n${rangeNote}\n\nتقدير تقريبي للبالغين فقط، ولا يصلح للحوامل أو الرياضيين ذوي الكتلة العضلية العالية.`;
           }
         },
         { id: 'iv', icon: '\u{1F4A7}', shortName: 'معدل التسريب', 
@@ -1499,4 +1503,221 @@ if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', initClinicalCalculators);
 } else {
     initClinicalCalculators();
+}
+
+const ADV_DISCLAIMER = '⚠️ أداة دعم قرار سريري فقط، ولا تغني عن الحكم الطبي. تحقق من النتائج قبل أي قرار علاجي.';
+
+function advNum(label, raw, min, max, integer) {
+    if (raw === '' || raw === null || raw === undefined) throw new Error('أدخل قيمة: ' + label);
+    const n = Number(raw);
+    if (!Number.isFinite(n)) throw new Error('قيمة غير صالحة: ' + label);
+    if (integer && !Number.isInteger(n)) throw new Error('يجب أن تكون القيمة عدداً صحيحاً: ' + label);
+    if (n < min || n > max) throw new Error(label + ' خارج النطاق المعقول (' + min + '–' + max + ')');
+    return n;
+}
+
+function advChoice(label, raw, allowed) {
+    if (raw === '' || raw === null || raw === undefined || !allowed.includes(String(raw))) {
+        throw new Error('اختر قيمة: ' + label);
+    }
+    return String(raw);
+}
+
+function advNEWS2(v) {
+    const rr = advNum('معدل التنفس', v.rr, 1, 80, true);
+    const spo2 = advNum('تشبع الأكسجين SpO2', v.spo2, 50, 100, true);
+    const scale = advChoice('مقياس SpO2', v.scale, ['1', '2']);
+    const onO2 = advChoice('أكسجين إضافي', v.onO2, ['true', 'false']) === 'true';
+    const sbp = advNum('الضغط الانقباضي', v.sbp, 30, 300, true);
+    const pulse = advNum('النبض', v.pulse, 10, 300, true);
+    const cons = advChoice('مستوى الوعي', v.consciousness, ['A', 'C', 'V', 'P', 'U']);
+    const temp = Math.round(advNum('الحرارة (°م)', v.temp, 25, 45) * 10) / 10;
+
+    const p = {};
+    p.rr = rr <= 8 ? 3 : rr <= 11 ? 1 : rr <= 20 ? 0 : rr <= 24 ? 2 : 3;
+    if (scale === '1') {
+        p.spo2 = spo2 <= 91 ? 3 : spo2 <= 93 ? 2 : spo2 <= 95 ? 1 : 0;
+    } else if (spo2 <= 83) p.spo2 = 3;
+    else if (spo2 <= 85) p.spo2 = 2;
+    else if (spo2 <= 87) p.spo2 = 1;
+    else if (spo2 <= 92) p.spo2 = 0;
+    else if (!onO2) p.spo2 = 0;
+    else p.spo2 = spo2 <= 94 ? 1 : spo2 <= 96 ? 2 : 3;
+    p.o2 = onO2 ? 2 : 0;
+    p.sbp = sbp <= 90 ? 3 : sbp <= 100 ? 2 : sbp <= 110 ? 1 : sbp <= 219 ? 0 : 3;
+    p.pulse = pulse <= 40 ? 3 : pulse <= 50 ? 1 : pulse <= 90 ? 0 : pulse <= 110 ? 1 : pulse <= 130 ? 2 : 3;
+    p.cons = cons === 'A' ? 0 : 3;
+    p.temp = temp <= 35.0 ? 3 : temp <= 36.0 ? 1 : temp <= 38.0 ? 0 : temp <= 39.0 ? 1 : 2;
+
+    const score = Object.values(p).reduce((a, b) => a + b, 0);
+    const anyThree = Object.values(p).some(x => x === 3);
+
+    let risk, resp;
+    if (score >= 7) { risk = 'مرتفعة'; resp = 'استجابة طارئة: مراقبة مستمرة وتقييم عاجل من فريق ذي كفاءة في الرعاية الحرجة.'; }
+    else if (score >= 5) { risk = 'متوسطة'; resp = 'استجابة عاجلة: مراجعة عاجلة من طبيب مختص بالحالات الحادة وفكّر بالتصعيد.'; }
+    else if (anyThree) { risk = 'منخفضة–متوسطة'; resp = 'معيار منفرد بدرجة 3: مراجعة سريرية عاجلة في الجناح.'; }
+    else if (score >= 1) { risk = 'منخفضة'; resp = 'أبلغ الممرض المسؤول وقيّم الحاجة لزيادة وتيرة المراقبة.'; }
+    else { risk = 'منخفضة'; resp = 'استمر بالمراقبة الروتينية حسب سياسة المؤسسة.'; }
+
+    const lines = ['النتيجة: ' + score + '/20', 'الخطورة: ' + risk, resp];
+    if (scale === '2') lines.push('ملاحظة: المقياس 2 يُستخدم فقط بتوجيه طبيب لمن هدفه 88–92% (مثل احتباس CO₂).');
+    return { score: score, risk: risk, anyThree: anyThree, lines: lines };
+}
+
+function advGCS(v) {
+    const e = advNum('فتح العين', v.e, 1, 4, true);
+    const vb = advNum('الاستجابة اللفظية', v.v, 1, 5, true);
+    const m = advNum('الاستجابة الحركية', v.m, 1, 6, true);
+    const score = e + vb + m;
+    const sev = score >= 13 ? 'خفيف' : score >= 9 ? 'متوسط' : 'شديد';
+    return { score: score, lines: ['المجموع: ' + score + '/15 (E' + e + ' V' + vb + ' M' + m + ')', 'التصنيف: ' + sev] };
+}
+
+function advCURB65(v) {
+    const conf = advChoice('تشوش ذهني جديد', v.confusion, ['true', 'false']) === 'true';
+    const unit = advChoice('وحدة اليوريا', v.ureaUnit, ['mmol', 'bun']);
+    const urea = advNum('اليوريا', v.urea, 0, 500);
+    const rr = advNum('معدل التنفس', v.rr, 1, 80, true);
+    const sbp = advNum('الضغط الانقباضي', v.sbp, 30, 300, true);
+    const dbp = advNum('الضغط الانبساطي', v.dbp, 10, 200, true);
+    const age = advNum('العمر', v.age, 0, 120, true);
+    const ureaHigh = unit === 'mmol' ? urea > 7 : urea > 19;
+    let s = 0;
+    if (conf) s++; if (ureaHigh) s++; if (rr >= 30) s++; if (sbp < 90 || dbp <= 60) s++; if (age >= 65) s++;
+    let risk, sug;
+    if (s <= 1) { risk = 'منخفضة'; sug = 'شدة منخفضة: العلاج المنزلي مناسب غالباً حسب الحكم السريري.'; }
+    else if (s === 2) { risk = 'متوسطة'; sug = 'شدة متوسطة: فكّر بالعلاج تحت إشراف المستشفى.'; }
+    else { risk = 'مرتفعة'; sug = 'شدة عالية: تنويم عاجل' + (s >= 4 ? ' وفكّر بتقييم العناية المركزة.' : '.'); }
+    return { score: s, risk: risk, lines: ['النتيجة: ' + s + '/5', 'الخطورة: ' + risk, sug, 'الحكم السريري والأمراض المصاحبة والأكسجة والعوامل الاجتماعية تؤخذ بالحسبان أيضاً.'] };
+}
+
+function advCHA2DS2(v) {
+    const age = advNum('العمر', v.age, 0, 120, true);
+    const sex = advChoice('الجنس', v.sex, ['male', 'female']);
+    let va = 0;
+    if (v.chf) va++; if (v.htn) va++;
+    if (age >= 75) va += 2; else if (age >= 65) va++;
+    if (v.dm) va++; if (v.stroke) va += 2; if (v.vasc) va++;
+    const s = va + (sex === 'female' ? 1 : 0);
+    const male = sex === 'male';
+    let rec;
+    if (s >= (male ? 2 : 3)) rec = 'يُوصى بمضادات التخثر الفموية (ESC 2020) بعد تقييم خطر النزف.';
+    else if (s === (male ? 1 : 2)) rec = 'يُنظر في مضادات التخثر الفموية (ESC 2020).';
+    else rec = 'خطورة منخفضة: لا يُشار عادةً لمضادات التخثر (ESC 2020).';
+    return { score: s, va: va, lines: ['CHA₂DS₂-VASc: ' + s + '/9', rec, 'CHA₂DS₂-VA (بدون الجنس، ESC 2024): ' + va + '/8'] };
+}
+
+function advHASBLED(v) {
+    const age = advNum('العمر', v.age, 0, 120, true);
+    let s = 0;
+    ['htn', 'renal', 'liver', 'stroke', 'bleeding', 'labileINR', 'drugs', 'alcohol'].forEach(function (k) { if (v[k]) s++; });
+    if (age > 65) s++;
+    const risk = s >= 3 ? 'مرتفعة' : s === 2 ? 'متوسطة' : 'منخفضة';
+    const lines = ['النتيجة: ' + s + '/9', 'الخطورة: ' + risk];
+    if (s >= 3) lines.push('تستدعي متابعة أدق وتصحيح العوامل القابلة للتعديل؛ وليست بذاتها سبباً لمنع مضادات التخثر.');
+    return { score: s, risk: risk, lines: lines };
+}
+
+function advHEART(v) {
+    const h = advNum('التاريخ المرضي', v.history, 0, 2, true);
+    const ecg = advNum('تخطيط القلب', v.ecg, 0, 2, true);
+    const age = advNum('العمر', v.age, 0, 120, true);
+    const rf = advNum('عدد عوامل الخطورة', v.riskFactors, 0, 6, true);
+    const trop = advNum('التروبونين (أضعاف الحد الأعلى الطبيعي)', v.troponin, 0, 100000);
+    const ath = !!v.atherosclerosis;
+    let s = h + ecg;
+    s += age >= 65 ? 2 : age >= 45 ? 1 : 0;
+    s += (ath || rf >= 3) ? 2 : rf >= 1 ? 1 : 0;
+    s += trop > 3 ? 2 : trop > 1 ? 1 : 0;
+    let risk, note;
+    if (s <= 3) { risk = 'منخفضة'; note = 'خطر MACE خلال 6 أسابيع نحو 1–2% في دراسات التحقق؛ يمكن التفكير بالخروج المبكر حسب المسار المحلي.'; }
+    else if (s <= 6) { risk = 'متوسطة'; note = 'خطر نحو 12–17% في دراسات التحقق؛ مراقبة وفحوص إضافية.'; }
+    else { risk = 'مرتفعة'; note = 'خطر نحو 50% فأكثر في دراسات التحقق؛ تنويم/استراتيجية تدخلية مبكرة حسب المسار المحلي.'; }
+    return { score: s, risk: risk, lines: ['النتيجة: ' + s + '/10', 'الخطورة: ' + risk, note] };
+}
+
+
+
+// ═══════════════════════════════════════════════════════════
+// Pediatric Dose Calculator (Paracetamol & Ibuprofen)
+// ═══════════════════════════════════════════════════════════
+function initPediatricDose() {
+    const anchor = document.getElementById('clinicalCalcPanel');
+    if (!anchor || document.getElementById('pediatricDosePanel')) return;
+
+    const DRUGS = {
+        paracetamol: { name: 'باراسيتامول', source: 'BNFc', mgPerKgPerDose: 15, maxMgPerDose: 1000, maxMgPerDay: 4000, dosesPerDay: 4, concentrations: { '120': 120, '250': 250 } },
+        ibuprofen: { name: 'إيبوبروفين', source: 'BNFc', mgPerKgPerDose: 10, maxMgPerDose: 400, maxMgPerDay: 1200, dosesPerDay: 3, concentrations: { '100': 100 } }
+    };
+
+    const panel = document.createElement('div');
+    panel.className = 'native-panel active';
+    panel.id = 'pediatricDosePanel';
+    panel.style.marginTop = '20px';
+    panel.innerHTML = '<div class="native-panel-title">💊 حاسبة جرعات الأدوية</div>';
+    const grid = document.createElement('div');
+    grid.className = 'native-grid';
+
+    Object.keys(DRUGS).forEach(key => {
+        const btn = document.createElement('button');
+        btn.className = 'native-btn';
+        btn.innerHTML = `<span class="native-icon">💊</span><span class="native-label">${DRUGS[key].name}</span><span class="native-status">احسب الجرعة</span>`;
+        btn.onclick = () => {
+            const body = document.getElementById('calcModalBody');
+            const overlay = document.getElementById('calcModalOverlay');
+            if (!body || !overlay) return;
+            body.innerHTML = `<h2 style="font-size:20px;margin-bottom:16px;color:var(--primary);">${DRUGS[key].name}</h2>`;
+            
+            const wWrapper = document.createElement('div');
+            wWrapper.style.marginBottom = '12px';
+            wWrapper.innerHTML = `<label style="display:block;font-size:14px;font-weight:bold;margin-bottom:6px;">وزن الطفل (كغ)</label>`;
+            const wInput = document.createElement('input');
+            wInput.type = 'number'; wInput.step = '0.1';
+            wInput.style.cssText = 'width:100%;padding:12px;border-radius:10px;border:1px solid var(--border);background:var(--bg);color:var(--text);font-size:16px;';
+            wWrapper.appendChild(wInput); body.appendChild(wWrapper);
+
+            const cWrapper = document.createElement('div');
+            cWrapper.style.marginBottom = '12px';
+            cWrapper.innerHTML = `<label style="display:block;font-size:14px;font-weight:bold;margin-bottom:6px;">التركيز (mg/5mL)</label>`;
+            const cSelect = document.createElement('select');
+            Object.keys(DRUGS[key].concentrations).forEach(conc => {
+                const op = document.createElement('option');
+                op.value = DRUGS[key].concentrations[conc];
+                op.textContent = `${DRUGS[key].concentrations[conc]} mg/5mL`;
+                cSelect.appendChild(op);
+            });
+            cSelect.style.cssText = 'width:100%;padding:12px;border-radius:10px;border:1px solid var(--border);background:var(--bg);color:var(--text);font-size:16px;';
+            cWrapper.appendChild(cSelect); body.appendChild(cWrapper);
+
+            const calcBtn = document.createElement('button');
+            calcBtn.textContent = 'احسب';
+            calcBtn.style.cssText = 'width:100%;padding:14px;border-radius:10px;background:var(--primary);color:#fff;border:none;font-size:16px;font-weight:bold;cursor:pointer;margin-top:10px;';
+            const out = document.createElement('div');
+            out.style.cssText = 'margin-top:16px;padding:16px;border-radius:10px;background:rgba(13,115,119,0.1);white-space:pre-line;font-size:15px;display:none;';
+            
+            calcBtn.onclick = () => {
+                try {
+                    const weight = parseFloat(wInput.value);
+                    const conc = parseFloat(cSelect.value);
+                    if (!weight || weight < 2 || weight > 150) throw new Error('أدخل وزناً صحيحاً');
+                    let dose = weight * DRUGS[key].mgPerKgPerDose;
+                    let warning = '';
+                    if (dose > DRUGS[key].maxMgPerDose) { dose = DRUGS[key].maxMgPerDose; warning = '⚠️ تم تحديد الجرعة عند الحد الأقصى.\n'; }
+                    const vol = (dose / conc) * 5;
+                    out.style.color = 'var(--text)';
+                    out.textContent = `الجرعة: ${dose.toFixed(1)} ملغ\nالحجم: ${vol.toFixed(1)} مل\nعدد الجرعات: ${DRUGS[key].dosesPerDay} يومياً\n${warning}المرجع: ${DRUGS[key].source}`;
+                } catch (e) { out.style.color = '#e57373'; out.textContent = '⚠️ ' + e.message; }
+                out.style.display = 'block';
+            };
+            body.appendChild(calcBtn); body.appendChild(out); overlay.style.display = 'flex';
+        };
+        grid.appendChild(btn);
+    });
+    panel.appendChild(grid); anchor.parentNode.insertBefore(panel, anchor.nextSibling);
+}
+
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initPediatricDose);
+} else {
+    initPediatricDose();
 }
