@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>الشروط والأحكام | MedSearch Yemen</title>
+    
+    <meta name="description" content="الشروط والأحكام الخاصة باستخدام تطبيق MedSearch Yemen - محرك البحث الطبي.">
+    <meta name="theme-color" content="#0d7377">
+    
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%230d7377'/%3E%3Ctext x='50' y='68' font-size='60' text-anchor='middle' fill='white'%3E⚕%3C/text%3E%3C/svg%3E">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary: #0d7377; --primary-dark: #095457; --primary-light: #e0f7fa;
+            --accent: #00bfa5; --bg: #ffffff; --bg-secondary: #f5f7fa;
+            --text: #1a1a2e; --text-secondary: #4a5568; --border: #e2e8f0;
+            --danger: #e53935; --danger-light: #ffebee; --success: #43a047; --success-light: #e8f5e9;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        html { background: var(--bg-secondary); scroll-behavior: smooth; }
+        body {
+            font-family: 'Tajawal', 'Cairo', sans-serif; background: var(--bg); color: var(--text);
+            max-width: 760px; margin: 40px auto; padding: 40px 32px; border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(13, 115, 119, 0.08); line-height: 1.9; font-size: 15px;
+            -webkit-font-smoothing: antialiased;
+        }
+        .back-btn {
+            display: inline-flex; align-items: center; gap: 8px; padding: 10px 20px;
+            background: var(--primary); color: #fff; text-decoration: none; border-radius: 25px;
+            font-weight: 700; font-size: 14px; margin-bottom: 24px; transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(13, 115, 119, 0.25);
+        }
+        .back-btn:hover { background: var(--primary-dark); transform: translateY(-2px); }
+        .terms-header {
+            text-align: center; padding: 32px 20px; background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            border-radius: 16px; color: #fff; margin-bottom: 28px; position: relative; overflow: hidden;
+        }
+        .terms-header::before {
+            content: ''; position: absolute; inset: 0;
+            background: repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(255,255,255,0.03) 10px, rgba(255,255,255,0.03) 20px);
+        }
+        .terms-header .icon { font-size: 56px; margin-bottom: 12px; position: relative; z-index: 1; }
+        .terms-header h1 { font-family: 'Cairo', sans-serif; font-size: 28px; font-weight: 800; margin-bottom: 8px; position: relative; z-index: 1; }
+        .terms-header p { font-size: 14px; opacity: 0.9; position: relative; z-index: 1; }
+        h2 {
+            font-family: 'Cairo', sans-serif; font-size: 20px; font-weight: 800; color: var(--primary-dark);
+            margin-top: 32px; margin-bottom: 14px; padding-bottom: 8px; border-bottom: 2px solid var(--primary-light);
+            display: flex; align-items: center; gap: 10px;
+        }
+        h2 .num {
+            display: inline-flex; align-items: center; justify-content: center; min-width: 30px; height: 30px;
+            background: linear-gradient(135deg, var(--primary), var(--accent)); color: #fff; border-radius: 50%;
+            font-size: 14px; font-weight: 800; flex-shrink: 0;
+        }
+        p { margin-bottom: 14px; color: var(--text-secondary); }
+        strong { color: var(--text); font-weight: 700; }
+        ul { list-style: none; padding: 0; margin: 12px 0 20px; }
+        ul li { position: relative; padding: 8px 32px 8px 0; color: var(--text-secondary); }
+        ul li::before {
+            content: '✓'; position: absolute; right: 0; top: 8px; width: 22px; height: 22px;
+            border-radius: 50%; background: var(--primary-light); color: var(--primary);
+            font-size: 13px; font-weight: 900; display: flex; align-items: center; justify-content: center;
+        }
+        .alert { padding: 16px 20px; border-radius: 12px; margin: 20px 0; border-right: 4px solid; font-size: 14px; }
+        .alert-warning { background: #fff3e0; border-color: #fb8c00; }
+        .alert-danger { background: var(--danger-light); border-color: var(--danger); }
+        .alert-danger strong { color: var(--danger); }
+        .footer {
+            margin-top: 40px; padding: 24px 20px; background: linear-gradient(135deg, #1a1a2e, var(--primary));
+            color: #fff; border-radius: 12px; text-align: center; font-size: 13px; line-height: 1.8;
+        }
+        .footer strong { color: #d4af37; }
+        @media (max-width: 600px) {
+            body { margin: 0; border-radius: 0; padding: 24px 20px; max-width: 100%; }
+            .terms-header h1 { font-size: 22px; }
+            h2 { font-size: 17px; }
+        }
+    </style>
+</head>
+<body>
+    
+    <a href="index.html" class="back-btn"><span>←</span><span>العودة للتطبيق</span></a>
+    
+    <div class="terms-header">
+        <div class="icon">📜</div>
+        <h1>الشروط والأحكام</h1>
+        <p>MedSearch Yemen - محرك البحث الطبي</p>
+        <p style="margin-top:6px;font-size:12px;opacity:0.75">آخر تحديث: 28 أكتوبر 2026</p>
+    </div>
+
+    <h2><span class="num">1</span> قبول الشروط</h2>
+    <p>باستخدامك لتطبيق <strong>MedSearch Yemen</strong> ("التطبيق")، فإنك توافق على الالتزام بهذه الشروط والأحكام. إذا كنت لا توافق على أي جزء من هذه الشروط، يرجى التوقف عن استخدام التطبيق فوراً.</p>
+
+    <h2><span class="num">2</span> طبيعة الخدمة</h2>
+    <p>التطبيق هو أداة مرجعية طبية تهدف إلى توفير معلومات عن الأدوية، الحاسبات السريرية، والروابط لمصادر طبية عالمية. التطبيق <strong>ليس جهازاً طبياً</strong> ولا يقدم تشخيصاً أو علاجاً أو وصفات طبية.</p>
+
+    <h2><span class="num">3</span> إخلاء المسؤولية الطبي</h2>
+    <div class="alert alert-danger">
+        <strong>⚠️ تنبيه مهم جداً:</strong>
+        <ul style="margin-top:10px">
+            <li>المعلومات والحاسبات في التطبيق هي لأغراض <strong>تعليمية ومرجعية فقط</strong>.</li>
+            <li>لا يجوز الاعتماد عليها كبديل عن استشارة الطبيب أو الصيدلي المختص.</li>
+            <li>نتائج الحاسبات تقديرية، ويجب التحقق منها دائماً مع النشرة الدوائية والمراجع الرسمية.</li>
+            <li>لا تؤخر طلب الرعاية الطبية بسبب ما قرأته في التطبيق. في الطوارئ اتصل بالإسعاف فوراً (191 في اليمن).</li>
+        </ul>
+    </div>
+
+    <h2><span class="num">4</span> الاستخدام المقبول</h2>
+    <p>أنت توافق على استخدام التطبيق للأغراض المشروعة فقط. يُمنع منعاً باتاً:</p>
+    <ul>
+        <li>استخدام التطبيق لتقديم استشارات طبية للمرضى دون ترخيص.</li>
+        <li>محاولة اختراق التطبيق أو تعطيل خدماته.</li>
+        <li>نسخ أو إعادة نشر محتوى التطبيق لأغراض تجارية دون إذن.</li>
+    </ul>
+
+    <h2><span class="num">5</span> الملكية الفكرية</h2>
+    <p>جميع حقوق التصميم، البرمجة، والمحتوى الأصلي في التطبيق محفوظة للمطور <strong>د. صلاح الأهدل</strong>. الروابط إلى المصادر الخارجية (مثل Google، PubMed، WHO) تخضع لشروط وسياسات تلك المواقع.</p>
+
+    <h2><span class="num">6</span> حدود المسؤولية</h2>
+    <p>يُقدم التطبيق "كما هو" (As Is) دون أي ضمانات صريحة أو ضمنية. المطور غير مسؤول عن أي أضرار مباشرة أو غير مباشرة قد تنتج عن استخدام التطبيق أو الاعتماد على معلوماته.</p>
+
+    <h2><span class="num">7</span> التعديلات على الخدمة</h2>
+    <p>نحتفظ بالحق في تعديل أو إيقاف أي جزء من التطبيق في أي وقت دون إشعار مسبق. قد نحدّث هذه الشروط من حين لآخر، واستمرارك في استخدام التطبيق يعني موافقتك على الشروط المحدثة.</p>
+
+    <h2><span class="num">8</span> القانون المعمول به</h2>
+    <p>تخضع هذه الشروط وتُفسر وفقاً للقوانين المعمول بها في <strong>الجمهورية اليمنية</strong>.</p>
+
+    <h2><span class="num">9</span> اتصل بنا</h2>
+    <p>لأي استفسار حول هذه الشروط، يمكنك التواصل مع المطور عبر البريد الإلكتروني: <a href="mailto:salahalahdal43@gmail.com">salahalahdal43@gmail.com</a>.</p>
+
+    <div class="footer">
+        © 2026 <strong>MedSearch Yemen</strong> - جميع الحقوق محفوظة<br>
+        <span style="font-size:12px;opacity:0.8">برمجة وتطوير: Dr. Salah Al-Ahdal</span>
+    </div>
+    
+</body>
+</html>

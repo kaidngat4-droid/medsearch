@@ -663,7 +663,8 @@
     <!-- Header -->
     <div class="professional-header">
         <div class="header-main" id="headerMain">
-            <a href="#" class="logo-area" onclick="showPage('home');return false" aria-label="الرئيسية">
+            <button onclick="showMainMenu()" class="header-menu-btn" aria-label="القائمة">&#9776;</button>
+                <a href="#" class="logo-area" onclick="showPage('home');return false" aria-label="الرئيسية">
                 <div class="logo-icon">&#x2695;&#xFE0F;</div>
                 <div>
                     <div class="logo-text">MedSearch Yemen</div>
@@ -879,5 +880,50 @@
 
     <script src="disclaimer.js"></script>
   <script src="app.js"></script>
+
+<script>
+function showMainMenu() {
+    var overlay = document.getElementById('mainMenuOverlay');
+    if (!overlay) {
+        overlay = document.createElement('div');
+        overlay.id = 'mainMenuOverlay';
+        overlay.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.8);z-index:10010;display:none;align-items:flex-end;justify-content:center;backdrop-filter:blur(3px);';
+        var content = document.createElement('div');
+        content.style.cssText = 'background:var(--bg-card);width:100%;max-width:500px;border-radius:20px 20px 0 0;padding:20px 20px 40px;border-top:1px solid var(--border);animation:menuSlideUp 0.3s ease;';
+        content.innerHTML = '<div style="display:flex;justify-content:center;margin-bottom:20px;"><div style="width:40px;height:4px;background:var(--border);border-radius:2px;"></div></div>'
+            + '<h2 style="font-family:var(--font-display);font-size:20px;margin-bottom:20px;color:var(--primary);text-align:center;">القائمة</h2>'
+            + '<div style="display:flex;flex-direction:column;gap:12px;">'
+            + '<button class="menu-item-btn" data-act="share"><span>📤</span> مشاركة التطبيق</button>'
+            + '<button class="menu-item-btn" data-act="rate"><span>⭐</span> تقييم التطبيق</button>'
+            + '<button class="menu-item-btn" data-act="feedback"><span>💡</span> شاركنا التطوير</button>'
+            + '<button class="menu-item-btn" data-act="terms"><span>📜</span> الشروط والأحكام</button>'
+            + '<button class="menu-item-btn" data-act="privacy"><span>🔒</span> سياسة الخصوصية</button>'
+            + '</div>';
+        overlay.appendChild(content);
+        document.body.appendChild(overlay);
+        overlay.onclick = function (e) {
+            if (e.target === overlay) { overlay.style.display = 'none'; return; }
+            var b = e.target.closest ? e.target.closest('.menu-item-btn') : null;
+            if (!b) return;
+            overlay.style.display = 'none';
+            var a = b.getAttribute('data-act');
+            if (a === 'share' && typeof shareApp === 'function') shareApp();
+            else if (a === 'feedback' && typeof openFeedbackModal === 'function') openFeedbackModal();
+            else if (a === 'privacy') window.open('privacy.html', '_blank');
+            else if (a === 'terms') window.open('terms.html', '_blank');
+            else if (a === 'rate') window.open('https://play.google.com/store/apps/details?id=com.salah.medsearch', '_blank');
+        };
+    }
+    overlay.style.display = 'flex';
+}
+</script>
+<style>
+@keyframes menuSlideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
+.header-menu-btn { background: transparent; border: none; color: var(--text); font-size: 24px; cursor: pointer; padding: 8px; margin-inline-end: 6px; display: inline-flex; align-items: center; justify-content: center; }
+.header-menu-btn:active { transform: scale(0.9); }
+.menu-item-btn { display: flex; align-items: center; gap: 12px; padding: 16px; background: var(--bg-secondary, var(--bg)); border: 1px solid var(--border); border-radius: 12px; font-size: 16px; font-weight: 600; color: var(--text); cursor: pointer; text-align: start; width: 100%; }
+.menu-item-btn span { font-size: 22px; }
+</style>
+
 </body>
 </html>

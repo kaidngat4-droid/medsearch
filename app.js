@@ -1790,7 +1790,7 @@ function openFeedbackModal() {
         document.getElementById('sendWhatsAppBtn').onclick = () => {
             const text = document.getElementById('feedbackText').value.trim();
             if (!text) { showToast('⚠️ يرجى كتابة ملاحظتك أولاً'); return; }
-            const msg = encodeURIComponent('📝 ملاحظة من مستخدم MedSearch Yemen:\\n\\n' + text);
+            const msg = encodeURIComponent('📝 ملاحظة من مستخدم MedSearch Yemen:\n\n' + text);
             window.open('https://wa.me/967711129611?text=' + msg, '_blank');
             overlay.style.display = 'none';
         };
@@ -1798,9 +1798,10 @@ function openFeedbackModal() {
         document.getElementById('sendTelegramBtn').onclick = () => {
             const text = document.getElementById('feedbackText').value.trim();
             if (!text) { showToast('⚠️ يرجى كتابة ملاحظتك أولاً'); return; }
-            // افترض أن اسم مستخدم تليجرام الخاص بك هو DrSalahAlAhdal (يمكنك تغييره)
-            const msg = encodeURIComponent('📝 ملاحظة من مستخدم MedSearch Yemen:\\n\\n' + text);
-            window.open('https://t.me/DrSalahAlAhdal?text=' + msg, '_blank');
+            const msg = encodeURIComponent('📝 ملاحظة من مستخدم MedSearch Yemen:\n\n' + text);
+            try { navigator.clipboard.writeText('📝 ملاحظة من مستخدم MedSearch Yemen:\n\n' + text); } catch (e) {}
+            window.open('https://t.me/+967711129611?text=' + msg, '_blank');
+            showToast('📋 تم نسخ ملاحظتك، الصقها في المحادثة إن لم تظهر تلقائياً');
             overlay.style.display = 'none';
         };
     }
