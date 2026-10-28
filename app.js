@@ -1778,7 +1778,7 @@ function openFeedbackModal() {
             <textarea id="feedbackText" placeholder="اكتب ملاحظتك أو اقتراحك هنا..." style="width:100%;height:120px;padding:12px;border-radius:10px;border:1px solid var(--border);background:var(--bg);color:var(--text);font-family:inherit;font-size:15px;resize:none;margin-bottom:16px;"></textarea>
             <div style="display:flex;gap:10px;">
                 <button id="sendWhatsAppBtn" style="flex:1;padding:12px;border-radius:10px;background:#25D366;color:#fff;border:none;font-size:15px;font-weight:bold;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px;">واتساب 💬</button>
-                <button id="sendTelegramBtn" style="flex:1;padding:12px;border-radius:10px;background:#0088cc;color:#fff;border:none;font-size:15px;font-weight:bold;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px;">تليجرام ✈️</button>
+                <button id="sendEmailBtn" style="flex:1;padding:12px;border-radius:10px;background:#ea4335;color:#fff;border:none;font-size:15px;font-weight:bold;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px;">البريد 📧</button>
             </div>
         `;
         overlay.appendChild(content);
@@ -1795,13 +1795,14 @@ function openFeedbackModal() {
             overlay.style.display = 'none';
         };
 
-        document.getElementById('sendTelegramBtn').onclick = () => {
+        document.getElementById('sendEmailBtn').onclick = () => {
             const text = document.getElementById('feedbackText').value.trim();
             if (!text) { showToast('⚠️ يرجى كتابة ملاحظتك أولاً'); return; }
-            const msg = encodeURIComponent('📝 ملاحظة من مستخدم MedSearch Yemen:\n\n' + text);
-            try { navigator.clipboard.writeText('📝 ملاحظة من مستخدم MedSearch Yemen:\n\n' + text); } catch (e) {}
-            window.open('https://t.me/+967711129611?text=' + msg, '_blank');
-            showToast('📋 تم نسخ ملاحظتك، الصقها في المحادثة إن لم تظهر تلقائياً');
+            const subject = encodeURIComponent('ملاحظة من مستخدم MedSearch Yemen');
+            const body = encodeURIComponent(text);
+            try { navigator.clipboard.writeText(text); } catch (e) {}
+            window.location.href = 'mailto:salahalahdal43@gmail.com?subject=' + subject + '&body=' + body;
+            showToast('📋 تم نسخ ملاحظتك، الصقها في البريد إن لم تظهر تلقائياً');
             overlay.style.display = 'none';
         };
     }
