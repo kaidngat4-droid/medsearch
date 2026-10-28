@@ -1755,3 +1755,54 @@ window.handleQRResult = function(data, format) {
     showToast(`🔍 لم يتم العثور عليه محلياً. جارٍ البحث في Google...`);
     setTimeout(() => openInNewTab(searchUrl), 500);
 };
+
+
+// ═══════════════════════════════════════════════════════════
+// Feedback System: شاركنا التطوير
+// ═══════════════════════════════════════════════════════════
+function openFeedbackModal() {
+    // التحقق من وجود النافذة أو إنشائها
+    let overlay = document.getElementById('feedbackOverlay');
+    if (!overlay) {
+        overlay = document.createElement('div');
+        overlay.id = 'feedbackOverlay';
+        overlay.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.8);z-index:10006;display:none;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(3px);';
+        
+        const content = document.createElement('div');
+        content.style.cssText = 'background:var(--bg-card);width:100%;max-width:500px;border-radius:16px;padding:20px;position:relative;box-shadow:0 10px 30px rgba(0,0,0,0.5);border:1px solid var(--border);';
+        
+        content.innerHTML = `
+            <button id="closeFeedbackBtn" style="position:absolute;top:15px;left:15px;background:transparent;border:none;color:var(--text);font-size:20px;cursor:pointer;">✕</button>
+            <h2 style="font-family:var(--font-display);font-size:20px;margin-bottom:16px;color:var(--primary);text-align:center;">💡 شاركنا التطوير</h2>
+            <p style="font-size:13px;color:var(--text-secondary);margin-bottom:12px;text-align:center;">ساعدنا في تحسين التطبيق بملاحظاتك ومقترحاتك.</p>
+            <textarea id="feedbackText" placeholder="اكتب ملاحظتك أو اقتراحك هنا..." style="width:100%;height:120px;padding:12px;border-radius:10px;border:1px solid var(--border);background:var(--bg);color:var(--text);font-family:inherit;font-size:15px;resize:none;margin-bottom:16px;"></textarea>
+            <div style="display:flex;gap:10px;">
+                <button id="sendWhatsAppBtn" style="flex:1;padding:12px;border-radius:10px;background:#25D366;color:#fff;border:none;font-size:15px;font-weight:bold;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px;">واتساب 💬</button>
+                <button id="sendTelegramBtn" style="flex:1;padding:12px;border-radius:10px;background:#0088cc;color:#fff;border:none;font-size:15px;font-weight:bold;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px;">تليجرام ✈️</button>
+            </div>
+        `;
+        overlay.appendChild(content);
+        document.body.appendChild(overlay);
+
+        // ربط الأحداث
+        document.getElementById('closeFeedbackBtn').onclick = () => overlay.style.display = 'none';
+        
+        document.getElementById('sendWhatsAppBtn').onclick = () => {
+            const text = document.getElementById('feedbackText').value.trim();
+            if (!text) { showToast('⚠️ يرجى كتابة ملاحظتك أولاً'); return; }
+            const msg = encodeURIComponent('📝 ملاحظة من مستخدم MedSearch Yemen:\\n\\n' + text);
+            window.open('https://wa.me/967711129611?text=' + msg, '_blank');
+            overlay.style.display = 'none';
+        };
+
+        document.getElementById('sendTelegramBtn').onclick = () => {
+            const text = document.getElementById('feedbackText').value.trim();
+            if (!text) { showToast('⚠️ يرجى كتابة ملاحظتك أولاً'); return; }
+            // افترض أن اسم مستخدم تليجرام الخاص بك هو DrSalahAlAhdal (يمكنك تغييره)
+            const msg = encodeURIComponent('📝 ملاحظة من مستخدم MedSearch Yemen:\\n\\n' + text);
+            window.open('https://t.me/DrSalahAlAhdal?text=' + msg, '_blank');
+            overlay.style.display = 'none';
+        };
+    }
+    overlay.style.display = 'flex';
+}
