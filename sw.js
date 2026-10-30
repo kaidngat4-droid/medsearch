@@ -14,7 +14,7 @@
 //   and the app icon actually shipped by the developer.
 // - Bumped cache version to force old caches to be evicted on update.
 
-const SW_VERSION = 'v37';
+const SW_VERSION = 'v44';
 const STATIC_CACHE = `medsearch-static-${SW_VERSION}`;
 const DYNAMIC_CACHE = `medsearch-dynamic-${SW_VERSION}`;
 const IMAGE_CACHE = `medsearch-images-${SW_VERSION}`;

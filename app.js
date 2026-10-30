@@ -2033,8 +2033,9 @@ if (document.readyState === 'loading') {
     else setup();
 })();
 
+
 // ═══════════════════════════════════════════════════════════
-// ExitConfirm_v1 — اضغط رجوع مرة أخرى للخروج (من الشاشة الرئيسية فقط)
+// ExitModal_v1 — نافذة تأكيد الخروج الأنيقة
 // ═══════════════════════════════════════════════════════════
 (function () {
     var WINDOW_MS = 2000;
@@ -2049,13 +2050,52 @@ if (document.readyState === 'loading') {
         return _push.apply(history, arguments);
     };
 
-    function toast(msg) {
-        if (typeof window.showToast === 'function') { window.showToast(msg); return; }
-        var d = document.createElement('div');
-        d.textContent = msg;
-        d.style.cssText = 'position:fixed;bottom:90px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,.85);color:#fff;padding:12px 20px;border-radius:24px;font-size:15px;z-index:99999;';
-        document.body.appendChild(d);
-        setTimeout(function () { if (d.parentNode) d.parentNode.removeChild(d); }, WINDOW_MS);
+    function showExitModal() {
+        let modal = document.getElementById('exitConfirmModal');
+        if (!modal) {
+            modal = document.createElement('div');
+            modal.id = 'exitConfirmModal';
+            modal.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.85);z-index:10005;display:none;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(4px);';
+            
+            modal.innerHTML = `
+                <div style="background:var(--bg-card, #1e293b);width:100%;max-width:340px;border-radius:20px;padding:24px;text-align:center;box-shadow:0 20px 40px rgba(0,0,0,0.5);border:1px solid var(--border);">
+                    <div style="font-size:48px;margin-bottom:16px;">🚪</div>
+                    <h2 style="font-family:var(--font-display);font-size:22px;color:#fbbf24;margin-bottom:12px;font-weight:800;">هل أنت متأكد من الخروج؟</h2>
+                    <p style="color:var(--text-secondary);font-size:15px;margin-bottom:24px;line-height:1.6;">سيتم إغلاق التطبيق، وبياناتك محفوظة على جهازك.</p>
+                    <div style="display:flex;gap:12px;">
+                        <button id="btnStay" style="flex:1;padding:14px;border-radius:12px;background:#06b6d4;color:#fff;border:none;font-size:16px;font-weight:bold;cursor:pointer;">البقاء</button>
+                        <button id="btnExit" style="flex:1;padding:14px;border-radius:12px;background:transparent;color:#f87171;border:1px solid #f87171;font-size:16px;font-weight:bold;cursor:pointer;">خروج</button>
+                    </div>
+                </div>
+            `;
+            document.body.appendChild(modal);
+
+            document.getElementById('btnStay').onclick = () => {
+                modal.style.display = 'none';
+                // نعود للأمام إلى إدخال home الموجود أصلاً (بدون دفع إدخال جديد)
+                history.go(1);
+            };
+
+            document.getElementById('btnExit').onclick = () => {
+                modal.style.display = 'none';
+                window.__exiting = true;   // نعطّل الحارس
+                // نرجع إلى أول إدخال في السجل
+                var steps = history.length - 1;
+                if (steps > 0) history.go(-steps);
+                // محاولة إغلاق مباشرة
+                setTimeout(function () { try { window.close(); } catch (e) {} }, 400);
+                // إرشاد المستخدم
+                setTimeout(function () {
+                    var t = document.createElement('div');
+                    t.textContent = 'اضغط زر الرجوع مرة أخرى للخروج';
+                    t.style.cssText = 'position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:#1e293b;color:#fff;padding:12px 20px;border-radius:12px;z-index:10020;font-size:15px;box-shadow:0 8px 24px rgba(0,0,0,.5);';
+                    document.body.appendChild(t);
+                    setTimeout(function () { t.remove(); }, 3000);
+                }, 600);
+                setTimeout(function () { window.__exiting = false; }, 4000);
+            };
+        }
+        modal.style.display = 'flex';
     }
 
     function arm() {
@@ -2072,10 +2112,7 @@ if (document.readyState === 'loading') {
 
     window.addEventListener('popstate', function () {
         if (!armed || navState() !== 'guard') return;
-        toast('اضغط رجوع مرة أخرى للخروج');
-        clearTimeout(timer);
-        timer = setTimeout(function () {
-            if (navState() === 'guard') history.go(1);
-        }, WINDOW_MS);
+        
+        showExitModal();
     });
 })();

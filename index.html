@@ -891,6 +891,7 @@ function showMainMenu() {
         var content = document.createElement('div');
         content.style.cssText = 'background:var(--bg-card);width:100%;max-width:500px;border-radius:20px 20px 0 0;padding:20px 20px 40px;border-top:1px solid var(--border);animation:menuSlideUp 0.3s ease;';
         content.innerHTML = '<div style="display:flex;justify-content:center;margin-bottom:20px;"><div style="width:40px;height:4px;background:var(--border);border-radius:2px;"></div></div>'
+            + '<button id="menuBackBtn" style="background:transparent;border:none;color:var(--primary);font-size:16px;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:6px;margin-bottom:12px;padding:4px 0;">→ العودة للرئيسية</button>'
             + '<h2 style="font-family:var(--font-display);font-size:20px;margin-bottom:20px;color:var(--primary);text-align:center;">القائمة</h2>'
             + '<div style="display:flex;flex-direction:column;gap:12px;">'
             + '<button class="menu-item-btn" data-act="share"><span>📤</span> مشاركة التطبيق</button>'
@@ -902,7 +903,9 @@ function showMainMenu() {
         overlay.appendChild(content);
         document.body.appendChild(overlay);
         overlay.onclick = function (e) {
-            if (e.target === overlay) { overlay.style.display = 'none'; return; }
+            var __closeMenu = function () { overlay.style.display = 'none'; if (history.state && history.state.nav === 'menu') history.back(); };
+            if (e.target === overlay) { __closeMenu(); return; }
+            if (e.target.closest && e.target.closest('#menuBackBtn')) { __closeMenu(); return; }
             var b = e.target.closest ? e.target.closest('.menu-item-btn') : null;
             if (!b) return;
             overlay.style.display = 'none';
