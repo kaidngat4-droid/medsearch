@@ -914,6 +914,11 @@ function showMainMenu() {
             else if (a === 'rate') window.open('https://play.google.com/store/apps/details?id=com.salah.medsearch', '_blank');
         };
     }
+    
+    // تسجيل فتح القائمة في سجل المتصفح ليعمل زر الرجوع
+    if (window.history && window.history.pushState) {
+        window.history.pushState({ nav: 'menu' }, '');
+    }
     overlay.style.display = 'flex';
 }
 </script>

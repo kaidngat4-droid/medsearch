@@ -1808,3 +1808,227 @@ function openFeedbackModal() {
     }
     overlay.style.display = 'flex';
 }
+
+
+// ═══════════════════════════════════════════════════════════
+// Pediatric Dose Calculator (Paracetamol & Ibuprofen)
+// مرجع: BNF for Children (BNFc) - يعمل كأداة مساعدة فقط
+// ═══════════════════════════════════════════════════════════
+function initPediatricDose() {
+    const anchor = document.getElementById('clinicalCalcPanel');
+    if (!anchor || document.getElementById('pediatricDosePanel')) return;
+
+    // قاعدة بيانات الأدوية (قيم تقريبية من BNFc - يجب مراجعتها سريرياً)
+    const DRUGS = {
+        paracetamol: {
+            name: 'باراسيتامول (Paracetamol)',
+            source: 'BNF for Children',
+            mgPerKgPerDose: 15,  // للفم
+            maxMgPerDose: 1000,
+            maxMgPerDay: 4000,
+            dosesPerDay: 4,
+            concentrations: { syrup120: 120, syrup250: 250 } // mg per 5mL
+        },
+        ibuprofen: {
+            name: 'إيبوبروفين (Ibuprofen)',
+            source: 'BNF for Children',
+            mgPerKgPerDose: 10,
+            maxMgPerDose: 400,
+            maxMgPerDay: 1200,
+            dosesPerDay: 3,
+            concentrations: { syrup100: 100 } // mg per 5mL
+        }
+    };
+
+    const panel = document.createElement('div');
+    panel.className = 'native-panel active';
+    panel.id = 'pediatricDosePanel';
+    panel.style.marginTop = '20px';
+    panel.innerHTML = '<div class="native-panel-title">💊 حاسبة جرعات الأدوية</div>';
+
+    const grid = document.createElement('div');
+    grid.className = 'native-grid';
+
+    Object.keys(DRUGS).forEach(key => {
+        const btn = document.createElement('button');
+        btn.className = 'native-btn';
+        btn.innerHTML = `<span class="native-icon">💊</span><span class="native-label">${DRUGS[key].name}</span><span class="native-status">احسب الجرعة</span>`;
+        
+        btn.onclick = () => {
+            const body = document.getElementById('calcModalBody');
+            const overlay = document.getElementById('calcModalOverlay');
+            if (!body || !overlay) return;
+            
+            body.innerHTML = `<h2 style="font-family:var(--font-display);font-size:20px;margin-bottom:16px;color:var(--primary);">${DRUGS[key].name}</h2>`;
+            
+            // وزن الطفل
+            const wWrapper = document.createElement('div');
+            wWrapper.style.marginBottom = '12px';
+            wWrapper.innerHTML = `<label style="display:block;font-size:14px;font-weight:bold;margin-bottom:6px;">وزن الطفل (كغ)</label>`;
+            const wInput = document.createElement('input');
+            wInput.type = 'number'; wInput.step = '0.1'; wInput.min = '1';
+            wInput.style.cssText = 'width:100%;padding:12px;border-radius:10px;border:1px solid var(--border);background:var(--bg);color:var(--text);font-size:16px;';
+            wWrapper.appendChild(wInput);
+            body.appendChild(wWrapper);
+
+            // التركيز
+            const cWrapper = document.createElement('div');
+            cWrapper.style.marginBottom = '12px';
+            cWrapper.innerHTML = `<label style="display:block;font-size:14px;font-weight:bold;margin-bottom:6px;">تركيز الشراب (mg/5mL)</label>`;
+            const cSelect = document.createElement('select');
+            Object.keys(DRUGS[key].concentrations).forEach(conc => {
+                const op = document.createElement('option');
+                op.value = DRUGS[key].concentrations[conc];
+                op.textContent = `${DRUGS[key].concentrations[conc]} mg/5mL`;
+                cSelect.appendChild(op);
+            });
+            cSelect.style.cssText = 'width:100%;padding:12px;border-radius:10px;border:1px solid var(--border);background:var(--bg);color:var(--text);font-size:16px;';
+            cWrapper.appendChild(cSelect);
+            body.appendChild(cWrapper);
+
+            // زر الحساب
+            const calcBtn = document.createElement('button');
+            calcBtn.textContent = 'احسب الجرعة';
+            calcBtn.style.cssText = 'width:100%;padding:14px;border-radius:10px;background:var(--primary);color:#fff;border:none;font-size:16px;font-weight:bold;cursor:pointer;margin-top:10px;';
+            
+            const out = document.createElement('div');
+            out.style.cssText = 'margin-top:16px;padding:16px;border-radius:10px;background:rgba(13,115,119,0.1);white-space:pre-line;font-size:15px;display:none;line-height:1.6;';
+            
+            calcBtn.onclick = () => {
+                try {
+                    const weight = parseFloat(wInput.value);
+                    const conc = parseFloat(cSelect.value);
+                    if (!weight || weight < 2 || weight > 150) throw new Error('أدخل وزناً صحيحاً بين 2 و 150 كغ');
+                    
+                    let dose = weight * DRUGS[key].mgPerKgPerDose;
+                    let warning = '';
+                    if (dose > DRUGS[key].maxMgPerDose) {
+                        dose = DRUGS[key].maxMgPerDose;
+                        warning = '⚠️ تم تحديد الجرعة عند الحد الأقصى المسموح.\n';
+                    }
+                    
+                    const vol = (dose / conc) * 5;
+                    const daily = dose * DRUGS[key].dosesPerDay;
+                    
+                    out.style.color = 'var(--text)';
+                    out.textContent = `الجرعة الواحدة: ${dose.toFixed(1)} ملغ\nالحجم: ${vol.toFixed(1)} مل\nالجرعات اليومية: ${DRUGS[key].dosesPerDay} مرات\nالحد الأقصى اليومي: ${daily.toFixed(1)} ملغ\n${warning}\nالمرجع: ${DRUGS[key].source}\n\n⚠️ تحقق دائماً من الجرعة ونشرة الدواء قبل الإعطاء.`;
+                } catch (e) {
+                    out.style.color = '#e57373';
+                    out.textContent = '⚠️ ' + e.message;
+                }
+                out.style.display = 'block';
+            };
+            body.appendChild(calcBtn);
+            body.appendChild(out);
+            overlay.style.display = 'flex';
+        };
+        grid.appendChild(btn);
+    });
+
+    panel.appendChild(grid);
+    anchor.parentNode.insertBefore(panel, anchor.nextSibling);
+}
+
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initPediatricDose);
+} else {
+    initPediatricDose();
+}
+
+// ═══════════════════════════════════════════════════════════
+// BackButtonNav_v1 — زر الرجوع في الهاتف: إغلاق النافذة ← الرئيسية ← الخروج
+// ═══════════════════════════════════════════════════════════
+(function () {
+    var HOME = 'home';
+    var inView = false;
+    var modalTracked = false;
+    var suppress = false;
+    var internal = false;
+
+    function detailEl() { return document.getElementById('detailModal'); }
+    function calcEl() { return document.getElementById('calcModalOverlay'); }
+    function isDetailOpen() { var e = detailEl(); return !!(e && e.classList.contains('active')); }
+    function isCalcOpen() { var e = calcEl(); return !!(e && getComputedStyle(e).display !== 'none'); }
+    function anyOpen() { return isDetailOpen() || isCalcOpen(); }
+
+    function closeOverlays() {
+        if (isDetailOpen()) {
+            if (typeof window.closeModal === 'function') window.closeModal();
+            else detailEl().classList.remove('active');
+            document.body.style.overflow = '';
+        }
+        var c = calcEl();
+        if (c && isCalcOpen()) {
+            if (c.style.display && c.style.display !== 'none') c.style.display = 'none';
+            else c.classList.remove('active', 'open', 'show');
+        }
+    }
+
+    function syncModal() {
+        var open = anyOpen();
+        if (open && !modalTracked) {
+            modalTracked = true;
+            history.pushState({ nav: 'modal' }, '');
+        } else if (!open && modalTracked) {
+            modalTracked = false;
+            suppress = true;
+            history.back();
+        }
+    }
+
+    function enterView() {
+        if (internal) return;
+        if (modalTracked) { inView = true; return; }
+        if (!inView) { inView = true; history.pushState({ nav: 'view' }, ''); }
+        else history.replaceState({ nav: 'view' }, '');
+    }
+
+    function leftToHome() {
+        if (internal || !inView) return;
+        inView = false;
+        if (!modalTracked) { suppress = true; history.back(); }
+    }
+
+    var _showPage = window.showPage;
+    if (typeof _showPage === 'function') {
+        window.showPage = function (page) {
+            var r = _showPage.apply(this, arguments);
+            if (page === HOME) leftToHome(); else enterView();
+            return r;
+        };
+    }
+    var _showDictionary = window.showDictionary;
+    if (typeof _showDictionary === 'function') {
+        window.showDictionary = function () {
+            var r = _showDictionary.apply(this, arguments);
+            enterView();
+            return r;
+        };
+    }
+
+    window.addEventListener('popstate', function () {
+        // التحقق من وجود القائمة الجانبية المفتوحة
+        var menuOverlay = document.getElementById('mainMenuOverlay');
+        if (menuOverlay && menuOverlay.style.display === 'flex') {
+            menuOverlay.style.display = 'none';
+            return;
+        }
+
+        if (suppress) { suppress = false; return; }
+        if (modalTracked) { modalTracked = false; closeOverlays(); return; }
+        if (inView) {
+            inView = false; internal = true;
+            try { window.showPage(HOME); } finally { internal = false; }
+        }
+    });
+
+    function setup() {
+        history.replaceState({ nav: 'home' }, '');
+        var obs = new MutationObserver(syncModal);
+        [detailEl(), calcEl()].forEach(function (el) {
+            if (el) obs.observe(el, { attributes: true, attributeFilter: ['class', 'style'] });
+        });
+    }
+    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', setup);
+    else setup();
+})();
