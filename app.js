@@ -814,7 +814,7 @@ async function shareApp() {
 // ═══════════════════════════════════════════════════════════
 
 async function copyToClipboard(text) {
-    const content = text || `${APP_NAME}: ${window.location.href}`;
+    const content = text || `${APP_NAME}: https://medsearch-app.netlify.app/`;
     try {
         await navigator.clipboard.writeText(content);
         showToast('\u{1F4CB} تم النسخ إلى الحافظة');
