@@ -583,6 +583,27 @@
         .icon-btn { width: 48px; height: 48px; }
         .nav-link, .native-feature-chip, .result-btn, .qr-scanner-close { min-height: 48px; }
     </style>
+
+    <!-- AppModeHideInstall_v1 -->
+    <script>
+    (function () {
+        try {
+            var mq = function (q) { return !!(window.matchMedia && window.matchMedia(q).matches); };
+            var fromTwa = (document.referrer || '').indexOf('android-app://') === 0;
+            if (fromTwa) sessionStorage.setItem('medsearch_twa', '1');
+            var isApp = fromTwa || sessionStorage.getItem('medsearch_twa') === '1' ||
+                mq('(display-mode: standalone)') || mq('(display-mode: fullscreen)') ||
+                mq('(display-mode: minimal-ui)') || window.navigator.standalone === true;
+            if (isApp) document.documentElement.classList.add('is-app');
+        } catch (e) {}
+    })();
+    </script>
+    <style>
+    .is-app .install-banner,
+    .is-app .pwa-sheet,
+    .is-app .pwa-sheet-overlay,
+    .is-app button[onclick="showPwaSheet()"] { display: none !important; }
+    </style>
 </head>
 <body>
 
@@ -673,7 +694,6 @@
             </a>
             <div class="header-actions">
                 <button class="icon-btn" onclick="toggleTheme()" title="تبديل الوضع" aria-label="تبديل الوضع الليلي">&#x1F313;</button>
-                <button class="icon-btn" onclick="showPwaSheet()" title="تثبيت التطبيق" aria-label="تثبيت التطبيق">&#x1F4F2;</button>
             </div>
         </div>
         <div class="header-nav">
