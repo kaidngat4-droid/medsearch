@@ -416,7 +416,7 @@ function renderDictionaryItem(item, type, index) {
         detailsHTML = `<div class="result-details"><div class="detail-item"><div class="detail-label">الموقع/القيم</div><div class="detail-value">${escapeHtml(item.location || item.normalValues)}</div></div></div>`;
     }
     const searchTerm = encodeURIComponent((item.nameEn || item.name) + ' medical');
-    return `<div class="dictionary-result-card" onclick="showItemDetail('${type}', ${item.id})" style="animation:fadeInUp 0.4s ease ${index * 0.05}s both"><div class="result-header"><div class="result-icon ${color}">${dictIcon}</div><div><div class="result-title">${escapeHtml(item.name)}</div><div class="result-subtitle">${escapeHtml(item.nameEn)}</div></div></div>${detailsHTML}<div class="result-actions"><button class="result-btn" onclick="event.stopPropagation();showItemDetail('${type}', ${item.id})"><span>\u{1F4CB}</span> تفاصيل</button><button class="result-btn google" onclick="event.stopPropagation();openInNewTab('https://www.google.com/search?q=${searchTerm}')"><span>\u{1F50D}</span> Google</button><button class="result-btn pubmed" onclick="event.stopPropagation();openInNewTab('https://pubmed.ncbi.nlm.nih.gov/?term=${encodeURIComponent(item.nameEn || item.name)}')"><span>\u{1F4C4}</span> PubMed</button></div></div>`;
+    return `<div class="dictionary-result-card" onclick="showItemDetail('${type}', ${item.id})" style="animation:fadeInUp 0.4s ease ${index * 0.05}s both"><div class="result-header"><div class="result-icon ${color}">${dictIcon}</div><div><div class="result-title">${escapeHtml(item.name)}</div><div class="result-subtitle">${escapeHtml(item.nameEn)}</div></div></div>${detailsHTML}<div class="result-actions"><button class="result-btn" onclick="event.stopPropagation();showItemDetail('${type}', ${item.id})"><span>\u{1F4CB}</span> تفاصيل</button>${favButtonHTML(type, item.id)}<button class="result-btn google" onclick="event.stopPropagation();openInNewTab('https://www.google.com/search?q=${searchTerm}')"><span>\u{1F50D}</span> Google</button><button class="result-btn pubmed" onclick="event.stopPropagation();openInNewTab('https://pubmed.ncbi.nlm.nih.gov/?term=${encodeURIComponent(item.nameEn || item.name)}')"><span>\u{1F4C4}</span> PubMed</button></div></div>`;
 }
 
 function searchInDictionary(type) {
@@ -2115,4 +2115,127 @@ if (document.readyState === 'loading') {
         
         showExitModal();
     });
+})();
+
+
+// ═══════════════════════════════════════════════════════════
+// AddFavorites_v1 — المفضلة
+// ═══════════════════════════════════════════════════════════
+const FAV_KEY = 'medsearch_favorites';
+
+function favGet() {
+    try {
+        const a = JSON.parse(localStorage.getItem(FAV_KEY) || '[]');
+        if (!Array.isArray(a)) return [];
+        return a.filter(f => f && typeof f.type === 'string' && Number.isFinite(Number(f.id)))
+                .map(f => ({ type: f.type, id: Number(f.id) }));
+    } catch (e) { return []; }
+}
+function favSave(list) {
+    try { localStorage.setItem(FAV_KEY, JSON.stringify(list)); return true; } catch (e) { return false; }
+}
+function favHas(type, id) {
+    id = Number(id);
+    return favGet().some(f => f.type === type && f.id === id);
+}
+function favLabel(on) {
+    return on ? '<span>\u2B50</span> في المفضلة' : '<span>\u2606</span> إضافة للمفضلة';
+}
+function favButtonHTML(type, id) {
+    const on = favHas(type, id);
+    return '<button class="result-btn fav-btn' + (on ? ' fav-on' : '') + '" data-fav="' + type + ':' + id +
+        '" onclick="event.stopPropagation();toggleFavorite(\'' + type + '\',' + id + ')">' + favLabel(on) + '</button>';
+}
+function favRefreshButtons() {
+    document.querySelectorAll('.fav-btn[data-fav]').forEach(function (b) {
+        const parts = b.getAttribute('data-fav').split(':');
+        const on = favHas(parts[0], parts[1]);
+        b.classList.toggle('fav-on', on);
+        b.innerHTML = favLabel(on);
+    });
+}
+function toggleFavorite(type, id) {
+    id = Number(id);
+    const list = favGet();
+    const i = list.findIndex(f => f.type === type && f.id === id);
+    if (i >= 0) list.splice(i, 1); else list.unshift({ type: type, id: id });
+    if (!favSave(list)) {
+        if (typeof showToast === 'function') showToast('تعذّر حفظ المفضلة على هذا الجهاز');
+        return;
+    }
+    favRefreshButtons();
+    if (typeof showToast === 'function') showToast(i >= 0 ? 'أُزيل من المفضلة' : '\u2B50 أُضيف إلى المفضلة');
+}
+function removeFavorite(type, id) {
+    toggleFavorite(type, id);
+    openFavorites();
+}
+function clearFavorites() {
+    if (!favGet().length) return;
+    if (!confirm('مسح كل المفضلة؟')) return;
+    favSave([]);
+    favRefreshButtons();
+    openFavorites();
+}
+
+function openFavorites() {
+    const modalBody = document.getElementById('modalBody');
+    const modal = document.getElementById('detailModal');
+    if (!modalBody || !modal) return;
+    const list = favGet();
+    const byType = {};
+    let count = 0;
+    list.forEach(function (f) {
+        const dict = MEDICAL_DB[f.type];
+        const item = dict && dict.data.find(function (i) { return i.id === f.id; });
+        if (!item) return;
+        (byType[f.type] = byType[f.type] || []).push(item);
+        count++;
+    });
+    const box = 'display:flex;align-items:center;gap:8px;padding:12px;background:var(--bg-secondary);border-radius:10px;margin-bottom:8px;border:1px solid var(--border-light);';
+    let html = '<div style="text-align:center;margin-bottom:20px">' +
+        '<div style="font-size:44px;margin-bottom:6px">\u2B50</div>' +
+        '<h2 style="font-family:var(--font-display);font-size:24px;color:var(--text);margin:8px 0">المفضلة</h2>' +
+        '<p style="color:var(--text-tertiary);font-size:14px">' + count + ' عنصر</p></div>';
+    if (!count) {
+        html += '<p style="text-align:center;color:var(--text-secondary);line-height:1.9;padding:12px">لا توجد عناصر في المفضلة بعد.<br>اضغط \u2606 على أي دواء أو تحليل أو مرض لإضافته هنا.</p>';
+    } else {
+        Object.keys(MEDICAL_DB).forEach(function (type) {
+            const items = byType[type];
+            if (!items || !items.length) return;
+            const dict = MEDICAL_DB[type];
+            html += '<div style="font-weight:800;color:var(--primary);margin:14px 0 8px;font-size:14px">' + dict.icon + ' ' + escapeHtml(dict.name) + '</div>';
+            items.forEach(function (item) {
+                html += '<div style="' + box + '">' +
+                    '<div style="flex:1;cursor:pointer" onclick="showItemDetail(\'' + type + '\',' + item.id + ')">' +
+                        '<div style="font-size:15px;font-weight:700;color:var(--text)">' + escapeHtml(item.name) + '</div>' +
+                        '<div style="font-size:12px;color:var(--text-tertiary)">' + escapeHtml(item.nameEn || '') + '</div>' +
+                    '</div>' +
+                    '<button class="result-btn" aria-label="إزالة من المفضلة" onclick="removeFavorite(\'' + type + '\',' + item.id + ')">\u2715</button>' +
+                '</div>';
+            });
+        });
+    }
+    html += '<div style="text-align:center;margin-top:20px;display:flex;gap:8px;justify-content:center;flex-wrap:wrap">' +
+        (count ? '<button class="result-btn" onclick="clearFavorites()">\uD83D\uDDD1\uFE0F مسح الكل</button>' : '') +
+        '<button class="result-btn" onclick="closeModal()">\u2715 إغلاق</button></div>';
+    modalBody.innerHTML = html;
+    modal.classList.add('active');
+    document.body.style.overflow = 'hidden';
+}
+
+// إضافة زر المفضلة داخل نافذة تفاصيل أي عنصر
+(function () {
+    const _showItemDetail = window.showItemDetail;
+    if (typeof _showItemDetail !== 'function') return;
+    window.showItemDetail = function (type, id) {
+        const r = _showItemDetail.apply(this, arguments);
+        const modal = document.getElementById('detailModal');
+        const mb = document.getElementById('modalBody');
+        if (!modal || !mb || !modal.classList.contains('active')) return r;
+        if (mb.querySelector('.fav-btn')) return r;
+        const last = mb.lastElementChild;
+        if (last && last.querySelector('button')) last.insertAdjacentHTML('afterbegin', favButtonHTML(type, id));
+        return r;
+    };
 })();

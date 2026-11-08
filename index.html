@@ -604,6 +604,8 @@
     .is-app .pwa-sheet-overlay,
     .is-app button[onclick="showPwaSheet()"] { display: none !important; }
     </style>
+
+    <style>/* AddFavorites_v1 */ .fav-btn.fav-on { border-color: #f59e0b !important; background: rgba(245,158,11,0.14) !important; }</style>
 </head>
 <body>
 
@@ -693,6 +695,7 @@
                 </div>
             </a>
             <div class="header-actions">
+                <button class="icon-btn" onclick="openFavorites()" title="المفضلة" aria-label="المفضلة">&#x2B50;</button>
                 <button class="icon-btn" onclick="toggleTheme()" title="تبديل الوضع" aria-label="تبديل الوضع الليلي">&#x1F313;</button>
             </div>
         </div>
