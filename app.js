@@ -639,76 +639,133 @@ async function supportsBarcodeDetector() {
     }
 }
 
+// ---- ضبط المسح (عدّل هنا عند الحاجة) ----
+const QR_FORMATS = ['qr_code', 'ean_13', 'ean_8', 'upc_a', 'upc_e', 'code_128', 'data_matrix'];
+const QR_SCAN_INTERVAL_MS = 90;      // BarcodeDetector: ~11 مسحة/ثانية
+const QR_ZXING_INTERVAL_MS = 200;    // ZXing: ~5 مسحات/ثانية
+const QR_MAX_DETECT_ERRORS = 5;      // أخطاء متتالية قبل التحويل إلى ZXing
+const QR_VIDEO_CONSTRAINTS = { video: { facingMode: { ideal: 'environment' }, width: { ideal: 1280 }, height: { ideal: 720 } } };
+
+function stopQRStream() {
+    if (qrStream) { try { qrStream.getTracks().forEach(t => t.stop()); } catch (e) {} qrStream = null; }
+}
+
+async function applyContinuousFocus(stream) {
+    try {
+        const track = stream && stream.getVideoTracks && stream.getVideoTracks()[0];
+        const caps = track && track.getCapabilities ? track.getCapabilities() : {};
+        if (caps.focusMode && caps.focusMode.includes('continuous')) {
+            await track.applyConstraints({ advanced: [{ focusMode: 'continuous' }] });
+        }
+    } catch (e) { /* غير مدعوم، نكمل */ }
+}
+
+// 1) المسار الأسرع: BarcodeDetector الأصلي في المتصفح
+async function startWithBarcodeDetector(overlay, video) {
+    if (!(await supportsBarcodeDetector())) return false;
+    try {
+        const supported = await BarcodeDetector.getSupportedFormats();
+        const formats = QR_FORMATS.filter(f => supported.includes(f));
+        if (!formats.length) return false;
+        const detector = new BarcodeDetector({ formats });
+
+        qrStream = await navigator.mediaDevices.getUserMedia(QR_VIDEO_CONSTRAINTS);
+        await applyContinuousFocus(qrStream);
+        video.srcObject = qrStream;
+        await video.play();
+        overlay.classList.add('active');
+        updateNativeStatus('qrStatus', '\u{1F50D} يبحث...');
+        showToast('\u{1F4F7} وجه الكاميرا نحو QR أو Barcode');
+
+        let stopped = false, timer = null, errs = 0;
+        const scanLoop = async () => {
+            if (stopped || !overlay.classList.contains('active')) return;
+            try {
+                if (video.readyState >= 2) {
+                    const codes = await detector.detect(video);
+                    errs = 0;
+                    if (codes.length > 0) {
+                        handleQRResult(codes[0].rawValue, codes[0].format);
+                        return;
+                    }
+                }
+            } catch (e) {
+                // بعض الأجهزة تُعلن الدعم ثم يفشل detect فعلياً: نحوّل إلى ZXing
+                if (++errs >= QR_MAX_DETECT_ERRORS) {
+                    console.warn('[QR] BarcodeDetector يفشل على هذا الجهاز، التحويل إلى ZXing');
+                    stopped = true;
+                    stopQRStream();
+                    video.srcObject = null;
+                    const ok = await startWithZXing(overlay, video);
+                    if (!ok) {
+                        updateNativeStatus('qrStatus', '\u{274C} غير مدعوم');
+                        showToast('\u{274C} تعذر تشغيل المسح على هذا الجهاز.');
+                        overlay.classList.remove('active');
+                    }
+                    return;
+                }
+            }
+            timer = setTimeout(scanLoop, QR_SCAN_INTERVAL_MS);
+        };
+        scanLoop();
+        qrControls = { stop: () => { stopped = true; clearTimeout(timer); overlay.classList.remove('active'); } };
+        return true;
+    } catch (err) {
+        console.error('[QR] BarcodeDetector failed:', err);
+        stopQRStream();
+        return false;
+    }
+}
+
+// 2) الاحتياطي: ZXing مع حصر الصيغ ودقة أعلى
+async function startWithZXing(overlay, video) {
+    let Z;
+    try { Z = await loadZXing(); } catch (err) {
+        console.warn('[QR] ZXing غير متاح');
+        return false;
+    }
+    try {
+        const F = Z.BarcodeFormat, H = Z.DecodeHintType;
+        const hints = new Map();
+        hints.set(H.POSSIBLE_FORMATS, [F.QR_CODE, F.EAN_13, F.EAN_8, F.UPC_A, F.UPC_E, F.CODE_128, F.DATA_MATRIX]);
+        hints.set(H.TRY_HARDER, true);
+        const reader = new Z.BrowserMultiFormatReader(hints, QR_ZXING_INTERVAL_MS);
+        const onResult = (result) => {
+            if (result) handleQRResult(result.getText(), result.getBarcodeFormat ? String(result.getBarcodeFormat()) : 'QR');
+        };
+
+        overlay.classList.add('active');
+        updateNativeStatus('qrStatus', '\u{1F50D} يبحث...');
+        showToast('\u{1F4F7} وجه الكاميرا نحو QR أو Barcode');
+
+        if (typeof reader.decodeFromConstraints === 'function') {
+            reader.decodeFromConstraints(QR_VIDEO_CONSTRAINTS, video, onResult);
+        } else {
+            const devices = await reader.listVideoInputDevices();
+            const back = devices.find(d => /back|environment|rear/i.test(d.label));
+            const deviceId = back ? back.deviceId : (devices[devices.length - 1]?.deviceId || undefined);
+            reader.decodeFromVideoDevice(deviceId, video, onResult);
+        }
+        qrControls = { stop: () => { try { reader.reset(); } catch (e) {} } };
+        setTimeout(() => { qrStream = video.srcObject; applyContinuousFocus(qrStream); }, 800);
+        return true;
+    } catch (err) {
+        console.error('[QR] ZXing start failed:', err);
+        stopQRStream();
+        return false;
+    }
+}
+
 async function startQRScanner() {
     const overlay = document.getElementById('qrScannerOverlay');
     const video = document.getElementById('qrVideo');
     if (!overlay || !video) return;
 
     updateNativeStatus('qrStatus', 'جارٍ التحميل...');
+    if (qrControls) { try { qrControls.stop(); } catch (e) {} qrControls = null; }
 
-    let ZXingBrowser = null;
-    try {
-        ZXingBrowser = await loadZXing();
-    } catch (err) {
-        console.warn('[QR] ZXing غير متاح، تجربة BarcodeDetector...');
-    }
-
-    if (qrControls) { try { qrControls.stop(); } catch(e){} qrControls = null; }
-
-    if (ZXingBrowser) {
-        try {
-            const codeReader = new ZXingBrowser.BrowserMultiFormatReader();
-            const devices = await codeReader.listVideoInputDevices();
-            const back = devices.find(d => /back|environment|rear/i.test(d.label));
-            const deviceId = back ? back.deviceId : (devices[devices.length - 1]?.deviceId || undefined);
-
-            overlay.classList.add('active');
-            updateNativeStatus('qrStatus', '\u{1F50D} يبحث...');
-            showToast('\u{1F4F7} وجه الكاميرا نحو QR أو Barcode');
-
-            codeReader.decodeFromVideoDevice(deviceId, video, (result, err) => {
-                if (result) handleQRResult(result.getText(), result.getBarcodeFormat ? String(result.getBarcodeFormat()) : 'QR');
-            });
-            qrControls = { stop: () => { try { codeReader.reset(); } catch (e) {} } };
-            setTimeout(() => { qrStream = video.srcObject; }, 800);
-            return;
-        } catch (err) {
-            console.error('[QR] ZXing start failed:', err);
-            if (qrStream) { qrStream.getTracks().forEach(t => t.stop()); qrStream = null; }
-        }
-    }
-
-    const barcodeSupported = await supportsBarcodeDetector();
-    if (barcodeSupported) {
-        try {
-            qrStream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: { ideal: 'environment' }, width: { ideal: 1280 }, height: { ideal: 720 } } });
-            video.srcObject = qrStream;
-            await video.play();
-            overlay.classList.add('active');
-            updateNativeStatus('qrStatus', '\u{1F50D} يبحث (BarcodeDetector)...');
-            showToast('\u{1F4F7} وجه الكاميرا نحو QR أو Barcode');
-
-            const detector = new BarcodeDetector({ formats: ['qr_code','ean_13','ean_8','upc_a','upc_e','code_128','code_39','itf','data_matrix','pdf417'] });
-            const scanLoop = async () => {
-                if (!overlay.classList.contains('active')) return;
-                try {
-                    const barcodes = await detector.detect(video);
-                    if (barcodes.length > 0) {
-                        const first = barcodes[0];
-                        handleQRResult(first.rawValue, first.format);
-                        return;
-                    }
-                } catch (e) { /* ignore */ }
-                requestAnimationFrame(scanLoop);
-            };
-            scanLoop();
-            qrControls = { stop: () => { overlay.classList.remove('active'); } };
-            return;
-        } catch (err) {
-            console.error('[QR] BarcodeDetector failed:', err);
-            if (qrStream) { qrStream.getTracks().forEach(t => t.stop()); qrStream = null; }
-        }
-    }
+    if (await startWithBarcodeDetector(overlay, video)) return;
+    if (await startWithZXing(overlay, video)) return;
 
     updateNativeStatus('qrStatus', '\u{274C} غير مدعوم');
     showToast('\u{274C} تعذر تحميل مكتبة المسح. تأكد من الاتصال بالإنترنت أو استخدم متصفحاً حديثاً.');
