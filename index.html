@@ -236,6 +236,19 @@
         .icon-btn:hover { color: var(--primary); transform: translateY(-2px); }
         .icon-btn:active { transform: scale(0.95); }
         .icon-btn .ripple { position: absolute; border-radius: 50%; background: rgba(13,115,119,0.2); animation: ripple 0.6s ease-out; pointer-events: none; }
+        /* إصلاح: ripple يمدّ ارتفاع الأزرار (كان مقصوراً على .icon-btn) */
+        .source-btn, .result-btn, .dictionary-search-btn, .global-search-btn,
+        .alphabet-btn, .dictionary-card, .external-source-card, .native-btn {
+            position: relative;
+            overflow: hidden;
+        }
+        .ripple {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.25);
+            animation: ripple 0.6s ease-out;
+            pointer-events: none;
+        }
 
         .user-avatar { width: 40px; height: 40px; border-radius: 50%; background: linear-gradient(135deg, var(--primary), var(--accent)); color: #fff; font-weight: 800; font-size: 14px; display: flex; align-items: center; justify-content: center; cursor: pointer; border: 2px solid var(--bg); box-shadow: 0 2px 8px rgba(13,115,119,0.2); transition: var(--transition-fast); position: relative; }
         .user-avatar:hover { transform: scale(1.1); box-shadow: 0 4px 12px rgba(13,115,119,0.3); }
