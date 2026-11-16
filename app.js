@@ -1018,7 +1018,8 @@ function getNetworkInfo() {
         info += `\nRTT: ${conn.rtt || 0} ms`;
         info += `\nتوفير البيانات: ${conn.saveData ? 'مفعل' : 'معطل'}`;
     }
-    showNativeOutput(info);
+    // عرض النتيجة في نافذة منبثقة (Toast) بدلاً من مكان مخفي
+    showToast(info.replace(/\n/g, ' | '));
     updateNativeStatus('networkStatus', conn ? (conn.effectiveType || 'متصل') : (isOnline ? 'متصل' : 'غير متصل'));
 }
 
