@@ -2588,3 +2588,32 @@ function openFavorites() {
         });
     };
 })();
+
+// ===== torch-fix: تشغيل/إطفاء الفلاش بشكل موثوق =====
+async function toggleTorch() {
+    const video = document.getElementById('qrVideo');
+    const stream = (video && video.srcObject) || qrStream;
+    const track = stream && stream.getVideoTracks && stream.getVideoTracks()[0];
+    if (!track || track.readyState !== 'live') { showToast('⚠️ الكاميرا غير نشطة'); return; }
+
+    const caps = track.getCapabilities ? track.getCapabilities() : {};
+    if (!('torch' in caps)) { showToast('⚠️ الفلاش غير مدعوم في هذا المتصفح/الجهاز'); return; }
+
+    // الحالة الحقيقية من المسار نفسه وليس من متغير قد يختل
+    const settings = track.getSettings ? track.getSettings() : {};
+    const next = !(settings.torch === true || (settings.torch === undefined && torchOn));
+
+    try {
+        await track.applyConstraints({ advanced: [{ torch: next }] });
+    } catch (e1) {
+        try {
+            await track.applyConstraints({ torch: next });
+        } catch (e2) {
+            showToast('❌ الفلاش: ' + (e2.name || 'خطأ'));
+            return;
+        }
+    }
+    const after = track.getSettings ? track.getSettings() : {};
+    torchOn = after.torch !== undefined ? after.torch === true : next;
+    showToast(torchOn ? '🔦 الفلاش مفعل' : '🔦 الفلاش مطفأ');
+}
