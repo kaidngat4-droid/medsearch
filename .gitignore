@@ -7,3 +7,4 @@ signing.keystore
 *.pre_*
 *.bak*
 backup-*/
+patch-*.py
