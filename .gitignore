@@ -5,3 +5,5 @@ signing.keystore
 *.bak
 *.orig
 *.pre_*
+*.bak*
+backup-*/
