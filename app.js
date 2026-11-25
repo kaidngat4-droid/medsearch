@@ -799,7 +799,11 @@ async function startWithZXing(overlay, video) {
         hints.set(H.TRY_HARDER, true);
         const reader = new Z.BrowserMultiFormatReader(hints, QR_ZXING_INTERVAL_MS);
         const onResult = (result) => {
-            if (result) handleQRResult(result.getText(), result.getBarcodeFormat ? String(result.getBarcodeFormat()) : 'QR');
+            if (result) {
+                let fmt = 'QR';
+                try { const f = result.getBarcodeFormat(); fmt = (Z.BarcodeFormat && Z.BarcodeFormat[f]) || String(f); } catch (e) {}
+                handleQRResult(result.getText(), fmt);
+            }
         };
 
         overlay.classList.add('active');
@@ -829,6 +833,7 @@ async function startQRScanner() {
     const video = document.getElementById('qrVideo');
     if (!overlay || !video) return;
 
+    torchOn = false;
     updateNativeStatus('qrStatus', 'جارٍ التحميل...');
     if (qrControls) { try { qrControls.stop(); } catch (e) {} qrControls = null; }
 
@@ -850,6 +855,7 @@ function stopQRScanner() {
     if (video) video.srcObject = null;
 
     torchOn = false;
+    QR_VIDEO_CONSTRAINTS.video.facingMode.ideal = 'environment';
     updateNativeStatus('qrStatus', 'جاهز');
 }
 
@@ -891,26 +897,12 @@ function handleQRResult(data, format) {
     updateNativeStatus('qrStatus', '\u{2705} تم القراءة');
 }
 
-async function toggleTorch() {
-    const video = document.getElementById('qrVideo');
-    const stream = (video && video.srcObject) || qrStream;
-    if (!stream) { showToast('⚠️ الكاميرا غير نشطة'); return; }
-    const track = stream.getVideoTracks()[0];
-    if (!track) { showToast('⚠️ لا يوجد مسار فيديو'); return; }
-    try {
-        const caps = track.getCapabilities ? track.getCapabilities() : {};
-        if (!('torch' in caps)) { showToast('⚠️ هذه الكاميرا لا تدعم الفلاش'); return; }
-        torchOn = !torchOn;
-        await track.applyConstraints({ advanced: [{ torch: torchOn }] });
-        showToast(torchOn ? '\u{1F526} الفلاش مفعل' : '\u{1F526} الفلاش مطفأ');
-    } catch (err) {
-        torchOn = false;
-        showToast('\u{274C} الفلاش: ' + (err.name || 'خطأ'));
-    }
-}
 
 async function switchCamera() {
-    stopQRScanner();
+    const fm = QR_VIDEO_CONSTRAINTS.video.facingMode;
+    const next = fm.ideal === 'environment' ? 'user' : 'environment';
+    stopQRScanner();            // يعيد الاتجاه إلى الخلفية
+    fm.ideal = next;            // ثم نطبّق الاتجاه الجديد
     setTimeout(() => startQRScanner(), 300);
 }
 
@@ -1952,34 +1944,71 @@ if (document.readyState === 'loading') {
 // ═══════════════════════════════════════════════════════════
 // Barcode Handling: بحث ذكي عن الباركود (بدون بيانات وهمية)
 // ═══════════════════════════════════════════════════════════
+// فهرس الباركود: رقم الباركود => id العنصر في قاموس الأدوية (pharmacology)
+// أضف أرقامك هنا، مثال:  '6291234567890': 13   // باراسيتامول
+// ويمكن بدلًا من ذلك إضافة الحقل barcode: ['...'] داخل العنصر نفسه.
+const BARCODE_INDEX = {};
+
+function _bcNorm(c) { return String(c == null ? '' : c).trim().replace(/^0+/, ''); }
+
 function findDrugByBarcode(barcode) {
-    if (!barcode || !MEDICAL_DB || !MEDICAL_DB.drugs) return null;
-    const code = String(barcode).trim();
-    return MEDICAL_DB.drugs.data.find(item => 
-        (item.barcode && Array.isArray(item.barcode) && item.barcode.includes(code)) || 
-        (item.barcode && String(item.barcode) === code)
-    ) || null;
+    const dict = MEDICAL_DB.pharmacology;
+    const code = _bcNorm(barcode);
+    if (!dict || !code) return null;
+    for (const k of Object.keys(BARCODE_INDEX)) {
+        if (_bcNorm(k) === code) {
+            const hit = dict.data.find(i => i.id === BARCODE_INDEX[k]);
+            if (hit) return hit;
+        }
+    }
+    return dict.data.find(item => {
+        const b = item.barcode;
+        if (!b) return false;
+        return (Array.isArray(b) ? b : [b]).some(x => _bcNorm(x) === code);
+    }) || null;
+}
+
+// نافذة نتيجة لباركود غير موجود محليًا (زر Google بنقرة المستخدم فلا يحجبه المتصفح)
+function showBarcodeResult(code, format) {
+    const modalBody = document.getElementById('modalBody');
+    const modal = document.getElementById('detailModal');
+    if (!modalBody || !modal) { openInNewTab('https://www.google.com/search?q=' + encodeURIComponent(code)); return; }
+    const fmt = String(format || 'BARCODE').toUpperCase().replace(/_/g, '-');
+    modalBody.innerHTML =
+        '<div style="text-align:center;margin-bottom:16px">' +
+        '<div style="font-size:44px;margin-bottom:6px">\u{1F4E6}</div>' +
+        '<h2 style="font-family:var(--font-display);font-size:22px;color:var(--text);margin:8px 0">تمت قراءة الباركود</h2>' +
+        '<div dir="ltr" style="font-size:22px;font-weight:800;letter-spacing:1px;word-break:break-all;color:var(--primary)">' + escapeHtml(code) + '</div>' +
+        '<div style="font-size:12px;color:var(--text-tertiary);margin-top:4px">' + escapeHtml(fmt) + '</div></div>' +
+        '<p style="text-align:center;color:var(--text-secondary);line-height:1.8">لم يُعثر على هذا الباركود في القواميس المحلية.</p>' +
+        '<div style="text-align:center;margin-top:16px;display:flex;gap:8px;justify-content:center;flex-wrap:wrap">' +
+        '<button class="result-btn google" data-code="' + escapeHtml(code) + '" onclick="openInNewTab(\'https://www.google.com/search?q=\' + encodeURIComponent(this.dataset.code))">\u{1F50D} بحث في Google</button>' +
+        '<button class="result-btn" data-code="' + escapeHtml(code) + '" onclick="copyToClipboard(this.dataset.code)">\u{1F4CB} نسخ الرقم</button>' +
+        '<button class="result-btn" onclick="closeModal()">\u{2715} إغلاق</button></div>';
+    modal.classList.add('active');
+    document.body.style.overflow = 'hidden';
 }
 
 const originalHandleQRResult = handleQRResult;
-window.handleQRResult = function(data, format) {
-    // 1. البحث في القاعدة المحلية
-    const drug = findDrugByBarcode(data);
-    if (drug) {
-        if (typeof stopQRScanner === 'function') stopQRScanner();
-        if (navigator.vibrate) navigator.vibrate([50, 30, 100]);
-        showToast(`✅ تم العثور على: ${drug.name}`);
-        if (typeof showItemDetail === 'function') showItemDetail('drugs', drug.id);
-        return;
-    }
-    
-    // 2. إذا لم يوجد في القاعدة، نفتح بحث Google عن الباركود
-    if (typeof stopQRScanner === 'function') stopQRScanner();
+window.handleQRResult = function (data, format) {
+    const code = String(data == null ? '' : data).trim();
+    // QR / روابط / نصوص: السلوك الأصلي (سجل + منع تكرار + تأكيد فتح الرابط)
+    if (!/^\d{8,14}$/.test(code)) return originalHandleQRResult(data, format);
+
+    // باركود منتج
+    if (_lastQR.d === code && Date.now() - _lastQR.t < 3000) return;
+    _lastQR = { d: code, t: Date.now() };
+    stopQRScanner();
     if (navigator.vibrate) navigator.vibrate([50, 30, 100]);
-    
-    const searchUrl = `https://www.google.com/search?q=${encodeURIComponent(data)}`;
-    showToast(`🔍 لم يتم العثور عليه محلياً. جارٍ البحث في Google...`);
-    setTimeout(() => openInNewTab(searchUrl), 500);
+    saveQRHistory(code, format);
+
+    const drug = findDrugByBarcode(code);
+    if (drug) {
+        showToast('\u{2705} ' + drug.name);
+        showItemDetail('pharmacology', drug.id);
+    } else {
+        showBarcodeResult(code, format);
+    }
 };
 
 
@@ -2175,9 +2204,12 @@ if (document.readyState === 'loading') {
     function calcEl() { return document.getElementById('calcModalOverlay'); }
     function isDetailOpen() { var e = detailEl(); return !!(e && e.classList.contains('active')); }
     function isCalcOpen() { var e = calcEl(); return !!(e && getComputedStyle(e).display !== 'none'); }
-    function anyOpen() { return isDetailOpen() || isCalcOpen(); }
+    function qrEl() { return document.getElementById('qrScannerOverlay'); }
+    function isQrOpen() { var e = qrEl(); return !!(e && e.classList.contains('active')); }
+    function anyOpen() { return isDetailOpen() || isCalcOpen() || isQrOpen(); }
 
     function closeOverlays() {
+        if (isQrOpen() && typeof window.stopQRScanner === 'function') window.stopQRScanner();
         if (isDetailOpen()) {
             if (typeof window.closeModal === 'function') window.closeModal();
             else detailEl().classList.remove('active');
@@ -2251,7 +2283,7 @@ if (document.readyState === 'loading') {
     function setup() {
         history.replaceState({ nav: 'home' }, '');
         var obs = new MutationObserver(syncModal);
-        [detailEl(), calcEl()].forEach(function (el) {
+        [detailEl(), calcEl(), qrEl()].forEach(function (el) {
             if (el) obs.observe(el, { attributes: true, attributeFilter: ['class', 'style'] });
         });
     }
