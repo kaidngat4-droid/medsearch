@@ -1631,7 +1631,7 @@ function initClinicalCalculators() {
         
         const content = document.createElement('div');
         content.id = 'calcModalContent';
-        content.style.cssText = 'background:var(--bg-card);width:100%;max-width:500px;border-radius:16px;padding:20px;max-height:90vh;overflow-y:auto;position:relative;box-shadow:0 10px 30px rgba(0,0,0,0.5);border:1px solid var(--border);';
+        content.style.cssText = 'background:var(--bg);color:var(--text);width:100%;max-width:500px;border-radius:16px;padding:20px;max-height:90vh;overflow-y:auto;position:relative;box-shadow:0 10px 30px rgba(0,0,0,0.5);border:1px solid var(--border);';
         
         const closeBtn = document.createElement('button');
         closeBtn.innerHTML = '✕';
@@ -1915,7 +1915,7 @@ function initPediatricDose() {
             calcBtn.textContent = 'احسب';
             calcBtn.style.cssText = 'width:100%;padding:14px;border-radius:10px;background:var(--primary);color:#fff;border:none;font-size:16px;font-weight:bold;cursor:pointer;margin-top:10px;';
             const out = document.createElement('div');
-            out.style.cssText = 'margin-top:16px;padding:16px;border-radius:10px;background:rgba(13,115,119,0.1);white-space:pre-line;font-size:15px;display:none;';
+            out.style.cssText = 'margin-top:16px;padding:16px;border-radius:10px;background:var(--bg-tertiary);color:var(--text);white-space:pre-line;font-size:15px;display:none;';
             
             calcBtn.onclick = () => {
                 try {
@@ -2028,7 +2028,7 @@ function openFeedbackModal() {
         overlay.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.8);z-index:10006;display:none;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(3px);';
         
         const content = document.createElement('div');
-        content.style.cssText = 'background:var(--bg-card);width:100%;max-width:500px;border-radius:16px;padding:20px;position:relative;box-shadow:0 10px 30px rgba(0,0,0,0.5);border:1px solid var(--border);';
+        content.style.cssText = 'background:var(--bg);color:var(--text);width:100%;max-width:500px;border-radius:16px;padding:20px;position:relative;box-shadow:0 10px 30px rgba(0,0,0,0.5);border:1px solid var(--border);';
         
         content.innerHTML = `
             <button id="closeFeedbackBtn" style="position:absolute;top:15px;left:15px;background:transparent;border:none;color:var(--text);font-size:20px;cursor:pointer;">✕</button>
@@ -2151,7 +2151,7 @@ function initPediatricDose() {
             calcBtn.style.cssText = 'width:100%;padding:14px;border-radius:10px;background:var(--primary);color:#fff;border:none;font-size:16px;font-weight:bold;cursor:pointer;margin-top:10px;';
             
             const out = document.createElement('div');
-            out.style.cssText = 'margin-top:16px;padding:16px;border-radius:10px;background:rgba(13,115,119,0.1);white-space:pre-line;font-size:15px;display:none;line-height:1.6;';
+            out.style.cssText = 'margin-top:16px;padding:16px;border-radius:10px;background:var(--bg-tertiary);color:var(--text);white-space:pre-line;font-size:15px;display:none;line-height:1.6;';
             
             calcBtn.onclick = () => {
                 try {
